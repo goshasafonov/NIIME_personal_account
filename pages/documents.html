@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8"/>
-  <title>Личный кабинет | Статусы запусков</title>
+  <title>Личный кабинет | Документы</title>
   <link rel="shortcut icon" href="../data/logo-2.png" type="image/x-icon" />
   <link rel="stylesheet" href="../Libs/bootstrap-4.4.1-dist/css/bootstrap.min.css">
   <link href="../Libs/MaterialDesign-Webfont-master/css/materialdesignicons.css" rel="stylesheet" type="text/css"/>
@@ -266,36 +266,76 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Статусы запусков</li>
+                    <li class="breadcrumb-item active" aria-current="page">Документы</li>
                 </ol>
             </nav>
                         
             <div class="container">
-                <div>
-                    
-                    <h3 class="mb-5"><span class="text-muted mdi mdi-chip"></span>
-                        Статусы запусков
+                <div>                    
+                    <h3 class="mb-5"><span class="text-muted mdi mdi-file-certificate"></span>
+                        Документы
                     </h3>
                 </div>
                 <div class="shadow p-3" style="border-radius: .25rem;">
-                    <h3>Карты состояния запусков</h3>
-                    <p class="text-muted mb-5">
-                        Вы можете отслеживать все изменения статусов запуска в реальном времени. Все запуски представлены ввиде карточек и
-                        временной линии на которой вы можете видеть индексацию состояния запуска.
-                    </p>
+                    <h3>Текущие состояния документов</h3>
+                    <div class="d-flex align-items-start">
+                        <p class="text-muted mb-5">
+                            Вы можете отслеживать все изменения документов в реальном времени. Вся информация о документах представлена ввиде карточек и
+                            временной линии на которой вы можете видеть индексацию состояний.
+                        </p>
+                        <button class="d-flex btn btn-sm btn-warning ml-4" data-toggle="modal" type="button" data-target=".download-modal-xl">
+                            <span class="mdi mdi-plus mr-2"></span>
+                            <span>Добавить</span>
+                        </button>
+                    </div>
+
+
+
+                    <div class="modal fade download-modal-xl" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Загрузка документов</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>                                
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                                <input type="text" class="form-control" id="recipient-name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="col-form-label">Message:</label>
+                                                <textarea class="form-control" id="message-text"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Send message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    
                     <div class="card-columns">
                         <div class="card">
                             <div class="card-header bg-transparent d-flex flex-wrap justify-content-between">
                                 <span class="d-flex align-items-center">
-                                    Запуск
+                                    Документ
                                 </span>
                                 <div class="btn border-success rounded-pill text-success text-nowrap" style="font-size: 0.8rem !important">
-                                    <span class="mdi mdi-server-plus"></span>
-                                    MIK_1H1_20
+                                    <span class="mdi mdi-file-clock"></span>
+                                    Расписание каникул
                                 </div>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">Прогресс запуска</h5>
+                                <h5 class="card-title">Процесс согласования</h5>
 
                                 <div class="timeline my-3 px-2 d-flex justify-content-around" style="position: relative;">                            
                                     <div class="btn rounded-circle"
@@ -343,7 +383,12 @@
 
 
                                 <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <button class="btn btn-sm btn-info">Подробнее</button>
+                                <div class="d-flex justify-content-between">
+                                    <a href="id_documents.html" type="button" class="btn btn-sm btn-info text-white">Перейти к документу</a>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <span class="mdi mdi-delete"></span>
+                                    </button>
+                                </div>
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">Last updated 3 mins ago</small>
