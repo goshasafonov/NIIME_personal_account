@@ -297,7 +297,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Прогресс запуска</h5>
 
-                                <div class="timeline my-3 px-2 d-flex justify-content-around" style="position: relative;">                            
+                                <div class="timeline-horizontal my-3 px-2 d-flex justify-content-around" style="position: relative;">                            
                                     <div class="btn rounded-circle"
                                         style="width: 35px;height: 35px;                                
                                         box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);                                
@@ -316,7 +316,8 @@
                                         box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
                                         padding: 3px; position: relative; background-color: white;z-index: 10;"
                                         tabindex="0"
-                                        role="button"                                
+                                        role="button"
+                                        data-placement="top"
                                         data-toggle="popover"
                                         data-trigger="focus"
                                         data-html="true"
@@ -391,9 +392,6 @@
                 content: "<div class='card'><h5 class='card-header bg-transparent'>Название карточки</h5><div class='card-body'><p class='card-text'>This card has supporting text below as a natural lead-in to additional content.</p></div><div class='dropdown-divider'></div><ul><li>We can do it</li><li>Every day 24/7</li><li>Greatest UI in the word</li></ul><div class='card-footer'><small class='text-muted'>Last updated 29.05.1996</small></div></div>"
             });
             $('[data-toggle="popover"]').popover();
-            $('.popover-dismiss').popover({
-                trigger: 'focus'
-            });
         });
   </script>
   

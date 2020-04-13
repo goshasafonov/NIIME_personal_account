@@ -8,6 +8,7 @@
   <link href="../Libs/MaterialDesign-Webfont-master/css/materialdesignicons.css" rel="stylesheet" type="text/css"/>
   
   <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="../css/timeline-vertical.css">
 </head>
 <body>
     <header class="top-navigatio-fixed" style="z-index: 300;">
@@ -282,48 +283,11 @@
                         <h3 class="text-muted mb-5">
                             Подробная информация о файле
                         </h3>
-                        <!-- <button class="d-flex btn btn-sm btn-warning ml-4" data-toggle="modal" type="button" data-target=".download-modal-xl">
-                            <span class="mdi mdi-plus mr-2"></span>
-                            <span>Добавить</span>
-                        </button> -->
                     </div>
 
-
-
-                    <div class="modal fade download-modal-xl" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Загрузка документов</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>                                
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                                <input type="text" class="form-control" id="recipient-name">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="message-text" class="col-form-label">Message:</label>
-                                                <textarea class="form-control" id="message-text"></textarea>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Send message</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
                     
-                    <div class="card-columns">
-                        <div class="card" style="min-width: 300px;">
+                    <div class="d-flex align-items-start flex-group">
+                        <div class="card shadow-sm-05 mb-4" style="max-width: 400px; min-width: 300px">
                             <div class="card-header bg-transparent d-flex flex-wrap justify-content-between">
                                 <span class="d-flex align-items-center">
                                     Документ
@@ -342,7 +306,7 @@
                                     <p>Тип файла:
                                         <span class="mdi mdi-file-pdf text-danger"></span>
                                      ADOBE PDF</p>
-                                     <p class="badge badge-info ml-3" data-toggle="tooltip" data-placement="right" title="Размер файла">3,56 mb</p>
+                                     <p class="badge badge-info ml-3" type="button" data-toggle="tooltip" data-placement="right" title="Размер файла">3,56 mb</p>
                                 </div>
                                 <div class="d-flex align-items-start ">
                                     <p>
@@ -376,7 +340,10 @@
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href="id_documents.html" type="button" class="btn btn-sm btn-primary text-white">Скачать</a>
+                                    <a href="id_documents.html" type="button" class="btn btn-sm btn-primary text-white">
+                                        <span class="mdi mdi-download mr-2"></span>
+                                        Скачать
+                                    </a>
                                     <button class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" data-placement="top" title="Удалить">
                                         <span class="mdi mdi-delete"></span>
                                     </button>
@@ -387,6 +354,163 @@
                                 <span class="mdi mdi-calendar text-muted" type="button" data-toggle="tooltip" data-placement="right" title="29.05.1996 16:15"></span>
                             </div>
                         </div>
+
+
+
+
+
+
+
+                        <!-- ////////////////////////////////////////// -->
+
+
+                        <div class="timeline-vertical flex-grow-1" style=" ">
+        <div class="py-4 timeline-group">
+            <div class="timeline-item">
+                <div class="timeline-point-wraper"> 
+                    <div class="btn rounded-circle timeline-point timeline-point-account">
+                        <div class="btn rounded-circle timeline-point-color bg-warning">
+                            <span class="mdi mdi-download"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-content">
+                    <div class="timeline-body">
+                        <h4 class="font-weight-light">Загрузил документ</h4>
+                        <a href="" type="button" data-toggle="tooltip" data-placement="top" title="Сафонов Георгий Юрьевич мл.науч.сотр.">
+                            Сафонов Г.Ю.<span class="mdi mdi-account ml-2"></span>
+                        </a>                        
+                    </div>
+                    <div class="timeline-date font-weight-light">
+                        <span class="mr-1">05.05.1925</span>
+                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-point-wraper"></div>
+                <div class="timeline-content">
+                    <h5 class="timeline-body text-muted font-weight-light">
+                        Процесс согласования
+                    </h5>                   
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-point-wraper">
+                    <div class="rounded-circle timeline-point"><div class="rounded-circle timeline-point-color bg-success"></div></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-body">
+                        <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="Рябинин Артем Денисович"></span>
+                        <span class="font-weight-bold text-muted">Рябинин А.Д.</span>                       
+                        <span class="badge badge-success">Согласованно</span>
+                        <br>
+                        Все отлично, печатаем и на подпись! 
+                    </div>
+                    <div class="timeline-date">
+                        <span class="mr-1">05.05.1925</span>
+                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-point-wraper">
+                    <div class="rounded-circle timeline-point"><div class="rounded-circle timeline-point-color"></div></div>
+                </div>
+                <div class="timeline-content d-flex">
+                    <div class="timeline-body">
+                        <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="Колдаев В.В."></span>
+                        <span class="font-weight-bold text-muted">Колдаев В.В.</span>
+                        <span class="badge badge-danger">Отказ</span>
+                        <br>
+                        Не верно указаны отступы в отчете а так же и третью главу нужно переписать. Жду исправлений ^_^ .
+                    </div>
+
+                    <div class="timeline-date">
+                        <span class="mr-1">05.05.1925</span>
+                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-point-wraper">
+                    <div class="rounded-circle timeline-point"><div class="rounded-circle timeline-point-color bg-success"></div></div>
+                </div>
+                <div class="timeline-content d-flex">
+                    <div class="timeline-body">
+                        <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="Колдаев В.В."></span>
+                        <span class="font-weight-bold text-muted">Колдаев В.В.</span>
+                        <span class="badge badge-success">Согласованно</span>
+                        <br>
+                        Отличная работа увидел правки!
+                    </div>
+
+                    <div class="timeline-date">
+                        <span class="mr-1">05.05.1925</span>
+                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="timeline-item">
+                <div class="timeline-point-wraper">
+                    <div class="rounded-circle timeline-point">
+                        <div class="rounded-circle timeline-point-color bg-primary">
+                            <span class="mdi mdi-message"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-content d-flex">
+                    <div class="timeline-body">
+                        <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="Кислячук М.М."></span>
+                        <span class="font-weight-bold text-muted">Кислячук М.М.</span>
+                        <span class="badge badge-info">Комментарий</span>
+                        <br>
+                        Я себе скопирую на всякий случай, хороший отчет.
+                    </div>
+
+                    <div class="timeline-date">
+                        <span class="mr-1">05.05.1925</span>
+                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="timeline-item">
+                <div class="timeline-point-wraper">
+                    <div class="rounded-circle timeline-point timeline-point-delete">
+                        <div class="rounded-circle timeline-point-color bg-secondary">
+                            <span class="mdi mdi-delete"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-content d-flex">
+                    <div class="timeline-body">
+                        Документ удален
+                        <br>
+                        
+                    </div>
+
+                    <div class="timeline-date">
+                        <span class="mr-1">05.05.1925</span>
+                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                    </div>
+                </div>
+            </div>
+            <span class="shadow-lg line"></span>
+        </div>
+    </div>
+
+
+
+                        <!-- ////////////////////////////////////////// -->
                         
                         
                         
