@@ -292,33 +292,51 @@
 
 
                     <div class="modal fade download-modal-xl" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Загрузка документов</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>                                
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                                <input type="text" class="form-control" id="recipient-name">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="message-text" class="col-form-label">Message:</label>
-                                                <textarea class="form-control" id="message-text"></textarea>
-                                            </div>
-                                        </form>
+                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                            <div class="modal-content  modal-drag-n-drop-downloader">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Загрузка документов</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>                                
+                                <div class="modal-body" style="overflow-y: auto; overflow-x: hidden;">
+                                    <div class="drag-n-drop-content d-flex flex-column justify-content-center align-items-center" 
+                                    style="width: 100%; height: 400px;">
+                                        <div>
+                                            <span class="mdi mdi-cloud-upload-outline display-1 text-muted"></span>
+                                        </div>
+                                        <div>
+                                            <label for="picker-input-downloader" type="button" class="text-primary" 
+                                            data-toggle="tooltip" data-placement="top" title="Нажмите чтобы открылось окно выбора файлов">
+                                                Выберите файлы
+                                            </label>
+                                            или перенесите их сюда
+                                        </div>
+                                        <input class="d-none" type="file" name="" id="picker-input-downloader">
+
+                                        <div class="drag-n-drop-documents d-none flex-column" style="height: 100%; width: 100%;"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Send message</button>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <div class=" d-flex align-items-center position-relative" 
+                                    style="margin-left: 2rem; margin-right: 2rem; width: 100%; max-width: 700px;">
+                                        <span type="button" class="mdi mdi-sticker-emoji position-absolute" style="left: 1rem;"></span>
+                                        <span type="button" class="button-send-comment-downloader mdi mdi-send position-absolute" style="right: 1rem; "></span>
+                                        <input class="input-comment-downloader rounded-pill border py-1 form-control form-control" 
+                                            type="text" name="" placeholder="Комментарий" 
+                                            style="width: 100%; padding-left:50px; padding-right: 50px;">
                                     </div>
+                                </div>
+                                <div class="drag-n-drop-downloader-preview d-none flex-column 
+                                justify-content-center align-items-center position-absolute bg-white rounded" 
+                                style="bottom: 0; top: 0; left: 0; right: 0; padding: 1rem; outline: 2px dashed #92b0b3; outline-offset: -10px;">
+                                    <span class="mdi mdi-file text-muted display-1" style="pointer-events: none;"></span>
+                                    <span style="pointer-events: none;">Перетащите сюда документы, чтобы прикрепить их</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
 
@@ -385,7 +403,7 @@
                                 <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                                 <div class="d-flex justify-content-between">
                                     <a href="id_documents.html" type="button" class="btn btn-sm btn-info text-white">Перейти к документу</a>
-                                    <button class="btn btn-sm btn-secondary">
+                                    <button class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Удалить документ">
                                         <span class="mdi mdi-delete"></span>
                                     </button>
                                 </div>
@@ -431,6 +449,7 @@
             $('.navbar-wrap-conteiner').toggleClass('navbar-toggle');
             $('.AppContent-wrapper').toggleClass('AppContent-toggle');
         });
+        var files = new Array;
         $(function () {
             $('.examplePoppver').popover({
                 content: "<div class='card'><h5 class='card-header bg-transparent'>Название карточки</h5><div class='card-body'><p class='card-text'>This card has supporting text below as a natural lead-in to additional content.</p></div><div class='dropdown-divider'></div><ul><li>We can do it</li><li>Every day 24/7</li><li>Greatest UI in the word</li></ul><div class='card-footer'><small class='text-muted'>Last updated 29.05.1996</small></div></div>"
@@ -439,8 +458,189 @@
             $('.popover-dismiss').popover({
                 trigger: 'focus'
             });
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+
+
+
+            // modal downloader
+            
+            
+            $(document).on('dragenter dragover dragleave drop', '.modal-drag-n-drop-downloader', preventDefaults);
+
+
+            $(document).on('dragenter', '.modal-drag-n-drop-downloader', function(e){
+                $('.drag-n-drop-downloader-preview').removeClass('d-none').addClass('d-flex');
+            });
+            $(document).on('dragleave', '.drag-n-drop-downloader-preview', function(e){
+                $('.drag-n-drop-downloader-preview').removeClass('d-flex').addClass('d-none');
+            });
+            $(document).on('drop', '.modal-drag-n-drop-downloader', handleDrop);
+
+
+            function preventDefaults (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function handleDrop(e) {
+                $('.drag-n-drop-downloader-preview').removeClass('d-flex').addClass('d-none');
+                $('.drag-n-drop-content').children().addClass('d-none');
+                $('.drag-n-drop-documents').removeClass('.d-none').addClass('d-flex');
+
+                var arrayFileList = e.originalEvent.dataTransfer.files;
+                arrayFileList = ([...arrayFileList]);
+                var tempFileList = new Array;
+                arrayFileList.forEach(file => {
+                    tempFileList.push({'file':file, 'comment': ''});
+                });
+
+                uploadfiles(arrayFileList, files);
+
+                if(files){
+                    files = ([...files, ...tempFileList]);
+                }else{
+                    files = tempFileList;
+                };
+            }
+
+            function uploadfiles (files, GlobalArrayFiles) {
+                var numberInArrayFiles = GlobalArrayFiles.length;
+
+                files.forEach(uploadfile =>{
+                    
+                    var ext = checkingFileExtension(uploadfile);
+
+
+                    $('.drag-n-drop-documents').append(
+                        `<div class="uploadDocument">
+                            <h2 class="mb-0 mr-2 ${ext.icon.mdi}" style="color:${ext.icon.color};"></h2>
+                            <div class="d-flex flex-column flex-grow-1" style="min-width:50px;">
+                                <small class="font-weight-bold mr-3"
+                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+                                >${uploadfile.name}</small>
+                                <small class="text-muted" style="align-items: flex-end;">
+                                    <span class="mr-2">${ext.size}</span>
+                                    <span class="badge badge-danger ${ext.check? 'd-none':'d-inline-block'}" 
+                                    style="padding: 2px 5px;">не возможно загрузить</span>
+                                </small>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="button-send-file-drag-n-drop-downloader mdi mdi-file-send-outline mr-2 text-success"
+                                data-toggle="tooltip" data-placement="top" title="Отправить файл на согласование"
+                                data-number-in-array-files=${numberInArrayFiles} type="button"
+                                ></span>
+                                <span class="button-add-comment-drag-n-drop-downloader mdi mdi-comment-plus-outline mr-2 text-primary"
+                                data-toggle="tooltip" data-placement="top" title="Добавить комментарий" 
+                                data-number-in-array-files=${numberInArrayFiles} type="button"
+                                ></span>
+                                <span class="button-delete-file-drag-n-drop-downloader mdi mdi-window-close close" style="font-size:inherit;"
+                                data-toggle="tooltip" data-placement="top" title="Не прикреплять файл" 
+                                data-number-in-array-files=${numberInArrayFiles} type="button"
+                                ></span>
+                            </div>
+                        </div>`
+                    );
+                    numberInArrayFiles++;
+                });
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+
+            function checkingFileExtension(file){
+                var ext   = file.name.split('.').pop();
+                var size  = file.size;
+                var mdi   =  { 'mdi' : 'mdi mdi-file-alert',           'color' : 'red'};
+                var check = false;
+                var obj = {
+                    'doc'  : { 'mdi' : ' mdi mdi-file-word',            'color' : 'blue'},
+                    'docx' : { 'mdi' : ' mdi mdi-microsoft-word',       'color' : 'blue'},
+                    'txt'  : { 'mdi' : ' mdi mdi-file-document',        'color' : 'grey'},
+                    'pdf'  : { 'mdi' : ' mdi mdi-file-pdf',             'color' : 'red'},
+                    'csv'  : { 'mdi' : ' mdi mdi-file-table',           'color' : 'green'},
+                    'xsl'  : { 'mdi' : ' mdi mdi-microsoft-excel',      'color' : 'green'},
+                    'xlsx' : { 'mdi' : ' mdi mdi-microsoft-excel',      'color' : 'green'},
+                    'xlsm' : { 'mdi' : ' mdi mdi-microsoft-excel',      'color' : 'green'},
+                    'ppt'  : { 'mdi' : ' mdi mdi-file-powerpoint',      'color' : 'red'},
+                    'pptx' : { 'mdi' : ' mdi mdi-microsoft-powerpoint', 'color' : 'red'},
+                    'html' : { 'mdi' : ' mdi mdi-language-html5',       'color' : 'red'},
+                    'js'   : { 'mdi' : ' mdi mdi-language-javascript',  'color' : 'yellow'},
+                    'json' : { 'mdi' : ' mdi mdi-code-json',            'color' : 'red'},
+                };
+                for (var key in obj) {
+                    if (key === ext) {
+                        mdi   = obj[key];
+                        check = true; 
+                    };
+                };
+
+                if (size < Math.pow(2,10)) {
+                    size = size + ' B';
+                }
+                else if (size < Math.pow(2,20)) {
+                    size = parseFloat( size/Math.pow(2,10) ).toFixed(2) + ' KB';
+                }
+                else if (size < Math.pow(2,30)) {
+                    size = parseFloat( size/Math.pow(2,20) ).toFixed(2) + ' MB';
+                }
+                else if (size < Math.pow(2,40)) {
+                    size = parseFloat( size/Math.pow(2,30) ).toFixed(2) + ' GB';
+                }
+                else if (size < Math.pow(2,50)) {
+                    size = parseFloat( size/Math.pow(2,40) ).toFixed(2) + ' TB';
+                };
+
+                return {'ext':ext, 'icon':mdi, 'size':size, 'check':check};
+            }
+            $(document).on('click', '.button-add-comment-drag-n-drop-downloader', function() {
+                $('.input-comment-downloader').focus();
+                $('.input-comment-downloader').attr('data-comented-document', $(this).attr('data-number-in-array-files'))
+            })
+            $(document).on('click', '.button-send-comment-downloader', function() {
+                var number = $('.input-comment-downloader').attr('data-comented-document');
+                files[number]['comment'] = $('.input-comment-downloader').val();
+                $('.input-comment-downloader').val('');
+                $(`.button-add-comment-drag-n-drop-downloader[data-number-in-array-files=${number}]`).removeClass('mdi-comment-plus-outline').addClass('mdi-comment-edit').attr('data-original-title', 'Редактировать комментарий');
+
+            })
+            $(document).on('click', '.button-send-file-drag-n-drop-downloader', function() {
+                var formData = new FormData();
+                formData.append('niime_documents', files[0]);
+                formData.append('niime_documents_comment', 'оЧЕНь важНО');
+                $.ajax({
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.onprogress = function(event) {
+                            console.log( (event.loaded / event.total) * 100);
+                        };
+                        return xhr;
+                    },
+                    url: '../php/documents.php',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                      alert(data);
+                    }
+                });                 
+            })
+            $(document).on('click', '.button-delete-file-drag-n-drop-downloader', function() {
+                $(this).closest('.uploadDocument').remove();
+                $('.tooltip').remove();
+            })
         });
   </script>
+
+
+  <style type="text/css">
+    .drag-n-drop-documents .uploadDocument{
+        display: flex;
+        width:100%;
+        margin-top: 0.25rem;
+    }
+  </style>
   
 </body>
 </html>
