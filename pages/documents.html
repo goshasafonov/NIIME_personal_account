@@ -600,7 +600,8 @@
                 var number = $('.input-comment-downloader').attr('data-comented-document');
                 files[number]['comment'] = $('.input-comment-downloader').val();
                 $('.input-comment-downloader').val('');
-                $(`.button-add-comment-drag-n-drop-downloader[data-number-in-array-files=${number}]`).removeClass('mdi-comment-plus-outline').addClass('mdi-comment-edit').attr('data-original-title', 'Редактировать комментарий');
+
+                $(`.button-add-comment-drag-n-drop-downloader[data-number-in-array-files=${number}]`).removeClass('mdi-comment-plus-outline').addClass('mdi-comment-edit').attr('title', 'Редактировать комментарий');
 
             })
             $(document).on('click', '.button-send-file-drag-n-drop-downloader', function() {
