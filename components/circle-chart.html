@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		
+	</title>
+</head>
+<body>	
+
+
+	<div class="single-chart">
+		<svg viewBox="0 0 36 36" class="circular-chart">
+			<path class="circle-bg"
+						d="M18 2.0845
+							 a 15.9155 15.9155 0 0 1 0 31.831
+							 a 15.9155 15.9155 0 0 1 0 -31.831"
+						/>
+			<path class="circle"
+						stroke-dasharray="10, 100"
+						d="M18 2.0845
+							 a 15.9155 15.9155 0 0 1 0 31.831
+							 a 15.9155 15.9155 0 0 1 0 -31.831"
+						/>
+			<text x="17" y="23" class="percentage"></text>
+		</svg>
+</div>
+
+<script type="text/javascript">
+	
+	function animationPercent(max){
+		var perc = document.querySelector('.percentage');
+		var min = 0;
+
+		function initPerc() {
+			perc.innerHTML = max;
+			max--
+			if(max >= min){
+				setTimeout(function(){
+					initPerc();
+				} ,1000);
+			}
+		}
+		if(max >= min){
+			initPerc();
+		};		
+	}
+
+	animationPercent(5);
+
+	setTimeout(function(){
+		var elem = document.querySelector('.single-chart');
+		elem.remove();
+	}, 6000)
+
+</script>
+
+</body>
+
+<style type="text/css">
+	
+.circular-chart {
+	display: block;
+	margin: 10px auto;
+	max-width: 15px;
+	max-height: 15px;
+}
+
+.circle-bg {
+	fill: none;
+	stroke: grey;
+	stroke-width: 4;
+}
+
+.percentage {
+	fill: grey;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 15px;
+	text-anchor: middle;
+}
+
+.circle {
+	fill: none;
+	stroke-width: 4;
+	 stroke-linecap: round; 
+	stroke: #50c690;
+	transform-origin: 50% 50%;
+	transform: rotate(-90deg);
+	stroke-dasharray: 40, 100;
+	animation: circular-chart-animation 6s infinite;
+}
+
+@keyframes circular-chart-animation {
+	from {stroke-dasharray: 0, 100;}  
+	to {stroke-dasharray: 100, 100;}
+}
+
+</style>
+</html>
