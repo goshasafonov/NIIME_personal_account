@@ -11,6 +11,8 @@ if (!isset($_SESSION['UserId'])) {
         if ($_POST["login"] && $_POST["password"]) {
             if ($_POST["login"] == 1 && $_POST["password"] == 1) {
                 $_SESSION['UserId'] = 1;
+                $_SESSION["Name"] = "Имя";
+                $_SESSION["Family"] = "Фамилия";
                 $msg["Success"] = "1";
             } else {
                 $msg["AuthError"] = "Не удалось авторизоваться.";

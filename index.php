@@ -25,6 +25,8 @@ $pageF = file_get_contents($pageFouter);
 //Замена переменных в шаблоне
 $page = $page.$pageF;
 $page = str_replace("%\$host%", $host, $page);
+$page = str_replace("%\$userName%", $_SESSION["Name"], $page);
+$page = str_replace("%\$userFamily%", $_SESSION["Family"], $page);
 $page = str_replace("%\$contentJsScript%", $contentJsScript, $page);
 $page = str_replace("%\$contentCss%", $contentCss, $page);
 
