@@ -2,11 +2,33 @@
 
 include './../config.php';
 
-include './../header.php';
-include './../menu.php';
-$page = file_get_contents("./page.html");
-$page = str_replace("%\$host%", $host, $page);
-echo $page;
+include './../auth.php';
+
+$page = "";
+
+//header
+$pageH = file_get_contents($pageHeader);
+$page = $pageH;
+
+//menu
+$pageM = file_get_contents($pageMenu);
+$page = $page.$pageM;
+
+//content
+$pageC = file_get_contents("./page.html");
+$page = $page.$pageC;
+
+//fouter
 $contentJsScript = '<script src="' . $host . '/statusLaunch/content.js" type="text/javascript"></script>';
-include './../fouter.php';
+$pageF = file_get_contents($pageFouter);
+
+//Замена переменных в шаблоне
+$page = $page.$pageF;
+$page = str_replace("%\$host%", $host, $page);
+$page = str_replace("%\$contentJsScript%", $contentJsScript, $page);
+$page = str_replace("%\$contentCss%", $contentCss, $page);
+
+
+echo $page;
+
 ?>

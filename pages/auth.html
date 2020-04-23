@@ -1,126 +1,148 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-	<meta charset="utf-8">
-	<title>Личный кабинет | Авторизация</title>
-	<link rel="shortcut icon" href="../data/logo-2.png" type="image/x-icon" />
-	<link rel="stylesheet" href="../Libs/bootstrap-4.4.1-dist/css/bootstrap.min.css">
-  	<link href="../Libs/MaterialDesign-Webfont-master/css/materialdesignicons.css" rel="stylesheet" type="text/css"/>
-</head>
-<body class="body-amination d-flex flex-column">
-	<header>
-		<nav class="navbar">
-			<a class="d-flex navbar-brand align-items-center" href="#">
-        	    <img class="brand-img d-inline-block" src="../data/logo.svg" alt="brand" style="height: 30px">
-        	</a>
-        </nav>
-	</header>
+    <head>
+        <meta charset="utf-8">
+        <title>Личный кабинет | Авторизация</title>
+        <link rel="shortcut icon" href="%$host%/data/logo-2.png" type="image/x-icon" />
+        <link rel="stylesheet" href="%$host%/Libs/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+        <link href="%$host%/Libs/MaterialDesign-Webfont-master/css/materialdesignicons.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body class="body-amination d-flex flex-column">
+        <header>
+            <nav class="navbar">
+                <a class="d-flex navbar-brand align-items-center" href="#">
+                    <img class="brand-img d-inline-block" src="%$host%/data/logo.svg" alt="brand" style="height: 30px">
+                </a>
+            </nav>
+        </header>
 
-	<div class="wrapForm" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-		<div class="rounded shadow p-3 d-flex bg-white">
-			<form style="min-width: 400px;width: 100%">
-				<div class="form-group text-center">
-					<h4>С возвращением!</h4>
-					<p>Мы рады видеть вас снова!</p>
-				</div>
-				<div class="form-group">
-  				  	<label for="FormLabeEmail" class="col-sm-4 col-form-label col-form-label-sm text-muted">
-  				  		<small class="font-weight-bolder">
-  				  			E-MAIL
-  				  		</small>
-  				  	</label>
-  				  	<div class="col-sm-12">
-  				    	<input type="email" class="form-control" id="FormLabeEmail" placeholder="">
-  				  	</div>
-  				</div>
-  				<div class="form-group ">
-  				  	<label for="FormLabePass" class="col-sm-4 col-form-label col-form-label-sm text-muted">
-  				  		<small class="font-weight-bolder">
-  				  			ПАРОЛЬ
-  				  		</small>
-  				  	</label>
-  				  	<div class="col-sm-12">
-  				    	<input type="password" class="form-control" id="FormLabePass" placeholder="">
-  				  	</div>
-  				  	<div class="col-sm-12">
-  				  		<small>
-  				  			<a href="">Забыли пароль?</a>
-  				  		</small>
-  				  	</div>
-  				</div>
-  				<div class="form-group">
-    				<div class="col-sm-12 d-flex">
-    				  	<button type="submit" class="btn btn-block btn-primary">Вход</button>
-    				</div>
-    				<div class="col-sm-12">
-    					<small>
-    						<span>Хотите создать учетную запись? </span><a href="">Зарегистрироваться</a>
-    					</small>
-  					</div>
-  				</div>
-			</form>
-			<div class="text-center" style="min-width: 200px;">
-				<div class="col-sm-12 d-flex justify-content-end flex-column" style="height: 100%">
-					<img class="brand-img d-inline-block mb-3" src="../data/logo-2.svg" alt="brand" style="height: 100px">
-					<div class="mb-3">
-						<h4 class="d-inline">Личный кабинет</h4>
-						<small class="badge badge-info">
-							<span class="mdi mdi-monitor"></span>
-							3.0.0
-						</small>
-					</div>	
-					<small class="font-weight-bolder text-muted mb-3">
-  				  		Войдите и пользуйтесь всеми удобствами личного кабинета
-  				  	</small>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="wrapForm" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="rounded shadow p-3 d-flex bg-white">
+                <form style="min-width: 400px;width: 100%" id="formAuth">
+                    <div class="form-group text-center">
+                        <h4>С возвращением!</h4>
+                        <p>Мы рады видеть вас снова!</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="FormLabeLogin" class="col-sm-4 col-form-label col-form-label-sm text-muted">
+                            <small class="font-weight-bolder">
+                                Логин
+                            </small>
+                        </label>
+                        <div class="col-sm-12">
+                            <input type="text" name="login" class="form-control" id="FormLabeLogin" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="FormLabePass" class="col-sm-4 col-form-label col-form-label-sm text-muted">
+                            <small class="font-weight-bolder">
+                                Пароль
+                            </small>
+                        </label>
+                        <div class="col-sm-12">
+                            <input type="password" name="password" class="form-control" id="FormLabePass" placeholder="">
+                        </div>                        
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 d-flex">
+                            <button type="button" class="btn btn-block btn-primary" onclick="auth()">Вход</button>
+                        </div>                        
+                    </div>
+                </form>
+                <div class="text-center" style="min-width: 200px;">
+                    <div class="col-sm-12 d-flex justify-content-end flex-column" style="height: 100%">
+                        <img class="brand-img d-inline-block mb-3" src="%$host%/data/logo-2.svg" alt="brand" style="height: 100px">
+                        <div class="mb-3">
+                            <h4 class="d-inline">Личный кабинет</h4>
+                            <small class="badge badge-info">
+                                <span class="mdi mdi-monitor"></span>
+                                3.0.0
+                            </small>
+                        </div>	
+                        <small class="font-weight-bolder text-muted mb-3">
+                            Войдите и пользуйтесь всеми удобствами личного кабинета
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-	<footer>
-		
-	</footer>
-</body>
-<style type="text/css">
-	.body-amination{
-		height: 100vh; 
-		background: linear-gradient(135deg, white 60%, white 60%, #4494A3 60%, #4494A3 60%);
-		background-size: 200% 200%;
-		background-position:  90% 0%;
-		animation: AnimationName 8s infinite ease;
-		transition:1s;
-	}
-	
+        <footer>
 
-	@-webkit-keyframes AnimationName {
-		0%{background-position:  90%  10%}
-	    30%{background-position: 90%  15%}
-	    50%{background-position: 90%  12%}
-	    60%{background-position: 90%  13%}
-	    100%{background-position:90%  10%}
-	}
-	@-moz-keyframes AnimationName {
-		0%{background-position:  90%  10%}
-	    30%{background-position: 90%  15%}
-	    50%{background-position: 90%  12%}
-	    60%{background-position: 90%  13%}
-	    100%{background-position:90%  10%}
-	}
-	@keyframes AnimationName {
-	    0%{background-position:  90%  10%}
-	    30%{background-position: 90%  17%}
-	    50%{background-position: 90%  14%}
-	    60%{background-position: 90%  15%}
-	    100%{background-position:90%  10%}
-	}
-</style>
+        </footer>
+
+        <script src="%$host%/Libs/jquery-3.4.1.min.js" type="text/javascript"></script>
+        <script src="%$host%/Libs/popper.min.js" type="text/javascript"></script>
+        <script src="%$host%/Libs/bootstrap-4.4.1-dist/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <style type="text/css">
+            .body-amination{
+                height: 100vh; 
+                background: linear-gradient(135deg, white 60%, white 60%, #4494A3 60%, #4494A3 60%);
+                background-size: 200% 200%;
+                background-position:  90% 0%;
+                animation: AnimationName 8s infinite ease;
+                transition:1s;
+            }
 
 
+            @-webkit-keyframes AnimationName {
+                0%{background-position:  90%  10%}
+                30%{background-position: 90%  15%}
+                50%{background-position: 90%  12%}
+                60%{background-position: 90%  13%}
+                100%{background-position:90%  10%}
+            }
+            @-moz-keyframes AnimationName {
+                0%{background-position:  90%  10%}
+                30%{background-position: 90%  15%}
+                50%{background-position: 90%  12%}
+                60%{background-position: 90%  13%}
+                100%{background-position:90%  10%}
+            }
+            @keyframes AnimationName {
+                0%{background-position:  90%  10%}
+                30%{background-position: 90%  17%}
+                50%{background-position: 90%  14%}
+                60%{background-position: 90%  15%}
+                100%{background-position:90%  10%}
+            }
+        </style>
+        <input type="hidden" value="%$host%/auth.php" id="pathAjax">
+        <script type="text/javascript">
+                                function alertMsg(text) {
+                                    alert(text);
+                                }
+                                function auth() {
+                                    var formData = new FormData(formAuth);
+                                    formData.append('typeJson', '1');
+                                    $.ajax({
+                                        url: pathAjax.value,
+                                        type: 'POST',
+                                        data: formData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: function (data) {
+                                            try {
+                                                var jsonData = JSON.parse(data);
+                                                if (typeof jsonData.AuthError !== "undefined") {
+                                                    alertMsg(jsonData.AuthError);
+                                                } else if (typeof jsonData.Success !== "undefined") {
+                                                    location.reload();
+                                                } else {
+                                                    alertMsg("Не корректный ответ от сервера");
+                                                }
+                                            } catch (e) {
+                                                alertMsg("Ошибка в структуре ответа от сайта:<br>" + e);
+                                            }
+                                        },
+                                        error: function (request, status, error) {
+                                            alertMsg("Ошибка при обращении к серверу:<br>error:" + error + "<br>status:" + status);
+                                        }
+                                    });
+                                }
 
-<script src="../Libs/jquery-3.4.1.min.js" type="text/javascript"></script>
-<script src="../Libs/popper.min.js" type="text/javascript"></script>
-<script src="../Libs/bootstrap-4.4.1-dist/js/bootstrap.min.js" type="text/javascript"></script>
-
-
+        </script>
+    </body>
 </html>
