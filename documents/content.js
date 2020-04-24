@@ -1,13 +1,6 @@
 var files = new Array;
 $(function () {
-    $('.examplePoppver').popover({
-        content: "<div class='card'><h5 class='card-header bg-transparent'>Название карточки</h5><div class='card-body'><p class='card-text'>This card has supporting text below as a natural lead-in to additional content.</p></div><div class='dropdown-divider'></div><ul><li>We can do it</li><li>Every day 24/7</li><li>Greatest UI in the word</li></ul><div class='card-footer'><small class='text-muted'>Last updated 29.05.1996</small></div></div>"
-    });
-    $('[data-toggle="popover"]').popover();
-    $('.popover-dismiss').popover({
-        trigger: 'focus'
-    });
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover(); $('[data-toggle="tooltip"]').tooltip();
     // modal downloader
     
     
@@ -73,6 +66,10 @@ $(function () {
                                 ></span>
                             </div>
                         </small>
+                        <div class="progress mr-3 d-none" style="height:7px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                            role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        </div>
                     </div>
                     <div class="align-items-center d-flex">
                         <span class="button-send-file-drag-n-drop-downloader ${!ext.check? 'd-none':'d-inline-block'} mdi mdi-file-send-outline mr-2 text-success"
@@ -183,27 +180,11 @@ $(function () {
     })
     $(document).on('click', '.button-send-file-drag-n-drop-downloader', function() {
         var number = $(this).attr('data-number-in-array-files');
-        var formData = new FormData();
-        formData.append('niime_documents', files[number]['file']);
-        formData.append('niime_documents_comment', files[number]['comment']);
-        $.ajax({
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.onprogress = function(event) {
-                    console.log( (event.loaded / event.total) * 100);
-                };
-                return xhr;
-            },
-            url: '../php/documents.php',
-            type: 'POST',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-              alert(data);
-            }
-        });                 
+        var uploadDocument = $(this).closest('.uploadDocument');
+        var ProgressBar = uploadDocument.find('.progress-bar');
+        var file = files[number]['file'];
+
+        readFile(0, file, ProgressBar, number, number);
     })
     $(document).on('click', '.button-delete-file-drag-n-drop-downloader', function() {
         $(this).closest('.uploadDocument').remove();
@@ -212,6 +193,178 @@ $(function () {
             $('.drag-n-drop-content').children().removeClass('d-none').addClass('d-flex');
             $('.drag-n-drop-documents').removeClass('d-flex').addClass('d-none');
         }
-    })
-    
+    });
+
+
+
+        /////////////////////////////////////
+       //                                 //
+      //  Загрузка файла большого обьема //
+     //                                 //
+    /////////////////////////////////////
+
+    function readFile(position, file, ProgressBar, timeChoiceFile, projectFileId) {
+        if (!file) {
+            msgError(formNewProject_msg, "Ошибка: файл утерян");
+            return;
+        };
+        var file = file;
+        var start = position || 0;
+        var step = 1024 * 1024;
+        var stop = file.size;
+        var reader = new FileReader();
+        reader.onloadend = function (evt, tdId) {
+            if (evt.target.readyState == FileReader.DONE) {
+                upload(evt.target.result, start, step, stop, ProgressBar, timeChoiceFile, projectFileId);
+            }
+        };
+        if (start == 0) {
+            ProgressBar.parent().removeClass('d-none').addClass('d-flex');
+            ProgressBar.css({'width':'0%'});            
+        }
+        if (file.webkitSlice) {
+            var blob = file.webkitSlice(start, start + step);
+        } else if (file.mozSlice) {
+            var blob = file.mozSlice(start, start + step);
+        } else if (file.slice) {
+            var blob = file.slice(start, start + step);
+        } else {
+            alert("Не удалось установить blob");
+            return;
+        }
+        reader.readAsBinaryString(blob);
+    };
+
+    function upload(blobOrFile, from, sizePortion, sizeFile, ProgressBar, timeChoiceFile, projectFileId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/****PATH****/' , true);
+        xhr.setRequestHeader("Content-Type", "application/x-binary; charset=x-user-defined");
+        xhr.setRequestHeader("Portion-From", from);
+        xhr.setRequestHeader("Portion-Size", sizePortion);
+        xhr.setRequestHeader("Portion-File", sizeFile);
+        xhr.setRequestHeader("Time-Choice-File", timeChoiceFile);
+        //xhr.setRequestHeader("Project-File-Id", projectFileId);
+        xhr.onload = function (data) {
+            var jsonData = JSON.parse(xhr.responseText);
+            var start = Number.parseInt(jsonData.From);
+            var step = Number.parseInt(jsonData.Size);
+            var stop = Number.parseInt(jsonData.File);
+            var projectFileId = Number.parseInt(jsonData.ProjectFileId);
+            var timeChoiceFile = jsonData.TimeChoiceFile;
+            if (timeChoiceFile == timeChoiceFile) { //Потом подумаю над проверкой
+                if (typeof jsonData.AjaxError !== "undefined") {
+                    msgError(formNewProject_msg, jsonData.AjaxError);
+                } else {
+                    if (start + step < stop) {
+                        readFile(start + step, timeChoiceFile, projectFileId);
+                        var procent = start * 100 / stop;
+                        ProgressBar.css({'width': procent + '%'});
+                    } else {
+                        ProgressBar.css({'width': '100%'});
+                        ProgressBar.parent().removeClass('d-flex').addClass('d-none');
+                        //commitProject(projectFileId);
+                        //начинаем загрузку следующего файла допишу при появлении кнопки загрузить все файлы.
+                    }
+                }
+            }
+        };
+        xhr.sendAsBinary(blobOrFile);
+    };
+
+
+
+
+    // // Настройки страницы и XML // //
+    window.onbeforeunload = function () {
+        return true;
+    };
+    window.onload = function () {
+        if (!XMLHttpRequest.prototype.sendAsBinary) {
+            XMLHttpRequest.prototype.sendAsBinary = function (datastr) {
+                function byteValue(x) {
+                    return x.charCodeAt(0) & 0xff;
+                }
+                var ords = Array.prototype.map.call(datastr, byteValue);
+                var ui8a = new Uint8Array(ords);
+                this.send(ui8a.buffer);
+            };
+        }
+        intialStartPage();
+    };
+
+    function intialStartPage() {
+        $.get('../components/document-card.html', function(data){
+
+            //ajax
+            JsonDocuments.forEach(document =>{
+                var DomJqData = $(data);
+                DomJqData.find('.document_card_name').text(document.name_document);
+                DomJqData.find('.card-text').text(document.comment_document);
+                DomJqData.find('.href_card_id_document').attr('href',document.href_document);
+                DomJqData.find('.last_update_document').text(document.last_update);
+                $('.card-columns').append( DomJqData );
+            });
+
+            $('.examplePoppver').popover({
+                content: "<div class='card'><h5 class='card-header bg-transparent'>Название карточки</h5><div class='card-body'><p class='card-text'>This card has supporting text below as a natural lead-in to additional content.</p></div><div class='dropdown-divider'></div><ul><li>We can do it</li><li>Every day 24/7</li><li>Greatest UI in the word</li></ul><div class='card-footer'><small class='text-muted'>Last updated 29.05.1996</small></div></div>"
+            });
+            $('[data-toggle="popover"]').popover();$('[data-toggle="tooltip"]').tooltip();
+        })
+
+
+        console.log('поехала!')
+    }
+
 });
+
+
+var JsonDocuments = [
+    {
+        'id_document'      : '123456',
+        'name_document'    : 'file_1',
+        'status_document'  : '???',
+        'comment_document' : 'Согласовать срочно, быстро, как можно быстрее, завтра приду и все согласовано, надеюсь. Пожалуйста ))',
+        'href_document'    : 'http://ololol1.ru',
+        'last_update'      : 'вчера',
+    },
+    {
+        'id_document'      : '123456',
+        'name_document'    : 'file_2',
+        'status_document'  : '???',
+        'comment_document' : 'Тут что то очень важное, читаем вдумчиво',
+        'href_document'    : 'http://ololol2.ru',
+        'last_update'      : 'сегодня',
+    },
+    {
+        'id_document'      : '123456',
+        'name_document'    : 'file_3',
+        'status_document'  : '???',
+        'comment_document' : 'Если парашют раскрылся - вы в полной безопасности", повторял мужик слова инструктора, опускаясь на кишащую акулами водную поверхность.',
+        'href_document'    : 'http://ololol3.ru',
+        'last_update'      : 'завтра',
+    },
+    {
+        'id_document'      : '123456',
+        'name_document'    : 'file_1',
+        'status_document'  : '???',
+        'comment_document' : 'Согласовать срочно, быстро, как можно быстрее, завтра приду и все согласовано, надеюсь. Пожалуйста ))',
+        'href_document'    : 'http://ololol1.ru',
+        'last_update'      : 'вчера',
+    },
+    {
+        'id_document'      : '123456',
+        'name_document'    : 'file_2',
+        'status_document'  : '???',
+        'comment_document' : 'Тут что то очень важное, читаем вдумчиво',
+        'href_document'    : 'http://ololol2.ru',
+        'last_update'      : 'сегодня',
+    },
+    {
+        'id_document'      : '123456',
+        'name_document'    : 'file_3',
+        'status_document'  : '???',
+        'comment_document' : 'Если парашют раскрылся - вы в полной безопасности", повторял мужик слова инструктора, опускаясь на кишащую акулами водную поверхность.',
+        'href_document'    : 'http://ololol3.ru',
+        'last_update'      : 'завтра',
+    },
+]
