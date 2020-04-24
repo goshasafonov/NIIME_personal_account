@@ -6,7 +6,7 @@
                 <li class="breadcrumb-item active" aria-current="page">Документы</li>
             </ol>
         </nav>
-
+                        
         <div class="container">
             <div>                    
                 <h3 class="mb-5"><span class="text-muted mdi mdi-file-certificate"></span>
@@ -26,8 +26,6 @@
                     </button>
                 </div>
 
-
-
                 <div class="modal fade download-modal-xl" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                         <div class="modal-content  modal-drag-n-drop-downloader">
@@ -39,19 +37,19 @@
                             </div>                                
                             <div class="modal-body" style="overflow-y: auto; overflow-x: hidden;">
                                 <div class="drag-n-drop-content d-flex flex-column justify-content-center align-items-center" 
-                                     style="width: 100%; height: 400px;">
+                                    style="width: 100%; height: 400px;">
                                     <div class="d-flex flex-column justify-content-center align-items-center">
                                         <div>
                                             <span class="mdi mdi-cloud-upload-outline display-1 text-muted"></span>
                                         </div>
                                         <div>
                                             <label for="picker-input-downloader" type="button" class="text-primary" 
-                                                   data-toggle="tooltip" data-placement="top" title="Нажмите чтобы открылось окно выбора файлов">
+                                            data-toggle="tooltip" data-placement="top" title="Нажмите чтобы открылось окно выбора файлов">
                                                 Выберите файлы
                                             </label>
                                             или перенесите их сюда
                                         </div>
-                                        <input class="d-none" type="file" name="" id="picker-input-downloader">
+                                        <input class="d-none" type="file" multiple="true" name="" id="picker-input-downloader">
                                     </div>
 
                                     <div class="drag-n-drop-documents d-none flex-column" style="height: 100%; width: 100%; max-width: 700px;"></div>
@@ -62,17 +60,17 @@
                                     <small class="font-weight-bold"></small>
                                 </div>
                                 <div class=" d-flex align-items-center position-relative" 
-                                     style="margin-left: 2rem; margin-right: 2rem; width: 100%; max-width: 700px;">
+                                style="margin-left: 2rem; margin-right: 2rem; width: 100%; max-width: 700px;">
                                     <span type="button" class="mdi mdi-sticker-emoji position-absolute" style="left: 1rem;"></span>
                                     <span type="button" class="button-send-comment-downloader mdi mdi-send position-absolute" style="right: 1rem; "></span>
                                     <input class="input-comment-downloader rounded-pill border py-1 form-control form-control" 
-                                           type="text" name="" placeholder="Комментарий" 
-                                           style="width: 100%; padding-left:50px; padding-right: 50px;">
+                                        type="text" name="" placeholder="Комментарий" 
+                                        style="width: 100%; padding-left:50px; padding-right: 50px;">
                                 </div>
                             </div>
                             <div class="drag-n-drop-downloader-preview d-none flex-column 
-                                 justify-content-center align-items-center position-absolute bg-white rounded" 
-                                 style="bottom: 0; top: 0; left: 0; right: 0; padding: 1rem; outline: 2px dashed #92b0b3; outline-offset: -10px;">
+                            justify-content-center align-items-center position-absolute bg-white rounded" 
+                            style="bottom: 0; top: 0; left: 0; right: 0; padding: 1rem; outline: 2px dashed #92b0b3; outline-offset: -10px;">
                                 <span class="mdi mdi-file text-muted display-1" style="pointer-events: none;"></span>
                                 <span style="pointer-events: none;">Перетащите сюда документы, чтобы прикрепить их</span>
                             </div>
@@ -80,9 +78,7 @@
                     </div>
                 </div>
 
-
-
-
+                    
                 <div class="card-columns">
                     <div class="card">
                         <div class="card-header bg-transparent d-flex flex-wrap justify-content-between">
@@ -99,52 +95,52 @@
 
                             <div class="timeline my-3 px-2 d-flex justify-content-around" style="position: relative;">                            
                                 <div class="btn rounded-circle"
-                                     style="width: 35px;height: 35px;                                
-                                     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);                                
-                                     padding: 3px; position: relative; background-color: white;z-index: 10;"
-                                     tabindex="0"
-                                     role="button"
-                                     data-toggle="popover"
-                                     data-trigger="focus" 
-                                     data-content="ESKIZ заявка"                                
-                                     >
+                                    style="width: 35px;height: 35px;                                
+                                    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+                                    padding: 3px; position: relative; background-color: white;z-index: 10;"
+                                    tabindex="0"
+                                    role="button"
+                                    data-toggle="popover"
+                                    data-trigger="focus" 
+                                    data-content="ESKIZ заявка"                                
+                                >
                                     <div class="btn rounded-circle" style="width: 100%; height: 100%; border-color: #1867c0 !important;"></div>
                                 </div>
 
                                 <div class="examplePoppver btn rounded-circle ml-4"
-                                     style="width: 35px;height: 35px; 
-                                     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-                                     padding: 3px; position: relative; background-color: white;z-index: 10;"
-                                     tabindex="0"
-                                     role="button"                                
-                                     data-toggle="popover"
-                                     data-trigger="focus"
-                                     data-html="true"
-                                     data-content=""                                
-                                     >
+                                    style="width: 35px;height: 35px; 
+                                    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+                                    padding: 3px; position: relative; background-color: white;z-index: 10;"
+                                    tabindex="0"
+                                    role="button"                                
+                                    data-toggle="popover"
+                                    data-trigger="focus"
+                                    data-html="true"
+                                    data-content=""                                
+                                >
                                     <div class="btn rounded-circle" style="width: 100%; height: 100%; background-color: #E57373 !important;"></div>
                                 </div>
 
                                 <div class="btn rounded-circle  ml-4"
-                                     style="width: 35px;height: 35px; padding: 3px; 
-                                     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-                                     position: relative; background-color: white;z-index: 10;"
-                                     tabindex="0"
-                                     role="button"
-                                     data-toggle="popover"
-                                     data-trigger="focus"
-                                     data-content="ESKIZ заявка"
-                                     >
+                                    style="width: 35px;height: 35px; padding: 3px; 
+                                    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+                                    position: relative; background-color: white;z-index: 10;"
+                                    tabindex="0"
+                                    role="button"
+                                    data-toggle="popover"
+                                    data-trigger="focus"
+                                    data-content="ESKIZ заявка"
+                                >
                                     <div class="btn rounded-circle" style="width: 100%; height: 100%; background-color: #28a745 !important;"></div>
                                 </div>
                                 <span class="shadow-lg" style="height: 1px; background-color: grey; width: 100%; display: block;opacity: .5;
-                                      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></span>
+                                    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></span>
                             </div>
 
 
                             <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                             <div class="d-flex justify-content-between">
-                                <a href="%$host%/documents/id" type="button" class="btn btn-sm btn-info text-white">Перейти к документу</a>
+                                <a href="%$host%/id_documents.html" type="button" class="btn btn-sm btn-info text-white">Перейти к документу</a>
                                 <button class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Удалить документ">
                                     <span class="mdi mdi-delete"></span>
                                 </button>
@@ -154,11 +150,9 @@
                             <small class="text-muted">Last updated 3 mins ago</small>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
+
             <footer class="mt-3 d-flex justify-content-between">
                 <div>
                     <small> НИИМЭ </small>
@@ -172,5 +166,6 @@
                 </div>
             </footer>
         </div>
+
     </div>
 </div>

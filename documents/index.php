@@ -21,7 +21,7 @@ $page = $page.$pageC;
 
 //fouter
 $contentJsScript = '<script src="' . $host . '/documents/content.js" type="text/javascript"></script>';
-$contentCss = '<style src="' . $host . '/documents/content.css" type="text/css"></style>';
+$contentCss = '<link rel="stylesheet" href="' . $host . '/documents/content.css" type="text/css">';
 $pageF = file_get_contents($pageFouter);
 
 //Замена переменных в шаблоне
