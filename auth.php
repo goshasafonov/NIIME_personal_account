@@ -18,7 +18,7 @@ if (!isset($_SESSION['UserId'])) {
                 $msg["AuthError"] = "Не удалось авторизоваться.";
             }
         } else {
-            $msg["AuthError"] = "Не удалось получить login и password";
+            $msg["AuthError"] = "Время сесси истекло. Для дальнейше работы, необходимо перелогиниться.";
         }
         echo json_encode($msg);
     } else {
