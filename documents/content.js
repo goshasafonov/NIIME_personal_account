@@ -274,10 +274,10 @@ $(function () {
 
 
 
-    // // Настройки страницы и XML // //
-    window.onbeforeunload = function () {
-        return true;
-    };
+    // // Настройки страницы и добавление протатипа (sendAsBinary) XML для хрома // //
+    // window.onbeforeunload = function () {
+    //     return true;
+    // };
     window.onload = function () {
         if (!XMLHttpRequest.prototype.sendAsBinary) {
             XMLHttpRequest.prototype.sendAsBinary = function (datastr) {
@@ -292,16 +292,31 @@ $(function () {
         intialStartPage();
     };
 
+    // // Обработка запроса на отображение карточек документов // //
     function intialStartPage() {
         $.get('../components/document-card.html', function(data){
 
-            //ajax
-            JsonDocuments.forEach(document =>{
+            //ajaxSuccess
+            JsonDocuments.forEach(doc =>{
                 var DomJqData = $(data);
-                DomJqData.find('.document_card_name').text(document.name_document);
-                DomJqData.find('.card-text').text(document.comment_document);
-                DomJqData.find('.href_card_id_document').attr('href',document.href_document);
-                DomJqData.find('.last_update_document').text(document.last_update);
+                DomJqData.find('.document_card_name').text(doc.name_document);
+                DomJqData.find('.container_document_card_name').attr('title', doc.name_document);
+                DomJqData.find('.card-title').html(doc.document_agreed ? 'Согласовано<span class="ml-1 mdi mdi-check-circle text-success"></span>' : 'Процесс согласования');
+                
+                for (var key in doc.status_document) {
+                    var status = doc.status_document[key];
+
+                    if(status === 'empty'){
+                        $(DomJqData.find('.timeline').children()[key]).find('div').addClass(status+'-score');
+                    }else{
+                        $(DomJqData.find('.timeline').children()[key]).find('div').removeClass('empty-score').addClass(status+'-score');
+                    };
+                }
+
+
+                DomJqData.find('.card-text').text(doc.comment_document);
+                DomJqData.find('.href_card_id_document').attr('href',doc.href_document);
+                DomJqData.find('.last_update_document').text(doc.last_update);
                 $('.card-columns').append( DomJqData );
             });
 
@@ -321,8 +336,9 @@ $(function () {
 var JsonDocuments = [
     {
         'id_document'      : '123456',
-        'name_document'    : 'file_1',
-        'status_document'  : '???',
+        'name_document'    : 'file-lflfl-s fdfdf df gdf gffff_1.pdf',
+        'status_document'  : {0:'success', 1:'success', 2:'success'},
+        'document_agreed'  : true,
         'comment_document' : 'Согласовать срочно, быстро, как можно быстрее, завтра приду и все согласовано, надеюсь. Пожалуйста ))',
         'href_document'    : 'http://ololol1.ru',
         'last_update'      : 'вчера',
@@ -330,7 +346,8 @@ var JsonDocuments = [
     {
         'id_document'      : '123456',
         'name_document'    : 'file_2',
-        'status_document'  : '???',
+        'status_document'  : {0:'empty', 1:'empty', 2:'empty'},
+        'document_agreed'  : false,
         'comment_document' : 'Тут что то очень важное, читаем вдумчиво',
         'href_document'    : 'http://ololol2.ru',
         'last_update'      : 'сегодня',
@@ -338,7 +355,8 @@ var JsonDocuments = [
     {
         'id_document'      : '123456',
         'name_document'    : 'file_3',
-        'status_document'  : '???',
+        'status_document'  : {0:'empty', 1:'empty', 2:'empty'},
+        'document_agreed'  : true,
         'comment_document' : 'Если парашют раскрылся - вы в полной безопасности", повторял мужик слова инструктора, опускаясь на кишащую акулами водную поверхность.',
         'href_document'    : 'http://ololol3.ru',
         'last_update'      : 'завтра',
@@ -346,7 +364,8 @@ var JsonDocuments = [
     {
         'id_document'      : '123456',
         'name_document'    : 'file_1',
-        'status_document'  : '???',
+        'status_document'  : {0:'empty', 1:'danger', 2:'success'},
+        'document_agreed'  : true,
         'comment_document' : 'Согласовать срочно, быстро, как можно быстрее, завтра приду и все согласовано, надеюсь. Пожалуйста ))',
         'href_document'    : 'http://ololol1.ru',
         'last_update'      : 'вчера',
@@ -354,7 +373,8 @@ var JsonDocuments = [
     {
         'id_document'      : '123456',
         'name_document'    : 'file_2',
-        'status_document'  : '???',
+        'status_document'  : {0:'empty', 1:'danger', 2:'success'},
+        'document_agreed'  : false,
         'comment_document' : 'Тут что то очень важное, читаем вдумчиво',
         'href_document'    : 'http://ololol2.ru',
         'last_update'      : 'сегодня',
@@ -362,7 +382,8 @@ var JsonDocuments = [
     {
         'id_document'      : '123456',
         'name_document'    : 'file_3',
-        'status_document'  : '???',
+        'status_document'  : {0:'empty', 1:'danger', 2:'success'},
+        'document_agreed'  : false,
         'comment_document' : 'Если парашют раскрылся - вы в полной безопасности", повторял мужик слова инструктора, опускаясь на кишащую акулами водную поверхность.',
         'href_document'    : 'http://ololol3.ru',
         'last_update'      : 'завтра',
