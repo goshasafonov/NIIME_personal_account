@@ -302,7 +302,10 @@ $(function () {
                 DomJqData.find('.document_card_name').text(doc.name_document);
                 DomJqData.find('.container_document_card_name').attr('title', doc.name_document);
                 DomJqData.find('.card-title').html(doc.document_agreed ? 'Согласовано<span class="ml-1 mdi mdi-check-circle text-success"></span>' : 'Процесс согласования');
-                
+                DomJqData.find('.card-text').text(doc.comment_document);
+                DomJqData.find('.href_card_id_document').attr('href',doc.href_document);
+                DomJqData.find('.last_update_document').text(doc.last_update);
+                //Распределение классов 
                 for (var key in doc.status_document) {
                     var status = doc.status_document[key];
 
@@ -311,17 +314,28 @@ $(function () {
                     }else{
                         $(DomJqData.find('.timeline').children()[key]).find('div').removeClass('empty-score').addClass(status+'-score');
                     };
-                }
-
-
-                DomJqData.find('.card-text').text(doc.comment_document);
-                DomJqData.find('.href_card_id_document').attr('href',doc.href_document);
-                DomJqData.find('.last_update_document').text(doc.last_update);
+                    //Popover
+                    $(DomJqData.find('.timeline').children()[key]).addClass('Popover_'+doc.id_document+'_'+key);
+                };
+                
                 $('.card-columns').append( DomJqData );
-            });
 
-            $('.examplePoppver').popover({
-                content: "<div class='card'><h5 class='card-header bg-transparent'>Название карточки</h5><div class='card-body'><p class='card-text'>This card has supporting text below as a natural lead-in to additional content.</p></div><div class='dropdown-divider'></div><ul><li>We can do it</li><li>Every day 24/7</li><li>Greatest UI in the word</li></ul><div class='card-footer'><small class='text-muted'>Last updated 29.05.1996</small></div></div>"
+                for (var key in doc.status_document) {
+                    $('.Popover_'+doc.id_document+'_'+key).popover({
+                        content: `
+                        <div class='card'>
+                            <h5 class='card-header bg-transparent'>Название карточки</h5>
+                            <div class='card-body'>
+                                <p class='card-text'>This card has supporting text below as a natural lead-in to additional content.</p>
+                            </div> 
+                            <div class='dropdown-divider'></div>
+                            <ul><li>We can do it</li><li>Every day 24/7</li><li>Greatest UI in the word</li></ul>
+                            <div class='card-footer'>
+                                <small class='text-muted'>Last updated 29.05.1996</small>
+                            </div>
+                        </div>`
+                    });
+                };
             });
             $('[data-toggle="popover"]').popover();$('[data-toggle="tooltip"]').tooltip();
         })
@@ -335,7 +349,7 @@ $(function () {
 
 var JsonDocuments = [
     {
-        'id_document'      : '123456',
+        'id_document'      : '1',
         'name_document'    : 'file-lflfl-s fdfdf df gdf gffff_1.pdf',
         'status_document'  : {0:'success', 1:'success', 2:'success'},
         'document_agreed'  : true,
@@ -344,7 +358,7 @@ var JsonDocuments = [
         'last_update'      : 'вчера',
     },
     {
-        'id_document'      : '123456',
+        'id_document'      : '2',
         'name_document'    : 'file_2',
         'status_document'  : {0:'empty', 1:'empty', 2:'empty'},
         'document_agreed'  : false,
@@ -353,7 +367,7 @@ var JsonDocuments = [
         'last_update'      : 'сегодня',
     },
     {
-        'id_document'      : '123456',
+        'id_document'      : '3',
         'name_document'    : 'file_3',
         'status_document'  : {0:'empty', 1:'empty', 2:'empty'},
         'document_agreed'  : true,
@@ -362,7 +376,7 @@ var JsonDocuments = [
         'last_update'      : 'завтра',
     },
     {
-        'id_document'      : '123456',
+        'id_document'      : '4',
         'name_document'    : 'file_1',
         'status_document'  : {0:'empty', 1:'danger', 2:'success'},
         'document_agreed'  : true,
@@ -371,7 +385,7 @@ var JsonDocuments = [
         'last_update'      : 'вчера',
     },
     {
-        'id_document'      : '123456',
+        'id_document'      : '5',
         'name_document'    : 'file_2',
         'status_document'  : {0:'empty', 1:'danger', 2:'success'},
         'document_agreed'  : false,
@@ -380,7 +394,7 @@ var JsonDocuments = [
         'last_update'      : 'сегодня',
     },
     {
-        'id_document'      : '123456',
+        'id_document'      : '6',
         'name_document'    : 'file_3',
         'status_document'  : {0:'empty', 1:'danger', 2:'success'},
         'document_agreed'  : false,

@@ -221,13 +221,6 @@ a::-moz-focus-inner {
     content: "\F0142";
 }
 
-/*popover*/
-
-.popover .card{
-    border: none;
-    margin: -0.5rem -0.75rem;
-}
-
 .container{
     max-width: 1400px;
 }
