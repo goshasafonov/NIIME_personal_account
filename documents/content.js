@@ -295,17 +295,10 @@ $(function () {
     // // Обработка запроса на отображение карточек документов // //
     function intialStartPage() {
         $.get('../components/document-card.html', function(data){
+            getListDocuments();
+            
 
-            var formData = new FormData();
-                formData.append('queryId', 'getListDocuments');
-                $.ajax({
-                    url: 'ajax.php',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: successGetListDocuments,
-                });
+                
 
             //ajaxSuccess
             JsonDocuments.forEach(doc =>{
@@ -355,12 +348,34 @@ $(function () {
         console.log('поехала!')
     };
 
+    function getListDocuments(){
+        var formData = new FormData();
+        formData.append('queryId', 'getListDocuments');
+        $.ajax({
+            url: 'ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: successGetListDocuments,
+        });
+    };
     function successGetListDocuments(data) {
-        console.log(JSON.parse(data));
+        try {
+            var jsonData = JSON.parse(data);
+            if (typeof jsonData.AuthError !== "undefined") {
+                alertMsg(jsonData.AuthError);
+                location.reload();
+            } else {
+                setTimeout(getListDocuments, 10000);
+            }
+        } catch (e) {
+            alertMsg("Ошибка в структуре ответа от сайта:<br>" + e);
+        }
+    };
+    function alertMsg(text) {
+        alert(text);
     }
-
-
-
 });
 
 
