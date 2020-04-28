@@ -17,7 +17,7 @@
         </header>
 
         <div class="wrapForm" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <div class="rounded shadow p-3 d-flex bg-white">
+            <div class=" rounded shadow p-3 d-flex bg-white">
                 <form style="min-width: 400px;width: 100%" id="formAuth">
                     <div class="form-group text-center">
                         <h4>С возвращением!</h4>
@@ -43,9 +43,16 @@
                             <input type="password" name="password" class="form-control" id="FormLabePass" placeholder="">
                         </div>                        
                     </div>
+                    <div class="form-group d-none AuthErrorMessage">
+                        <div class="col-sm-12 d-flex justify-content-center">
+                            <small class="font-weight-bolder text-danger">
+                                Неправильный логин или пароль
+                            </small>
+                        </div>                        
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-12 d-flex">
-                            <button type="button" class="btn btn-block btn-primary" onclick="auth()">Вход</button>
+                            <button type="submit" class="btn btn-block btn-primary">Вход</button>
                         </div>                        
                     </div>
                 </form>
@@ -59,7 +66,7 @@
                                 3.0.0
                             </small>
                         </div>	
-                        <small class="font-weight-bolder text-muted mb-3">
+                        <small class="messageForUser font-weight-bolder text-muted mb-3">
                             Войдите и пользуйтесь всеми удобствами личного кабинета
                         </small>
                     </div>
@@ -111,37 +118,43 @@
         </style>
         <input type="hidden" value="%$host%/auth.php" id="pathAjax">
         <script type="text/javascript">
-                                function alertMsg(text) {
-                                    alert(text);
-                                }
-                                function auth() {
-                                    var formData = new FormData(formAuth);
-                                    formData.append('typeJson', '1');
-                                    $.ajax({
-                                        url: pathAjax.value,
-                                        type: 'POST',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: function (data) {
-                                            try {
-                                                var jsonData = JSON.parse(data);
-                                                if (typeof jsonData.AuthError !== "undefined") {
-                                                    alertMsg(jsonData.AuthError);
-                                                } else if (typeof jsonData.Success !== "undefined") {
-                                                    location.reload();
-                                                } else {
-                                                    alertMsg("Не корректный ответ от сервера");
-                                                }
-                                            } catch (e) {
-                                                alertMsg("Ошибка в структуре ответа от сайта:<br>" + e);
-                                            }
-                                        },
-                                        error: function (request, status, error) {
-                                            alertMsg("Ошибка при обращении к серверу:<br>error:" + error + "<br>status:" + status);
-                                        }
-                                    });
-                                }
+            function alertMsg(text) {
+                $('.AuthErrorMessage').removeClass('d-none').find('small').html(text);
+            }
+            //запуск функции по submit(более юзабельно)
+            $("#formAuth").on("submit", (e)=>{e.preventDefault();e.stopPropagation();auth()});
+            function auth() {
+                var formData = new FormData(formAuth);
+                formData.append('typeJson', '1');
+                $.ajax({
+                    url: pathAjax.value,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        try {
+                            var jsonData = JSON.parse(data);
+                            if (typeof jsonData.AuthError !== "undefined") {
+                                alertMsg(jsonData.AuthError);
+                            } else if (typeof jsonData.Success !== "undefined") {
+                                //успешная авторизация (небольшая анимационная задержка)
+                                $('#formAuth').hide(300);
+                                $('.messageForUser').removeClass('text-muted').addClass('text-success')
+                                .html('Вы успешно авторизованны!');
+                                setTimeout(()=>{location.reload();}, 300);
+                            } else {
+                                alertMsg("Не корректный ответ от сервера");
+                            }
+                        } catch (e) {
+                            alertMsg("Ошибка в структуре ответа от сайта:<br>" + e);
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alertMsg("Ошибка при обращении к серверу:<br>error:" + error + "<br>status:" + status);
+                    }
+                });
+            }
 
         </script>
     </body>

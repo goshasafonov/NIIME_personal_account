@@ -33,9 +33,10 @@ switch ($queryId) {
                 $tmp = array();
                 $tmp['id_document'] = $row['Id'];
                 $tmp['name_document'] = $row['Name'];
-                $tmp['status_document'][0] = $row['UploadStatus'];
-                $tmp['status_document'][1] = 'success';
-                $tmp['status_document'][2] = $row['PublicationStatus'];
+                $tmp['status_document'] = array(); 
+                $tmp['status_document'][] = $row['UploadStatus'];
+                $tmp['status_document'][] = 'success';
+                $tmp['status_document'][] = $row['PublicationStatus'];
                 $tmp['document_agreed'] = true;
                 $tmp['comment_document'] = $row['Description'];
                 $tmp['href_document'] = "$host/document/id?" . $row['Id'];

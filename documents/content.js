@@ -296,6 +296,17 @@ $(function () {
     function intialStartPage() {
         $.get('../components/document-card.html', function(data){
 
+            var formData = new FormData();
+                formData.append('queryId', 'getListDocuments');
+                $.ajax({
+                    url: 'ajax.php',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: successGetListDocuments,
+                });
+
             //ajaxSuccess
             JsonDocuments.forEach(doc =>{
                 var DomJqData = $(data);
@@ -307,12 +318,14 @@ $(function () {
                 DomJqData.find('.last_update_document').text(doc.last_update);
                 //Распределение классов 
                 for (var key in doc.status_document) {
-                    var status = doc.status_document[key];
+                    var status = doc.status_document[key].status;
 
                     if(status === 'empty'){
                         $(DomJqData.find('.timeline').children()[key]).find('div').addClass(status+'-score');
                     }else{
-                        $(DomJqData.find('.timeline').children()[key]).find('div').removeClass('empty-score').addClass(status+'-score');
+                        $(DomJqData.find('.timeline').children()[key]).find('div')
+                        .removeClass()
+                        .addClass('btn rounded-circle ' + status+'-score');
                     };
                     //Popover
                     $(DomJqData.find('.timeline').children()[key]).addClass('Popover_'+doc.id_document+'_'+key);
@@ -324,14 +337,14 @@ $(function () {
                     $('.Popover_'+doc.id_document+'_'+key).popover({
                         content: `
                         <div class='card'>
-                            <h5 class='card-header bg-transparent'>Название карточки</h5>
+                            <h5 class='card-header bg-transparent'>${doc.status_document[key].name}</h5>
                             <div class='card-body'>
-                                <p class='card-text'>This card has supporting text below as a natural lead-in to additional content.</p>
+                                <p class='card-text'>${doc.status_document[key].comment}</p>
                             </div> 
                             <div class='dropdown-divider'></div>
-                            <ul><li>We can do it</li><li>Every day 24/7</li><li>Greatest UI in the word</li></ul>
+                            <ul><li>можно</li><li>было бы</li><li>что-то перечислять</li></ul>
                             <div class='card-footer'>
-                                <small class='text-muted'>Last updated 29.05.1996</small>
+                                <small class='text-muted'>Last updated ${doc.status_document[key].date}</small>
                             </div>
                         </div>`
                     });
@@ -339,10 +352,14 @@ $(function () {
             });
             $('[data-toggle="popover"]').popover();$('[data-toggle="tooltip"]').tooltip();
         })
-
-
         console.log('поехала!')
+    };
+
+    function successGetListDocuments(data) {
+        console.log(JSON.parse(data));
     }
+
+
 
 });
 
@@ -351,55 +368,33 @@ var JsonDocuments = [
     {
         'id_document'      : '1',
         'name_document'    : 'file-lflfl-s fdfdf df gdf gffff_1.pdf',
-        'status_document'  : {0:'success', 1:'success', 2:'success'},
+        'status_document'  : 
+        {
+            0:
+            {
+                'name'    : 'Процесс загрузки',
+                'status'  : 'success',
+                'comment' : 'загрузил с такой то целью',
+                'date'    : '00.00.00.0.0.0',
+            },
+            1:
+            {   
+                'name'    : 'Процесс согласования',
+                'status'  : 'empty',
+                'comment' : 'тут к примеру последний утверждающий комментарий или описание',
+                'date'    : '00.00.00.0.0.0',
+            },
+            2:
+            {   
+                'name'    : 'Процесс публикации',
+                'status'  : 'danger',
+                'comment' : 'что то что пишут при публикациях',
+                'date'    : '00.00.00.0.0.0',
+            },
+        },
         'document_agreed'  : true,
         'comment_document' : 'Согласовать срочно, быстро, как можно быстрее, завтра приду и все согласовано, надеюсь. Пожалуйста ))',
         'href_document'    : 'http://ololol1.ru',
         'last_update'      : 'вчера',
-    },
-    {
-        'id_document'      : '2',
-        'name_document'    : 'file_2',
-        'status_document'  : {0:'empty', 1:'empty', 2:'empty'},
-        'document_agreed'  : false,
-        'comment_document' : 'Тут что то очень важное, читаем вдумчиво',
-        'href_document'    : 'http://ololol2.ru',
-        'last_update'      : 'сегодня',
-    },
-    {
-        'id_document'      : '3',
-        'name_document'    : 'file_3',
-        'status_document'  : {0:'empty', 1:'empty', 2:'empty'},
-        'document_agreed'  : true,
-        'comment_document' : 'Если парашют раскрылся - вы в полной безопасности", повторял мужик слова инструктора, опускаясь на кишащую акулами водную поверхность.',
-        'href_document'    : 'http://ololol3.ru',
-        'last_update'      : 'завтра',
-    },
-    {
-        'id_document'      : '4',
-        'name_document'    : 'file_1',
-        'status_document'  : {0:'empty', 1:'danger', 2:'success'},
-        'document_agreed'  : true,
-        'comment_document' : 'Согласовать срочно, быстро, как можно быстрее, завтра приду и все согласовано, надеюсь. Пожалуйста ))',
-        'href_document'    : 'http://ololol1.ru',
-        'last_update'      : 'вчера',
-    },
-    {
-        'id_document'      : '5',
-        'name_document'    : 'file_2',
-        'status_document'  : {0:'empty', 1:'danger', 2:'success'},
-        'document_agreed'  : false,
-        'comment_document' : 'Тут что то очень важное, читаем вдумчиво',
-        'href_document'    : 'http://ololol2.ru',
-        'last_update'      : 'сегодня',
-    },
-    {
-        'id_document'      : '6',
-        'name_document'    : 'file_3',
-        'status_document'  : {0:'empty', 1:'danger', 2:'success'},
-        'document_agreed'  : false,
-        'comment_document' : 'Если парашют раскрылся - вы в полной безопасности", повторял мужик слова инструктора, опускаясь на кишащую акулами водную поверхность.',
-        'href_document'    : 'http://ololol3.ru',
-        'last_update'      : 'завтра',
-    },
+    },    
 ]

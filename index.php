@@ -18,8 +18,8 @@ $pageC = file_get_contents("./page.html");
 $page = $page.$pageC;
 
 //fouter
-$contentJsScript = '<script src="' . $host . '/documents/content.js" type="text/javascript"></script>';
-$contentCss = '<style src="' . $host . '/documents/content.css" type="text/css"></style>';
+// $contentJsScript = '<script src="' . $host . '/documents/content.js" type="text/javascript"></script>';
+// $contentCss = '<style src="' . $host . '/documents/content.css" type="text/css"></style>';//тут должен быть Link и ContentCss перенесен в header(исправленно в documents)
 $pageF = file_get_contents($pageFouter);
 
 //Замена переменных в шаблоне

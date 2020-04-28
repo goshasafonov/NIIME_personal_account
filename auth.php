@@ -15,7 +15,7 @@ if (!isset($_SESSION['UserId'])) {
                 $_SESSION["Family"] = "Фамилия";
                 $msg["Success"] = "1";
             } else {
-                $msg["AuthError"] = "Не удалось авторизоваться.";
+                $msg["AuthError"] = "Не верный логин или пароль!";
             }
         } else {
             $msg["AuthError"] = "Время сесси истекло. Для дальнейше работы, необходимо перелогиниться.";
