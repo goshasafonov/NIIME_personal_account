@@ -13,10 +13,39 @@
                     Администрирование - страниц сайта
                 </h3>
             </div>
+            <select class="selectpicker" data-live-search="true" data-size="5" id="selectMdiIcon">
+                <option data-icon="mdi-account-settings mdi">mdi-account-settings</option>
+            </select>
 
-            <div class="shadow p-3" style="border-radius: .25rem;">               
-               
+            <div class="shadow p-3" style="border-radius: .25rem; min-height: 60vh;">        
+                <button type="button" class="btn btn-sm btn-warning" style="margin-bottom: 2rem;">
+                    <span class="mdi mdi-plus mr-2"></span>
+                    <span>Добавить</span>
+                </button>
+                <table class="table" id="pageTable">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Имя страницы</th>
+                            <th>Ссылка</th>
+                            <th>Код иконки</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
+            <footer class="mt-3 d-flex justify-content-between">
+                <div>
+                    <small> НИИМЭ </small>
+                    <small class="text-muted">© 2020</small>
+                </div>
+                <div>
+                    <small class="text-muted">Make with</small>
+                    <small><span class="mdi mdi-heart"></span></small>
+                    <small class="text-muted">and</small>
+                    <small><span class="mdi mdi-tea"></span></small>
+                </div>
+            </footer>
         </div>
     </div>
 </div>
