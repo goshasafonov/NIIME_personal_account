@@ -11,7 +11,7 @@ if ($mysqli->connect_errno) {
     exit;
 }
 
-if (!$mysqli->set_charset('utf-8')) {
+if (!$mysqli->set_charset('utf8')) {
     $msg['AjaxError'] = "Извините, возникла проблема на сайте<br>"
             . "Ошибка: Не удалось установить 'utf-8': <br>"
             . "Номер ошибки: " . $mysqli->errno . "<br>"

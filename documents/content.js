@@ -21,14 +21,16 @@ $(function () {
         e.stopPropagation();
     }
     function handleDrop(e, fileListInput) {
-        $('.drag-n-drop-downloader-preview').removeClass('d-flex').addClass('d-none');
-        $('.drag-n-drop-content').children().addClass('d-none').removeClass('d-flex');
-        $('.drag-n-drop-documents').removeClass('d-none').addClass('d-flex');
         if (fileListInput) {
-            var arrayFileList = fileListInput
+            var arrayFileList = fileListInput.length != 0 ? fileListInput : false;
         }else{
-            var arrayFileList = e.originalEvent.dataTransfer.files;
-        }                
+            var arrayFileList = e.originalEvent.dataTransfer.files.length != 0 ? e.originalEvent.dataTransfer.files : false;
+        };
+        if(arrayFileList){
+            $('.drag-n-drop-downloader-preview').removeClass('d-flex').addClass('d-none');
+            $('.drag-n-drop-content').children().addClass('d-none').removeClass('d-flex');
+            $('.drag-n-drop-documents').removeClass('d-none').addClass('d-flex');
+        }else return;
         
         arrayFileList = ([...arrayFileList]);
         var tempFileList = new Array;
@@ -115,6 +117,7 @@ $(function () {
             'html' : { 'mdi' : ' mdi mdi-language-html5',       'color' : 'red'},
             'js'   : { 'mdi' : ' mdi mdi-language-javascript',  'color' : 'yellow'},
             'json' : { 'mdi' : ' mdi mdi-code-json',            'color' : 'red'},
+            'mkv'  : { 'mdi' :  'mdi mdi-video',                'color' : 'red'}, //перекидывал рик и морти для проверки
         };
         for (var key in obj) {
             if (key === ext) {
@@ -183,8 +186,9 @@ $(function () {
         var uploadDocument = $(this).closest('.uploadDocument');
         var ProgressBar = uploadDocument.find('.progress-bar');
         var file = files[number]['file'];
+        var comment = files[number]['comment'];
 
-        readFile(0, file, ProgressBar, number, number);
+        readFile(0, ProgressBar, number, number);
     })
     $(document).on('click', '.button-delete-file-drag-n-drop-downloader', function() {
         $(this).closest('.uploadDocument').remove();
@@ -203,24 +207,22 @@ $(function () {
      //                                 //
     /////////////////////////////////////
 
-    function readFile(position, file, ProgressBar, timeChoiceFile, projectFileId) {
+    function msgError(){
+        console.log('or not');
+    }
+
+    function readFile(position, ProgressBar,  projectFileId) {
+        var file = files[projectFileId]['file'];
         if (!file) {
             msgError(formNewProject_msg, "Ошибка: файл утерян");
             return;
         };
-        var file = file;
-        var start = position || 0;
-        var step = 1024 * 1024;
-        var stop = file.size;
-        var reader = new FileReader();
-        reader.onloadend = function (evt, tdId) {
-            if (evt.target.readyState == FileReader.DONE) {
-                upload(evt.target.result, start, step, stop, ProgressBar, timeChoiceFile, projectFileId);
-            }
-        };
+        var fileName = files[projectFileId]['file']['name'];
+        var start    = position || 0;
+        var step     = 1024 * 1024;
+        var stop     = file.size;
         if (start == 0) {
-            ProgressBar.parent().removeClass('d-none').addClass('d-flex');
-            ProgressBar.css({'width':'0%'});            
+            ProgressBar.css('width', '0%').parent().removeClass('d-none').addClass('d-flex');
         }
         if (file.webkitSlice) {
             var blob = file.webkitSlice(start, start + step);
@@ -231,44 +233,51 @@ $(function () {
         } else {
             alert("Не удалось установить blob");
             return;
-        }
-        reader.readAsBinaryString(blob);
+        };        
+        upload(blob, start, step, stop, fileName, ProgressBar, projectFileId);
     };
 
-    function upload(blobOrFile, from, sizePortion, sizeFile, ProgressBar, timeChoiceFile, projectFileId) {
+    function upload(blobOrFile, from, sizePortion, sizeFile, fileName, ProgressBar, projectFileId) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/****PATH****/' , true);
-        xhr.setRequestHeader("Content-Type", "application/x-binary; charset=x-user-defined");
+        xhr.open('POST', 'loader.php' , true);
         xhr.setRequestHeader("Portion-From", from);
         xhr.setRequestHeader("Portion-Size", sizePortion);
         xhr.setRequestHeader("Portion-File", sizeFile);
-        xhr.setRequestHeader("Time-Choice-File", timeChoiceFile);
-        //xhr.setRequestHeader("Project-File-Id", projectFileId);
+        xhr.setRequestHeader("Project-File-Id", projectFileId);
         xhr.onload = function (data) {
             var jsonData = JSON.parse(xhr.responseText);
             var start = Number.parseInt(jsonData.From);
             var step = Number.parseInt(jsonData.Size);
             var stop = Number.parseInt(jsonData.File);
-            var projectFileId = Number.parseInt(jsonData.ProjectFileId);
-            var timeChoiceFile = jsonData.TimeChoiceFile;
-            if (timeChoiceFile == timeChoiceFile) { //Потом подумаю над проверкой
+            var name = jsonData.name;
+            var ProjectFileId = Number.parseInt(jsonData.ProjectFileId);
+            if (ProjectFileId == ProjectFileId) { //Потом подумаю над проверкой
                 if (typeof jsonData.AjaxError !== "undefined") {
                     msgError(formNewProject_msg, jsonData.AjaxError);
                 } else {
                     if (start + step < stop) {
-                        readFile(start + step, timeChoiceFile, projectFileId);
+                        readFile(start + step, ProgressBar, ProjectFileId);
                         var procent = start * 100 / stop;
-                        ProgressBar.css({'width': procent + '%'});
+                        ProgressBar.css('width',procent + '%');
                     } else {
-                        ProgressBar.css({'width': '100%'});
-                        ProgressBar.parent().removeClass('d-flex').addClass('d-none');
-                        //commitProject(projectFileId);
+                        ProgressBar.css('width', '100%');
+                        setTimeout(()=>{
+                            ProgressBar.closest('.uploadDocument').remove();
+                            $('.tooltip').remove();
+                            if( $('.drag-n-drop-documents').children().length === 0 ){
+                                $('.drag-n-drop-content').children().removeClass('d-none').addClass('d-flex');
+                                $('.drag-n-drop-documents').removeClass('d-flex').addClass('d-none');
+                            };
+                        }, 700);
                         //начинаем загрузку следующего файла допишу при появлении кнопки загрузить все файлы.
                     }
                 }
             }
         };
-        xhr.sendAsBinary(blobOrFile);
+        var formData = new FormData();
+        formData.append('blob', blobOrFile, fileName);
+        formData.append('comment', files[projectFileId]['comment']);
+        xhr.send(formData);
     };
 
 
@@ -294,9 +303,10 @@ $(function () {
 
     // // Обработка запроса на отображение карточек документов // //
     function intialStartPage() {
+        console.log(`[START APP: Hello user, good u know devtools ⚡]`);
+
         $.get('../components/document-card.html', function(data){
-            getListDocuments();
-            
+            getListDocuments();      
 
                 
 
@@ -344,8 +354,7 @@ $(function () {
                 };
             });
             $('[data-toggle="popover"]').popover();$('[data-toggle="tooltip"]').tooltip();
-        })
-        console.log('поехала!')
+        });
     };
 
     function getListDocuments(){
