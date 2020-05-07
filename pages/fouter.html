@@ -15,10 +15,10 @@
 %$contentJsScript%
 
 <script>
-    window.onload = function () {
-
+    $(document).ready(function () {
         setTimeout(hidenLoaded, 1000);
-    }
+    });
+    
     function hidenLoaded() {
         //document.body.classList.add('loaded_hiding');
         document.body.classList.add('loaded');

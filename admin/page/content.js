@@ -2,7 +2,6 @@
 
 selectMdiIcon.innerHTML = "";
 
-
-window.onload = function () {
+$(document).ready(function () {
     fillMdiIconInSelectPicker(selectMdiIcon);
-}
+});
