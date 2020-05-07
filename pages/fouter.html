@@ -5,6 +5,7 @@
 <script src="%$host%/Libs/popper.min.js" type="text/javascript"></script>
 <script src="%$host%/Libs/bootstrap-4.4.1-dist/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="%$host%/js/menu.js" type="text/javascript"></script>
+<script src="%$host%/js/functions.js" type="text/javascript"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src='%$host%/Libs/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js'></script>
 
@@ -12,5 +13,18 @@
 <script src='%$host%/Libs/bootstrap-select-1.13.14/dist/js/i18n/defaults-*.min.js'></script>
 
 %$contentJsScript%
+
+<script>
+    window.onload = function () {
+
+        setTimeout(hidenLoaded, 1000);
+    }
+    function hidenLoaded() {
+        //document.body.classList.add('loaded_hiding');
+        document.body.classList.add('loaded');
+        document.body.classList.remove('loaded_hiding');
+    }
+</script>
+
 </body>
 </html>
