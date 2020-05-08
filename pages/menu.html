@@ -8,10 +8,25 @@
             </div>                    
             <ul class="navbar-nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link " href="%$host%/admin">
+                    <a class="nav-link collapsed" href="%$host%/admin" data-toggle="collapse" data-target="#dash_drp" aria-expanded="false" aria-controls="dash_drp">                    
                         <span class="mdi-account-settings mdi"></span>
                         <span class="ml-3 nav-link-text">Администрирование</span>
                     </a>
+                    <ul id="dash_drp" class="nav flex-column collapse-level-1 collapse" data-parent="#accordionExample">
+                        <li class="nav-item">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="%$host%/admin/page">Страницы сайта</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="%$host%/admin/data">Данные</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="%$host%/admin/userAccess">Доступ пользователей</a>
+                                </li>                                
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="%$host%/statusLaunch">
@@ -58,4 +73,6 @@
                 </li>
             </ul>
         </div>
-    </nav>        
+    </nav>       
+
+    

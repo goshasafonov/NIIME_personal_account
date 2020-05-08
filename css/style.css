@@ -481,7 +481,7 @@ a::-moz-focus-inner {
   right: 0;
   bottom: 0;
   /* фоновый цвет элемента */
-  background: #e0e0e0;
+  background: #fff;
   /* размещаем блок над всеми элементами на странице (это значение должно быть больше, чем у любого другого позиционированного элемента на странице) */
   z-index: 1001;
 }
@@ -502,7 +502,7 @@ a::-moz-focus-inner {
   position: absolute;
   display: inline-block;
   top: 0;
-  background-color: #337ab7;
+  background-color: #20c997;
   border-radius: 100%;
   width: 35px;
   height: 35px;

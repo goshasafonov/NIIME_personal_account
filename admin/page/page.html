@@ -13,12 +13,9 @@
                     Администрирование - страниц сайта
                 </h3>
             </div>
-            <select class="selectpicker" data-live-search="true" data-size="5" id="selectMdiIcon">
-                <option data-icon="mdi-account-settings mdi">mdi-account-settings</option>
-            </select>
 
             <div class="shadow p-3" style="border-radius: .25rem; min-height: 60vh;">        
-                <button type="button" class="btn btn-sm btn-warning" style="margin-bottom: 2rem;">
+                <button type="button" class="btn btn-sm btn-warning" style="margin-bottom: 2rem;" data-toggle="modal" data-target="#modalCreatePage">
                     <span class="mdi mdi-plus mr-2"></span>
                     <span>Добавить</span>
                 </button>
@@ -46,6 +43,45 @@
                     <small><span class="mdi mdi-tea"></span></small>
                 </div>
             </footer>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="modalCreatePage">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Создать новую страницу</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formCreatePage">
+                    <div class="form-group">
+                        <label for="formCreatePage_Name">Название страницы</label>
+                        <input type="text" class="form-control" id="formCreatePage_Name" aria-describedby="...">
+                    </div>
+                    <div class="form-group">
+                        <label for="formCreatePage_Path">Путь к index файлу на сервере</label>
+                        <input type="text" class="form-control" id="formCreatePage_Path" aria-describedby="...">
+                    </div>
+                    <div class="form-group">
+                        <label for="formCreatePage_MdiIcon">Выберите иконку</label>
+                        <select class="form-control selectpicker" data-live-search="true"  data-size="10" id="formCreatePage_MdiIcon" onchange="showExampleMdiIcon(this)"></select>
+                    </div>
+                </form>
+                <h7>Пример иконки</h7>
+                <div class="row">                    
+                    <div class="col"s style="height:180px;">
+                        <span class="" id="exampleLargeMdiIcon" style="font-size:100pt;"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" onclick="createNewPage()">Создать</button>
+            </div>
         </div>
     </div>
 </div>
