@@ -188,7 +188,7 @@ $(function () {
         var file = files[number]['file'];
         var comment = files[number]['comment'];
 
-        readFile(0, ProgressBar, number, number);
+        readFile(0, ProgressBar, number, 0);
     })
     $(document).on('click', '.button-delete-file-drag-n-drop-downloader', function() {
         $(this).closest('.uploadDocument').remove();
@@ -211,7 +211,7 @@ $(function () {
         console.log('or not');
     }
 
-    function readFile(position, ProgressBar,  projectFileId) {
+    function readFile(position, ProgressBar, projectFileId, dataBaseId, multiUpload) {
         var file = files[projectFileId]['file'];
         if (!file) {
             msgError(formNewProject_msg, "Ошибка: файл утерян");
@@ -234,16 +234,17 @@ $(function () {
             alert("Не удалось установить blob");
             return;
         };        
-        upload(blob, start, step, stop, fileName, ProgressBar, projectFileId);
+        upload(blob, start, step, stop, fileName, ProgressBar, projectFileId, dataBaseId, multiUpload);
     };
 
-    function upload(blobOrFile, from, sizePortion, sizeFile, fileName, ProgressBar, projectFileId) {
+    function upload(blobOrFile, from, sizePortion, sizeFile, fileName, ProgressBar, projectFileId, dataBaseId, multiUpload) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'loader.php' , true);
         xhr.setRequestHeader("Portion-From", from);
         xhr.setRequestHeader("Portion-Size", sizePortion);
         xhr.setRequestHeader("Portion-File", sizeFile);
         xhr.setRequestHeader("Project-File-Id", projectFileId);
+        xhr.setRequestHeader("Data-Base-Id", dataBaseId);
         xhr.onload = function (data) {
             var jsonData = JSON.parse(xhr.responseText);
             var start = Number.parseInt(jsonData.From);
@@ -251,12 +252,13 @@ $(function () {
             var stop = Number.parseInt(jsonData.File);
             var name = jsonData.name;
             var ProjectFileId = Number.parseInt(jsonData.ProjectFileId);
+            var DB_id = Number.parseInt(jsonData.DB_id);
             if (ProjectFileId == ProjectFileId) { //Потом подумаю над проверкой
                 if (typeof jsonData.AjaxError !== "undefined") {
                     msgError(formNewProject_msg, jsonData.AjaxError);
                 } else {
                     if (start + step < stop) {
-                        readFile(start + step, ProgressBar, ProjectFileId);
+                        readFile(start + step, ProgressBar, ProjectFileId, DB_id);
                         var procent = start * 100 / stop;
                         ProgressBar.css('width',procent + '%');
                     } else {
@@ -268,7 +270,15 @@ $(function () {
                                 $('.drag-n-drop-content').children().removeClass('d-none').addClass('d-flex');
                                 $('.drag-n-drop-documents').removeClass('d-flex').addClass('d-none');
                             };
+
+                            if (multiUpload && $('.drag-n-drop-documents').children().length != 0){
+                                var elem   = $('.drag-n-drop-documents').children()[0];
+                                var number = $(elem).attr('data-number-in-array-files');
+                            };
                         }, 700);
+
+
+                        
                         //начинаем загрузку следующего файла допишу при появлении кнопки загрузить все файлы.
                     }
                 }
