@@ -30,6 +30,7 @@ $(function () {
             $('.drag-n-drop-downloader-preview').removeClass('d-flex').addClass('d-none');
             $('.drag-n-drop-content').children().addClass('d-none').removeClass('d-flex');
             $('.drag-n-drop-documents').removeClass('d-none').addClass('d-flex');
+            $('.button-downloader-upload-all-documents').show();
         }else return;
         
         arrayFileList = ([...arrayFileList]);
@@ -46,11 +47,10 @@ $(function () {
     }
     function renderfiles (files, GlobalArrayFiles) {
         var numberInArrayFiles = GlobalArrayFiles.length;
-        files.forEach(uploadfile =>{
-            
+        files.forEach( uploadfile => {            
             var ext = checkingFileExtension(uploadfile);
             $('.drag-n-drop-documents').append(
-                `<div class="uploadDocument" data-number-in-array-files=${numberInArrayFiles}>
+                `<div class="uploadDocument" data-number-in-array-files=${numberInArrayFiles} data-ext-check = ${ext.check}>
                     <h2 class="mb-0 mr-2 ${ext.icon.mdi}" style="color:${ext.icon.color};"></h2>
                     <div class="d-flex flex-column flex-grow-1" style="min-width:50px;">
                         <small class="font-weight-bold mr-3"
@@ -61,7 +61,7 @@ $(function () {
                             <span class="badge badge-danger ${ext.check? 'd-none':'d-inline-block'}" 
                             style="padding: 2px 5px;">не возможно загрузить</span>
                             <div class="comment-upload-document d-none align-items-center text-nowrap" style="min-width:50px;">
-                                <span class="badge badge-info d-inline-block" 
+                                <span class="badge badge-info d-inline-block mr-1" 
                                 style="padding: 2px 5px;">Комментарий</span>
                                 <span class="mr-3 span-comment-upload-document" 
                                 style = "white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
@@ -74,23 +74,23 @@ $(function () {
                         </div>
                     </div>
                     <div class="align-items-center d-flex">
-                        <span class="button-send-file-drag-n-drop-downloader ${!ext.check? 'd-none':'d-inline-block'} mdi mdi-file-send-outline mr-2 text-success"
+                        <button class="btn py-1 px-2 border-0 button-send-file-drag-n-drop-downloader ${!ext.check? 'd-none':'d-inline-block'} mdi mdi-file-send-outline mr-1 text-success"
                         data-toggle="tooltip" data-placement="top" title="Отправить файл на согласование"
                         data-number-in-array-files=${numberInArrayFiles} type="button"
-                        ></span>
-                        <span class="button-add-comment-drag-n-drop-downloader mdi mdi-comment-plus-outline mr-2 text-primary"
+                        ></button>
+                        <button class="btn py-1 px-2 border-0 button-add-comment-drag-n-drop-downloader mdi mdi-comment-plus-outline mr-1 text-primary"
                         style="display:${!ext.check? 'none':'inline-block'}"
                         data-toggle="tooltip" data-placement="top" title="Добавить комментарий" 
                         data-number-in-array-files=${numberInArrayFiles} type="button"
-                        ></span>
-                        <span class="button-edit-comment-drag-n-drop-downloader mdi mdi-comment-edit mr-2 text-primary"
+                        ></button>
+                        <button class="btn py-1 px-2 border-0 button-edit-comment-drag-n-drop-downloader mdi mdi-comment-edit mr-1 text-primary"
                         data-toggle="tooltip" data-placement="top" title="Редактировать комментарий" 
                         data-number-in-array-files=${numberInArrayFiles} type="button" style="display:none;"
-                        ></span>
-                        <span class="button-delete-file-drag-n-drop-downloader mdi mdi-window-close close" style="font-size:inherit;"
+                        ></button>
+                        <button class="btn py-1 px-2 border-0 button-delete-file-drag-n-drop-downloader mdi mdi-window-close close" style="font-size:inherit; line-height:1.5"
                         data-toggle="tooltip" data-placement="top" title="Не прикреплять файл" 
                         data-number-in-array-files=${numberInArrayFiles} type="button"
-                        ></span>
+                        ></button>
                     </div>
                 </div>`
             );
@@ -177,7 +177,6 @@ $(function () {
             }
             $('.input-comment-downloader').removeAttr('data-comented-document');
         }else{
-            console.log('выберите документ');
             $('.informing-window-commented-downloader small').html('Выберите документ и нажмиту кнопку добавить комментарий').parent().show();
         }
     })
@@ -185,9 +184,7 @@ $(function () {
         var number = $(this).attr('data-number-in-array-files');
         var uploadDocument = $(this).closest('.uploadDocument');
         var ProgressBar = uploadDocument.find('.progress-bar');
-        var file = files[number]['file'];
-        var comment = files[number]['comment'];
-
+        $('.tooltip').remove();
         readFile(0, ProgressBar, number, 0);
     })
     $(document).on('click', '.button-delete-file-drag-n-drop-downloader', function() {
@@ -196,7 +193,21 @@ $(function () {
         if( $('.drag-n-drop-documents').children().length === 0 ){
             $('.drag-n-drop-content').children().removeClass('d-none').addClass('d-flex');
             $('.drag-n-drop-documents').removeClass('d-flex').addClass('d-none');
+            $('.button-downloader-upload-all-documents').hide();
         }
+    });
+    $(document).on('click', '.button-downloader-upload-all-documents', function () {
+        $('.drag-n-drop-documents [data-ext-check=false]').remove();
+
+        var elem   = $('.drag-n-drop-documents').children()[0];
+        var number = $(elem).attr('data-number-in-array-files');
+        var ProgressBar_2 = $(elem).find('.progress-bar');        
+
+        if( $(elem).attr('data-ext-check')  && $('.drag-n-drop-documents').children().length != 0 ){
+            readFile(0, ProgressBar_2, number, 0, true);
+        } else {
+            $(elem).remove();
+        };
     });
 
 
@@ -223,6 +234,9 @@ $(function () {
         var stop     = file.size;
         if (start == 0) {
             ProgressBar.css('width', '0%').parent().removeClass('d-none').addClass('d-flex');
+            $('.informing-window-commented-downloader small').html('Файл загружается ...');
+            $('.informing-window-commented-downloader').show();
+            $('.button-send-file-drag-n-drop-downloader').prop('disabled', true);
         }
         if (file.webkitSlice) {
             var blob = file.webkitSlice(start, start + step);
@@ -263,23 +277,30 @@ $(function () {
                         ProgressBar.css('width',procent + '%');
                     } else {
                         ProgressBar.css('width', '100%');
+                        $('.informing-window-commented-downloader small').html('Успешно загружен!');
+                        $('.informing-window-commented-downloader').show();
                         setTimeout(()=>{
-                            ProgressBar.closest('.uploadDocument').remove();
+                            var elem = ProgressBar.closest('.uploadDocument').remove();
                             $('.tooltip').remove();
+                            $('.button-send-file-drag-n-drop-downloader').prop('disabled', false);
+                            $('.informing-window-commented-downloader').hide();
                             if( $('.drag-n-drop-documents').children().length === 0 ){
                                 $('.drag-n-drop-content').children().removeClass('d-none').addClass('d-flex');
                                 $('.drag-n-drop-documents').removeClass('d-flex').addClass('d-none');
+                                $('.button-downloader-upload-all-documents').hide();
                             };
 
                             if (multiUpload && $('.drag-n-drop-documents').children().length != 0){
                                 var elem   = $('.drag-n-drop-documents').children()[0];
-                                var number = $(elem).attr('data-number-in-array-files');
+                                if( $(elem).attr('data-ext-check') ) {
+                                    var number = $(elem).attr('data-number-in-array-files');
+                                    var ProgressBar_2 = $(elem).find('.progress-bar');
+                                    readFile(0, ProgressBar_2, number, 0, true);
+                                } else {
+                                    $(elem).remove();
+                                }                                                               
                             };
                         }, 700);
-
-
-                        
-                        //начинаем загрузку следующего файла допишу при появлении кнопки загрузить все файлы.
                     }
                 }
             }

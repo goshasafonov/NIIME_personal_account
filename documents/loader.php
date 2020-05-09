@@ -5,9 +5,11 @@ include './../auth.php';
 include $phpLogin;
 
 
+$fileErrorLog = __DIR__.'log.txt';
+
 $date = date("y.m.d");
 $time = date("h.i.s");
-$fileErrorLog = "ErrorLog/" . $date . ".errorLog";
+//$fileErrorLog = "ErrorLog/" . $date . ".errorLog";
 $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/'.'NIIME_personal_account'.'/'.'upload';
 
 if (!is_dir($uploadDir)) {
@@ -49,9 +51,9 @@ if (
         $statusId = 4;
     };
 
-    $id = 1;
-
-    
+    $UploadStatusId = 1;
+    $UploadUserId = 13131313;
+    $PublicationStatusId = 1;
 	
     if (intval($_SERVER["HTTP_PORTION_FROM"]) == 0) {
 
@@ -66,10 +68,14 @@ if (
                     . " `Description` = ?";
         $statement = $mysqli->prepare($query);
     	if ($statement) {
-    		$statement->bind_param('ssiiis', $name, $name, $UserId, $id, $id, $_POST['comment']);
+    		$statement->bind_param('ssiiis', $name, $name, $UploadUserId, $UploadStatusId, $PublicationStatusId, $_POST['comment']);
     		if ($statement->execute()) {
     			$msg["AjaxSuccess"] = $statement->insert_id;
     			$msg["DB_id"] = $msg["AjaxSuccess"];
+
+    			mkdir($uploadDir.'/'.$msg["AjaxSuccess"], 0777);
+        		$filename = $uploadDir.'/'.$msg["AjaxSuccess"].'/'.'doc_'.$msg["AjaxSuccess"].'.'.$ext;
+        		$fout = fopen($filename, "wb");
     		} else {
                 $msg["AjaxError"] = $time . ": Не удалось добавить проект. Обратитесь к администратору.";
                 $errorText = $time . ":\t Ошибка записи в базу : (" . $mysqli->errno . " ) " . $mysqli->error . "\n";
@@ -81,10 +87,6 @@ if (
             $errorText = $time . ":\t Ошибка записи в базу : (" . $mysqli->errno . " ) " . $mysqli->error . "\n";
             file_put_contents($fileErrorLog, $errorText, FILE_APPEND);
         };
-
-        mkdir($uploadDir.'/'.$msg["AjaxSuccess"], 0777);
-        $filename = $uploadDir.'/'.$msg["AjaxSuccess"].'/'.'doc_'.$msg["AjaxSuccess"].'.'.$ext;
-        $fout = fopen($filename, "wb");
     } else {
     	$filename = $uploadDir.'/'.$DB_id.'/'.'doc_'.$DB_id.'.'.$ext;
         $fout = fopen($filename, "ab");
@@ -96,6 +98,8 @@ if (
     
 
     if ($statusId === 4) {
+		$UploadStatusId = 2;
+
     	$DB_id = $msg["DB_id"];
     	$path = 'upload'.'/'.$DB_id.'/'.'doc_'.$DB_id.'.'.$ext;
     	$query = ""
@@ -110,7 +114,7 @@ if (
 
         $statement = $mysqli->prepare($query);
     	if ($statement) {
-    		$statement->bind_param('sisi', $path, $id, $_POST['comment'], $DB_id);
+    		$statement->bind_param('sisi', $path, $UploadStatusId, $_POST['comment'], $DB_id);
     		if ($statement->execute()) {
     			$msg["AjaxSuccess"] = $DB_id;
     		} else {

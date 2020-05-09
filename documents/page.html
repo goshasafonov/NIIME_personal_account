@@ -27,11 +27,11 @@
                 </div>
 
                 <div class="modal fade download-modal-xl" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="user-select: none;">
                         <div class="modal-content  modal-drag-n-drop-downloader">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Загрузка документов</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="outline: none;">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>                                
@@ -55,9 +55,10 @@
                                     <div class="drag-n-drop-documents d-none flex-column" style="height: 100%; width: 100%; max-width: 700px;"></div>
                                 </div>
                             </div>
-                            <div class="modal-footer justify-content-center">
-                                <div class="informing-window-commented-downloader pb-2" style="display: none;">
-                                    <small class="font-weight-bold"></small>
+                            <div class="modal-footer justify-content-center position-relative">
+                                <div class="informing-window-commented-downloader py-3 position-absolute text-white px-4 bg-black" 
+                                    style="display: none;top: -60px; opacity: 0.9; border-top-left-radius: 6px;border-top-right-radius: 6px; background-color: black;">
+                                    <small></small>
                                 </div>
                                 <div class=" d-flex align-items-center position-relative" 
                                 style="margin-left: 2rem; margin-right: 2rem; width: 100%; max-width: 700px;">
@@ -65,11 +66,18 @@
                                     data-toggle="tooltip" data-placement="top" title="Добавить документ"
                                     onclick="$('#picker-input-downloader').trigger('click');" 
                                     ></span>
-                                    <span type="button" class="button-send-comment-downloader mdi mdi-send position-absolute" style="right: 1rem; "></span>
+                                    <span type="button" class="button-send-comment-downloader mdi mdi-send position-absolute" style="right: 1rem; "
+                                    data-toggle="tooltip" data-placement="top" title="Ваш коментарий будет прикреплен к выбранному файлу"
+                                    ></span>
                                     <input class="input-comment-downloader rounded-pill border py-1 form-control form-control" 
                                         type="text" name="" placeholder="Комментарий" 
                                         style="width: 100%; padding-left:50px; padding-right: 50px;">
                                 </div>
+                                <a type="button" class="btn btn-warning btn-sm button-downloader-upload-all-documents" 
+                                    style="display: none;">
+                                    <span class="mdi mdi-cloud-upload-outline mr-1"></span>
+                                    загрузить все файлы
+                                </a>
                             </div>
                             <div class="drag-n-drop-downloader-preview d-none flex-column 
                             justify-content-center align-items-center position-absolute bg-white rounded" 
