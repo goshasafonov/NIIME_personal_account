@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card shadow">
     <div class="card-header bg-transparent d-flex flex-wrap justify-content-between">
         <span class="d-flex align-items-center my-1 mr-1">
             Документ
@@ -19,10 +19,11 @@
                 role="button"
                 data-toggle="popover"
                 data-trigger="focus"
+                data-placement="top"
                 data-html="true"
                 data-content=""                                
             >
-                <div class="btn rounded-circle empty-score"></div>
+                <div class="btn d-block rounded-circle empty-score"></div>
             </div>
 
             <div class="btn rounded-circle ml-4 time-point"
@@ -30,10 +31,11 @@
                 role="button"                                
                 data-toggle="popover"
                 data-trigger="focus"
+                data-placement="bottom"
                 data-html="true"
                 data-content=""                                
             >
-                <div class="btn rounded-circle danger-score"></div>
+                <div class="btn d-block rounded-circle danger-score"></div>
             </div>
 
             <div class="btn rounded-circle  ml-4 time-point"
@@ -41,10 +43,11 @@
                 role="button"
                 data-toggle="popover"
                 data-trigger="focus"
+                data-placement="top"
                 data-html="true"
                 data-content=""
             >
-                <div class="btn rounded-circle success-score"></div>
+                <div class="btn d-block rounded-circle success-score"></div>
             </div>
         </div>
 
@@ -58,6 +61,6 @@
         </div>
     </div>
     <div class="card-footer">
-        <small class="text-muted">Last updated <span class="last_update_document">3 mins ago</span> </small>
+        <small class="text-muted">Последнее изменение <span class="last_update_document"></span> </small>
     </div>
 </div>

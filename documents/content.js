@@ -336,55 +336,10 @@ $(function () {
     function intialStartPage() {
         console.log(`[START APP: Hello user, good u know devtools ⚡]`);
 
+
         $.get('../components/document-card.html', function(data){
-            getListDocuments();      
-
-                
-
-            //ajaxSuccess
-            JsonDocuments.forEach(doc =>{
-                var DomJqData = $(data);
-                DomJqData.find('.document_card_name').text(doc.name_document);
-                DomJqData.find('.container_document_card_name').attr('title', doc.name_document);
-                DomJqData.find('.card-title').html(doc.document_agreed ? 'Согласовано<span class="ml-1 mdi mdi-check-circle text-success"></span>' : 'Процесс согласования');
-                DomJqData.find('.card-text').text(doc.comment_document);
-                DomJqData.find('.href_card_id_document').attr('href',doc.href_document);
-                DomJqData.find('.last_update_document').text(doc.last_update);
-                //Распределение классов 
-                for (var key in doc.status_document) {
-                    var status = doc.status_document[key].status;
-
-                    if(status === 'empty'){
-                        $(DomJqData.find('.timeline').children()[key]).find('div').addClass(status+'-score');
-                    }else{
-                        $(DomJqData.find('.timeline').children()[key]).find('div')
-                        .removeClass()
-                        .addClass('btn rounded-circle ' + status+'-score');
-                    };
-                    //Popover
-                    $(DomJqData.find('.timeline').children()[key]).addClass('Popover_'+doc.id_document+'_'+key);
-                };
-                
-                $('.card-columns').append( DomJqData );
-
-                for (var key in doc.status_document) {
-                    $('.Popover_'+doc.id_document+'_'+key).popover({
-                        content: `
-                        <div class='card'>
-                            <h5 class='card-header bg-transparent'>${doc.status_document[key].name}</h5>
-                            <div class='card-body'>
-                                <p class='card-text'>${doc.status_document[key].comment}</p>
-                            </div> 
-                            <div class='dropdown-divider'></div>
-                            <ul><li>можно</li><li>было бы</li><li>что-то перечислять</li></ul>
-                            <div class='card-footer'>
-                                <small class='text-muted'>Last updated ${doc.status_document[key].date}</small>
-                            </div>
-                        </div>`
-                    });
-                };
-            });
-            $('[data-toggle="popover"]').popover();$('[data-toggle="tooltip"]').tooltip();
+            componentCard = data;
+            getListDocuments();
         });
     };
 
@@ -397,59 +352,119 @@ $(function () {
             data: formData,
             processData: false,
             contentType: false,
-            success: successGetListDocuments,
+            success: function(data) {
+                successGetListDocuments(data, componentCard);
+            },
         });
     };
-    function successGetListDocuments(data) {
+    function successGetListDocuments(data, componentCard) {
         try {
             var jsonData = JSON.parse(data);
             if (typeof jsonData.AuthError !== "undefined") {
                 alertMsg(jsonData.AuthError);
                 location.reload();
             } else {
+                renderCardsDocuments(jsonData, componentCard);
                 setTimeout(getListDocuments, 10000);
             }
         } catch (e) {
             alertMsg("Ошибка в структуре ответа от сайта:<br>" + e);
         }
     };
+    function renderCardsDocuments(JsonDocuments, componentCard) {
+        console.log(JsonDocuments);
+        JsonDocuments.forEach(doc =>{
+            var docOnPage = $(`[data-document-id-card=${doc.id_document}]`);
+            if (docOnPage[0]){
+                prepareCadrComponent ( doc, docOnPage[0] );
+                UpdateCardPopover (doc);
+                return
+            } else {                
+                $('.card-columns').append( prepareCadrComponent (doc, componentCard) );
+                prepareCardPopover (doc);
+                $('[data-toggle="popover"]').popover();$('[data-toggle="tooltip"]').tooltip();
+            };
+        });        
+    };
+
+    function prepareCadrComponent (doc, componentCard){
+        var DomJqData = $(componentCard);
+        DomJqData.attr( 'data-document-id-card', doc.id_document );
+        DomJqData.find('.document_card_name').text(doc.name_document);
+        DomJqData.find('.container_document_card_name').attr('title', doc.name_document);
+        DomJqData.find('.card-title').html(doc.document_agreed ? 'Согласовано<span class="ml-1 mdi mdi-check-circle text-success"></span>' : 'Процесс согласования');
+        DomJqData.find('.card-text').text(doc.comment_document);
+        DomJqData.find('.href_card_id_document').attr('href',doc.href_document);
+        DomJqData.find('.last_update_document').text(doc.last_update);
+        //Распределение классов 
+        for (var key in doc.status_document) {
+            var status = doc.status_document[key].class;
+            if(status === 'empty'){
+                $(DomJqData.find('.timeline').children()[key]).find('div').addClass(status+'-score');
+            }else{
+                $(DomJqData.find('.timeline').children()[key]).find('div')
+                .removeClass()
+                .addClass('btn d-block rounded-circle ' + status+'-score');
+            };
+            //Popover
+            $(DomJqData.find('.timeline').children()[key]).addClass('Popover_'+doc.id_document+'_'+key);
+        };
+        return DomJqData
+    };
+    function prepareCardPopover (doc) {
+        for (var key in doc.status_document) {
+            $('.Popover_'+doc.id_document+'_'+key).popover({
+                content: `
+                <div class='card bg-dark text-white'>
+                    <h5 class='card-header py-2 bg-transparent'>${doc.status_document[key].name}</h5>
+                    <div class='card-body py-2'>
+                        <p class='card-text mb-2'>${doc.status_document[key].comment}</p>
+                        <div class='dropdown-divider'></div>
+                        <div class='d-flex justify-content-between'>
+                            <span class='mdi mdi-account mr-1'>${doc.status_document[key].user}</span>
+                            <span class='badge badge-${doc.status_document[key].class}'>
+                                ${doc.status_document[key].status}
+                            </span>
+                        </div>
+                    </div>
+                    <div class='card-footer py-2'>
+                        <span class='text-muted'>Дата загрузки: ${doc.status_document[key].date}</span>
+                    </div>
+                </div>`
+            });
+        };
+    }
+    function UpdateCardPopover (doc) {
+        for (var key in doc.status_document) {
+            var buttonPopover = $('.Popover_'+doc.id_document+'_'+key);
+            var popoverContent =`
+                <div class='card bg-dark text-white'>
+                    <h5 class='card-header py-2 bg-transparent'>${doc.status_document[key].name}</h5>
+                    <div class='card-body py-2'>
+                        <p class='card-text mb-2'>${doc.status_document[key].comment}</p>
+                        <div class='dropdown-divider'></div>
+                        <div class='d-flex justify-content-between'>
+                            <span class='mdi mdi-account mr-1'>${doc.status_document[key].user}</span>
+                            <span class='badge badge-${doc.status_document[key].class}'>
+                                ${doc.status_document[key].status}
+                            </span>
+                        </div>
+                    </div>
+                    <div class='card-footer py-2'>
+                        <span class='text-muted'>Дата загрузки: ${doc.status_document[key].date}</span>
+                    </div>
+                </div>`;
+            buttonPopover.data('bs.popover').config.content = popoverContent;
+            /*Если в данный момент popover открыт то обновим его контент для отображения
+            в ином случае при focus он автоматически его обновит на добавленный*/
+            if (buttonPopover.data('bs.popover')._activeTrigger.focus) {
+                var popoverElem =  buttonPopover.data('bs.popover').tip;
+                $(popoverElem).find('.popover-body').html(popoverContent);
+            }
+        };
+    }
+
     function alertMsg(text) {
         alert(text);
     }
 });
-
-
-var JsonDocuments = [
-    {
-        'id_document'      : '1',
-        'name_document'    : 'file-lflfl-s fdfdf df gdf gffff_1.pdf',
-        'status_document'  : 
-        {
-            0:
-            {
-                'name'    : 'Процесс загрузки',
-                'status'  : 'success',
-                'comment' : 'загрузил с такой то целью',
-                'date'    : '00.00.00.0.0.0',
-            },
-            1:
-            {   
-                'name'    : 'Процесс согласования',
-                'status'  : 'empty',
-                'comment' : 'тут к примеру последний утверждающий комментарий или описание',
-                'date'    : '00.00.00.0.0.0',
-            },
-            2:
-            {   
-                'name'    : 'Процесс публикации',
-                'status'  : 'danger',
-                'comment' : 'что то что пишут при публикациях',
-                'date'    : '00.00.00.0.0.0',
-            },
-        },
-        'document_agreed'  : true,
-        'comment_document' : 'Согласовать срочно, быстро, как можно быстрее, завтра приду и все согласовано, надеюсь. Пожалуйста ))',
-        'href_document'    : 'http://ololol1.ru',
-        'last_update'      : 'вчера',
-    },    
-]

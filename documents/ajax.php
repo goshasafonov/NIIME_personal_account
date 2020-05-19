@@ -22,7 +22,14 @@ switch ($queryId) {
                 . " `Document`.Name, "
                 . " `Document::UploadStatus`.Name as UploadStatus, "
                 . " `Document::PublicationStatus`.Name as PublicationStatus, "
-                . " `Document`.Description "
+
+                . " `Document::UploadStatus`.StatusClass as UploadStatusClass, "
+                . " `Document::PublicationStatus`.StatusClass as PublicationStatusClass, "
+
+
+                . " `Document`.Description, "
+                . " `Document`.UploadUserId, "
+                . " `Document`.TimeStamp "
                 . "FROM"
                 . " `Document` "
                 . " LEFT JOIN `Document::UploadStatus` ON `Document::UploadStatus`.Id = `Document`.UploadStatusId "
@@ -33,14 +40,32 @@ switch ($queryId) {
                 $tmp = array();
                 $tmp['id_document'] = $row['Id'];
                 $tmp['name_document'] = $row['Name'];
-                $tmp['status_document'] = array(); 
-                $tmp['status_document'][] = $row['UploadStatus'];
-                $tmp['status_document'][] = 'success';
-                $tmp['status_document'][] = $row['PublicationStatus'];
+                
+                $tmp['status_document'][0]['name'] = 'Процесс загрузки';
+                $tmp['status_document'][0]['status'] = $row['UploadStatus'];
+                $tmp['status_document'][0]['class'] = $row['UploadStatusClass'];
+                $tmp['status_document'][0]['user'] = $row['UploadUserId'];
+                $tmp['status_document'][0]['comment'] = 'Документ успешно загружен и готов к процессу согласования для более подробной информации перейдите в раздер документа';
+                $tmp['status_document'][0]['date'] = $row['TimeStamp'];
+
+                $tmp['status_document'][1]['name'] = 'Процесс согласования';
+                $tmp['status_document'][1]['status'] = $row['PublicationStatus'];
+                $tmp['status_document'][1]['class'] = 'warning';//$row['PublicationStatusClass'];
+                $tmp['status_document'][1]['user'] = $row['UploadUserId'];
+                $tmp['status_document'][1]['comment'] = 'Документ успешно согласован и готов к процессу публикации для более подробной информации перейдите в раздер документа';
+                $tmp['status_document'][1]['date'] = $row['TimeStamp'];
+
+                $tmp['status_document'][2]['name'] = 'Процесс публикации';
+                $tmp['status_document'][2]['status'] = $row['PublicationStatus'];
+                $tmp['status_document'][2]['class'] = $row['PublicationStatusClass'];
+                $tmp['status_document'][2]['user'] = $row['UploadUserId'];
+                $tmp['status_document'][2]['comment'] = 'Документ успешно опубликован для просмотра и более подробной информации перейдите в раздер документа';
+                $tmp['status_document'][2]['date'] = $row['TimeStamp'];
+
                 $tmp['document_agreed'] = true;
                 $tmp['comment_document'] = $row['Description'];
                 $tmp['href_document'] = "$host/document/id?" . $row['Id'];
-                $tmp['last_update'] = '0000-00-00 00:00:00';
+                $tmp['last_update'] = $row['TimeStamp'];
                 $msg[] = $tmp;
             }
         } else {

@@ -23,6 +23,12 @@
     background-color: white;
     z-index: 10;
 }
+.timeline .time-point:hover{
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+.timeline .time-point:focus{
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
 .timeline .time-point .empty-score{
 	width: 100%;
 	height: 100%;
@@ -32,15 +38,27 @@
 .timeline .time-point .danger-score{
 	width: 100%;
 	height: 100%;
-	background-color: #E57373;
+	background-color: #ff5252;
 }
 .timeline .time-point .success-score{
 	width: 100%;
 	height: 100%;
-	background-color: #28a745;
+	background-color: #4caf50;
+}
+.timeline .time-point .warning-score{
+	width: 100%;
+	height: 100%;
+	background-color: #fb8c00;
 }
 
 .popover .card {
     border: none;
     margin: -0.5rem -0.75rem;
+}
+.popover {
+	max-width: 320px;
+}
+.popover .arrow:after {
+    border-top-color: #343a40;
+    border-bottom-color: #343a40;
 }
