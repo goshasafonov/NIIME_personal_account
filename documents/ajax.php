@@ -64,7 +64,7 @@ switch ($queryId) {
 
                 $tmp['document_agreed'] = true;
                 $tmp['comment_document'] = $row['Description'];
-                $tmp['href_document'] = "$host/document/id?" . $row['Id'];
+                $tmp['href_document'] = "$host/documents/id/?doc=" . $row['Id'];
                 $tmp['last_update'] = $row['TimeStamp'];
                 $msg[] = $tmp;
             }
