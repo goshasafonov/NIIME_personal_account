@@ -1,5 +1,16 @@
-.drag-n-drop-documents .uploadDocument{
-    display: flex;
-    width:100%;
-    margin-top: 0.25rem;
+body{
+}
+.card-body p{
+	margin-bottom: 0.5rem
+}
+.card-header .docNameContainer{
+	min-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.fileMD5Container{
+	transition: 0.3s;
+}
+.fileMD5Container:hover .fileMD5{
+	color: #1ebccd;
 }

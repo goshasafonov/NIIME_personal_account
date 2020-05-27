@@ -65,6 +65,7 @@ if (
                     . " `UploadUserId` = ?,"
                     . " `UploadStatusId` = ?,"
                     . " `PublicationStatusId` = ?,"
+                    . " `MD5` = 'не сформирована',"
                     . " `Description` = ?";
         $statement = $mysqli->prepare($query);
     	if ($statement) {
@@ -101,20 +102,23 @@ if (
 		$UploadStatusId = 2;
 
     	$DB_id = $msg["DB_id"];
-    	$path = 'upload'.'/'.$DB_id.'/'.'doc_'.$DB_id.'.'.$ext;
+    	$path  = 'upload'.'/'.$DB_id.'/'.'doc_'.$DB_id.'.'.$ext;
+        $MD5   = md5_file($uploadDir.'/'.$DB_id.'/'.'doc_'.$DB_id.'.'.$ext);
+
     	$query = ""
     			. "UPDATE"
                 . " `document` "
                 . "SET"
                 . " `document`.Path = ?, "
                 . " `document`.UploadStatusId = ?, "
+                . " `document`.MD5 = ?, "
                 . " `document`.Description = ? "
                 . "WHERE"
                 . " `document`.Id = ?";
 
         $statement = $mysqli->prepare($query);
     	if ($statement) {
-    		$statement->bind_param('sisi', $path, $UploadStatusId, $_POST['comment'], $DB_id);
+    		$statement->bind_param('sissi', $path, $UploadStatusId, $MD5, $_POST['comment'], $DB_id);
     		if ($statement->execute()) {
     			$msg["AjaxSuccess"] = $DB_id;
     		} else {
