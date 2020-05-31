@@ -373,6 +373,14 @@ $(function () {
     };
     function renderCardsDocuments(JsonDocuments, componentCard) {
         console.log(JsonDocuments);
+        var cardElements = $('.card-columns').children();
+        if (JsonDocuments.length === 0){
+            $('.allContentDocuments .emptyDocumentsList').removeClass('d-none').addClass('d-flex');
+            cardElements.remove();
+            return;
+        }else{
+            $('.allContentDocuments .emptyDocumentsList').removeClass('d-flex').addClass('d-none')
+        };
         JsonDocuments.forEach(doc =>{
             var docOnPage = $(`[data-document-id-card=${doc.id_document}]`);
             if (docOnPage[0]){
@@ -384,7 +392,16 @@ $(function () {
                 prepareCardPopover (doc);
                 $('[data-toggle="popover"]').popover();$('[data-toggle="tooltip"]').tooltip();
             };
-        });        
+        });
+        cardElements = $('.card-columns').children();
+        cardElements.each(function(index, value){
+            var val = $(value).attr('data-document-id-card');
+            var check = JsonDocuments.find(item=>item.id_document == val);
+            if(!check){
+                var docOnPage = $(`[data-document-id-card=${val}]`);
+                docOnPage.remove();
+            }
+        });
     };
 
     function prepareCadrComponent (doc, componentCard){

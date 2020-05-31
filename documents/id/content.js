@@ -61,6 +61,7 @@ $(function () {
 
     $(document).on('click', '.fileMD5Container', function(){
     	var MD5 = $(this).find('.fileMD5').text();
+    	
     	var copyForm = document.createElement('textarea');
     	copyForm.setAttribute('style', 'opacity:0;position:fixed;top:0;left:0;height:0;width:0;');
     	copyForm.value = MD5;
@@ -68,10 +69,17 @@ $(function () {
     	copyForm.select();
     	document.execCommand('copy');
     	document.body.removeChild(copyForm);
-    	var copyEvent = document.createElement('div');
-    	copyEvent.setAttribute('class', 'copyEvent');
+    	
+    	var tip = $(this).data('bs.tooltip').tip
+    	var tooltipInner = $(tip).find('.tooltip-inner');
+    	tooltipInner.html('Скопировано');
+    	$(this).tooltip('update');
     });
-    $('[data-toggle="popover"]').popover();    
+    parseTimeLineData(data);
+    agreementPopover();
+  
+    $('[data-toggle="popover"]').popover();
+
 });
 
 
@@ -136,28 +144,33 @@ function checkingFileExtension(fileName){
 
 
 function timeLineItemCreate(data){
-
 	var elem = 
 	`
 	<div class="timeline-item">
 	    <div class="timeline-point-wraper">
 	        <div class="rounded-circle timeline-point">
-	        	<div class="rounded-circle timeline-point-color bg-success"></div>
+	        	<div class="rounded-circle timeline-point-color bg-${data.options.timePointColor}">
+	        		${data.options.mdi == '' ? '' : '<span class="'+ data.options.mdi +'"></span>'}
+	        	</div>
 	        </div>
 	    </div>
 	    <div class="timeline-content">
 	        <div class="timeline-body">
-	            <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Рябинин Артем Денисович"></span>
-	            <span class="font-weight-bold text-muted">Рябинин А.Д.</span>                       
-	            <span class="badge badge-success">Согласованно</span>
+	        	<div class='d-inline-block mr-2' type="button" data-toggle="tooltip" 
+	        	data-placement="top" data-html="true" title="" 
+	        	data-original-title="${data.author + '<br>' + data.position}">
+	        		<span class="mdi mdi-account-circle"></span>
+	            	<span class="font-weight-bold text-muted">${smallFIO (data.author)}</span>
+	        	</div>
+	            <span class="badge badge-${data.options.badge}">${data.options.textStatus}</span>
 	            <br>
 	            <span>
-	                Все отлично, печатаем и на подпись!
+	                ${data.comment}
 	            </span>
 	        </div>
 	        <div class="timeline-date">
-	            <span class="mr-1">05.05.1925</span>
-	            <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="16:00"></span>
+	            <span class="mr-1">${new Date(data.date).toLocaleDateString()}</span>
+	            <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="${data.date}"></span>
 	        </div>
 	    </div>
 	</div>
@@ -165,6 +178,133 @@ function timeLineItemCreate(data){
 	return elem;
 };
 
-function addTimeLineItem() {
-	$('.timeline-vertical .timeline-group').append( timeLineItemCreate() );
+function smallFIO (fullFIO) {
+	var arr = fullFIO.split(' ');
+	return arr[0] + ' ' + arr[1][0] + '. ' + arr[2][0] + '.';
 }
+
+function addTimeLineItem(data) {
+	var obj = {
+        'agree'    : { 'textStatus' : ' Согласованно ', 'timePointColor' : 'success', 'badge' : 'success', 'mdi' : '',},
+        'disagree' : { 'textStatus' : ' Отказ ',        'timePointColor' : 'danger',  'badge' : 'danger',  'mdi' : '',},
+        'comment'  : { 'textStatus' : ' Комментарий ',  'timePointColor' : 'primary', 'badge' : 'info',    'mdi' : 'mdi mdi-message',},
+    };
+    for (var key in obj) {
+        if (key === data.status) {
+            data.options = obj[key];
+        };
+    };
+	$('.timeline-vertical .timeline-group').append( timeLineItemCreate(data) );
+	$('.timeline-item [data-toggle="tooltip"]').tooltip();
+};
+function parseTimeLineData(data){
+	data.forEach( timeLineItem => {
+		addTimeLineItem(timeLineItem);
+	});
+}
+function agreementPopover(){
+	var c = false;
+    var popoverElem = null;
+    var content = `
+    	<div>
+        	<a href='#' class='buttonAgreeDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-success'>
+        		<span class='mdi mdi-thumb-up'></span>
+        		Согласовать
+        	</a>
+        	<br>
+        	<a href='#' class='buttonDesAgreeDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-danger'>
+        		<span class='mdi mdi-thumb-down'></span>
+        		Отказать
+        	</a>
+        	<br>
+        	<a href="#" class='buttonCommentDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-info'>
+        		<span class='mdi mdi-comment'></span>
+        		Комментарий
+        	</a>
+        	<br>
+        	<a href="#" class='buttonImageDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-secondary'>
+        		<span class='mdi mdi-image'></span>
+        		Изображение
+        	</a>
+        <div>`;
+    content = $(content)[0];
+    content.querySelector('.buttonAgreeDoc').onclick = buttonAgreeDoc;
+    content.querySelector('.buttonDesAgreeDoc').onclick = buttonAgreeDoc;
+    content.querySelector('.buttonCommentDoc').onclick = buttonCommentDoc;
+
+	$('.agreementDoc').popover({
+    	content : content,
+    }).on('mouseenter', function (){
+    	c = false
+    	$(this).popover('show');
+    	var popoverElem =  $('.agreementDoc').data('bs.popover').tip;
+
+    	$(popoverElem).addClass('shadow-sm').find('.popover-body').addClass('px-0');
+    	popoverElem.onmouseenter = function (){ c = true; };
+    	popoverElem.onmouseleave = function (){ $(this).popover('hide'); c = false; };
+    }).on('mouseleave', function () {
+    	setTimeout(function(){ if(!c){ $('.agreementDoc').popover('hide'); }
+    	},100);
+    });
+}
+function buttonAgreeDoc(e){
+	preventDefaults (e);
+	console.log('lol');
+	$('.agreementDoc').popover('hide');
+	$('.input-comment-document').focus();
+}
+function buttonDesAgreeDoc(e){
+	preventDefaults (e);
+	console.log('lol');
+	$('.agreementDoc').popover('hide');
+	$('.input-comment-document').focus();
+}
+function buttonCommentDoc(e){
+	preventDefaults (e);
+	console.log('lol');
+	$('.agreementDoc').popover('hide');
+	$('.input-comment-document').focus();
+}
+function preventDefaults (e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+var data = [
+	{
+		'status'  : 'agree',
+		'author'  : 'Рябинин Артем Денисович',
+		'position': 'Не знаю точно, кто-тот главный',
+		'comment' : 'Все отлично, печатаем и на подпись!',
+		'date'    : '2020-05-28 21:59:30',
+	},
+	{
+		'status'  : 'disagree',
+		'author'  : 'Сафонов Георгий Юрьевич',
+		'position': 'Мл.научный сотрудник',
+		'comment' : 'Не верно указаны отступы в отчете а так же и третью главу нужно переписать. Жду исправлений ^_^ .',
+		'date'    : '2020-05-29 12:59:30',
+	},
+	{
+		'status'  : 'comment',
+		'author'  : 'Гагарина Лариса Генадьевна',
+		'position': 'Директор СПИНТех',
+		'comment' : 'Я себе скопирую на всякий случай, хороший отчет.',
+		'date'    : '2020-05-29 07:59:30',
+	},
+	{
+		'status'  : 'agree',
+		'author'  : 'Гагарина Лариса Генадьевна',
+		'position': 'Директор СПИНТех',
+		'comment' : '',
+		'date'    : '2020-05-29 07:59:30',
+	},
+	{
+		'status'  : 'disagree',
+		'author'  : 'Гагарина Лариса Генадьевна',
+		'position': 'Директор СПИНТех',
+		'comment' : '',
+		'date'    : '2020-05-29 07:59:30',
+	},
+];
+

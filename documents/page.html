@@ -13,19 +13,19 @@
                     Документы
                 </h3>
             </div>
-            <div class="shadow p-3" style="border-radius: .25rem;">
+            <div class="allContentDocuments shadow p-3" style="border-radius: .25rem;">
                 <h3>Текущие состояния документов</h3>
                 <div class="d-flex align-items-start">
-                    <p class="text-muted mb-5">
+                    <p class="mb-5">
                         Вы можете отслеживать все изменения документов в реальном времени. Вся информация о документах представлена ввиде карточек и
                         временной линии на которой вы можете видеть индексацию состояний.
                     </p>
                     <button class="d-flex btn btn-sm btn-warning ml-4" data-toggle="modal" type="button" data-target=".download-modal-xl">
-                        <span class="mdi mdi-plus mr-2"></span>
+                        <span class="mdi mdi-file-plus mr-2"></span>
                         <span>Добавить</span>
                     </button>
                 </div>
-
+                <!-- loader module (bootstrap modal-dialog)-->
                 <div class="modal fade download-modal-xl" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="user-select: none;">
                         <div class="modal-content  modal-drag-n-drop-downloader">
@@ -87,14 +87,21 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                    
+                </div>                
                 <div class="card-columns">
-                    
-                    
-
+                    <!-- here put all content card documents -->
                 </div>
+
+                <div class="d-none justify-content-center emptyDocumentsList">
+                    <div class="text-center mb-5">
+                        <span class="text-muted mdi mdi-file-cancel" style="font-size: 9rem;"></span>
+                        <h5 class="text-muted">На дынный момент документов для согласования нет!</h5>
+                        <h6 class="text-muted">Но вы можете их 
+                            <a href="#" data-toggle="modal" type="button" data-target=".download-modal-xl">добавить</a>
+                        </h6>
+                    </div>
+                </div>
+
             </div>
 
             <footer class="mt-3 d-flex justify-content-between">

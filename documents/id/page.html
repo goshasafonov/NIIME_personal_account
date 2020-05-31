@@ -150,85 +150,6 @@
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-point-wraper">
-                                    <div class="rounded-circle timeline-point"><div class="rounded-circle timeline-point-color bg-success"></div></div>
-                                </div>
-                                <div class="timeline-content">
-                                    <div class="timeline-body">
-                                        <span class="mdi mdi-account-circle" 
-                                              type="button" data-toggle="tooltip" data-placement="top" title="Рябинин Артем Денисович"></span>
-                                        <span class="font-weight-bold text-muted">Рябинин А.Д.</span>                       
-                                        <span class="badge badge-success">Согласованно</span>
-                                        <br>
-                                        <span>
-                                            Все отлично, печатаем и на подпись!
-                                        </span>
-                                    </div>
-                                    <div class="timeline-date">
-                                        <span class="mr-1">05.05.1925</span>
-                                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-point-wraper">
-                                    <div class="rounded-circle timeline-point"><div class="rounded-circle timeline-point-color"></div></div>
-                                </div>
-                                <div class="timeline-content d-flex">
-                                    <div class="timeline-body">
-                                        <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="Колдаев В.В."></span>
-                                        <span class="font-weight-bold text-muted">Колдаев В.В.</span>
-                                        <span class="badge badge-danger">Отказ</span>
-                                        <br>
-                                        Не верно указаны отступы в отчете а так же и третью главу нужно переписать. Жду исправлений ^_^ .
-                                    </div>
-                                    <div class="timeline-date">
-                                        <span class="mr-1">05.05.1925</span>
-                                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-point-wraper">
-                                    <div class="rounded-circle timeline-point"><div class="rounded-circle timeline-point-color bg-success"></div></div>
-                                </div>
-                                <div class="timeline-content d-flex">
-                                    <div class="timeline-body">
-                                        <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="Колдаев В.В."></span>
-                                        <span class="font-weight-bold text-muted">Колдаев В.В.</span>
-                                        <span class="badge badge-success">Согласованно</span>
-                                        <br>
-                                        Отличная работа увидел правки!
-                                    </div>
-                                    <div class="timeline-date">
-                                        <span class="mr-1">05.05.1925</span>
-                                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-point-wraper">
-                                    <div class="rounded-circle timeline-point">
-                                        <div class="rounded-circle timeline-point-color bg-primary">
-                                            <span class="mdi mdi-message"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="timeline-content d-flex">
-                                    <div class="timeline-body">
-                                        <span class="mdi mdi-account-circle" type="button" data-toggle="tooltip" data-placement="top" title="Кислячук М.М."></span>
-                                        <span class="font-weight-bold text-muted">Кислячук М.М.</span>
-                                        <span class="badge badge-info">Комментарий</span>
-                                        <br>
-                                        Я себе скопирую на всякий случай, хороший отчет.
-                                    </div>
-                                    <div class="timeline-date">
-                                        <span class="mr-1">05.05.1925</span>
-                                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-point-wraper">
                                     <div class="rounded-circle timeline-point timeline-point-delete">
                                         <div class="rounded-circle timeline-point-color bg-secondary">
                                             <span class="mdi mdi-delete"></span>
@@ -247,11 +168,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-4 d-flex align-items-center" style="margin-left: 4.5rem; margin-right: 3rem;">
-                            <span type="button" class="mdi mdi-sticker-emoji position-absolute" style="left: calc( 6px + 5rem );"></span>
-                            <span type="button" class="mdi mdi-send position-absolute" style="right: calc( 6px + 3.5rem); "></span>
-                            <input class="rounded-pill border py-1 form-control form-control" type="text" name="" placeholder="Комментарий" style="width: 100%; padding-left:50px; ">
-                        </div>
+                        <!-- <div class="mt-4 d-flex justify-content-between" style="margin-left: 4.5rem; margin-right: 3rem;">
+                            <button class="btn btn-sm btn-primary">Согласовать</button>
+                            <button class="btn btn-sm btn-danger">Отказать</button>
+                        </div> -->
+                        <form class="mt-4 d-flex align-items-center" style="margin-left: 4.5rem; margin-right: 3rem;">
+                            <button type="button" class="agreementDoc btn btn-sm mdi mdi-paperclip position-absolute" style="left: calc( 6px + 5rem ); font-size: 1.2rem"
+                                data-toggle="popover"
+                                data-trigger="click"
+                                data-placement="top"
+                                title=""
+                                data-html="true"
+                            ></button>
+                            <button type="button" class="btn btn-sm mdi mdi-send-outline position-absolute" style="right: calc( 6px + 3.5rem); font-size: 1.2rem" 
+                            type="button" data-toggle="tooltip" data-placement="top" title="Отправить"></button>
+                            <input class="input-comment-document rounded-pill border py-1 form-control form-control" type="text" name="" placeholder="Комментарий" style="width: 100%; padding-left:50px; ">
+                        </form>
                     </div>
 
                     <!-- ////////////////////////////////////////// -->                       

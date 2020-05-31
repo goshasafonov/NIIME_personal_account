@@ -42,12 +42,14 @@
 }
 .timeline-vertical .timeline-item .timeline-point-wraper .timeline-point .timeline-point-color{
 	width: 100%; 
-	height: 100%; 
-	background-color: #E57373;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: white
+}
+.timeline-point .bg-danger{
+	background-color: #E57373!important;
 }
 .timeline-vertical .timeline-item .timeline-content{
 	display: flex;
