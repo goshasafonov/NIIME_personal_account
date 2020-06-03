@@ -1,0 +1,122 @@
+<div class="AppContent-wrapper">
+    <div class="AppContent" style="margin-top: 57px; overflow: hidden;">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="%$host%">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Технологии</li>
+            </ol>
+        </nav>
+                        
+        <div class="container">
+            <div>                    
+                <h3 class="mb-5"><span class="text-muted mdi mdi-file-certificate"></span>
+                    Технологии
+                </h3>
+            </div>
+            <div class="shadow p-3" style="border-radius: .25rem;">
+                <h3>Список технологий и маршрутов</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-3 border-light">
+                            <div class="row no-gutters">
+                                <div class="col-md-3">
+                                    <img src="./logo.png" class="card-img" alt="..." style="margin-top: 20px;">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <p class="card-text">Данный модуль содержит данные по всем технологиям и маршрутам:</p>
+                                        <ul class="card-text">
+                                            <li>Список технологий</li>
+                                            <li>Таблица с данными маршрутов + их опций</li> 
+                                        </ul>
+                                        <p class="card-text"><small class="text-muted">Версия сайта</small><span class="ml-2 badge badge-sm badge-info">%$versionSite%</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form id="formTechnology">
+                            <div class="form-group">
+                                <label for="technology">Семейство технологий:</label>
+                                <select class="custom-select" id="technologySelect" name="technology" onchange="getRoute()" disabled></select>
+                                <small id="technologyHelp" class="form-text text-muted">Для просмотра маршрутов, выберите семейство технологий.</small>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form id="formRoutes">
+                            <div class="form-group" id="routesCheckbox">
+                                <label>Маршруты:</label>                        
+                            </div>                    
+                        </form>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col">                
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" id="showNameOptions" name="showNameOptions" class="custom-control-input" onchange="showOptionName()" disabled>
+                            <label class="custom-control-label" for="showNameOptions">Отображать в таблице имена опций</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" id="hideEmptyRow" name="hideEmptyRow" class="custom-control-input" onchange="hideEmptyRows()" disabled>
+                            <label class="custom-control-label" for="hideEmptyRow">Скрыть пустые строки</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover" id="combinationOptionsTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" rowspan="2">#</th>
+                                        <th scope="col" rowspan="2">Комбинация опций</th>                           
+                                    </tr> 
+                                    <tr></tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table> 
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="#modalAlertTitle" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalAlertTitle">Внимание!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body" id="modalAlertBody">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        
+
+            <footer class="mt-3 d-flex justify-content-between">
+                <div>
+                    <small> НИИМЭ </small>
+                    <small class="text-muted">© 2020</small>
+                </div>
+                <div>
+                    <small class="text-muted">Make with</small>
+                    <small><span class="mdi mdi-heart"></span></small>
+                    <small class="text-muted">and</small>
+                    <small><span class="mdi mdi-tea"></span></small>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

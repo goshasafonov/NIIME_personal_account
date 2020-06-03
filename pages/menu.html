@@ -8,11 +8,11 @@
             </div>                    
             <ul class="navbar-nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="%$host%/admin" data-toggle="collapse" data-target="#dash_drp" aria-expanded="false" aria-controls="dash_drp">                    
+                    <a class="nav-link collapsed" href="%$host%/admin" data-toggle="collapse" data-target="#admin_drp" aria-expanded="false" aria-controls="admin_drp">                    
                         <span class="mdi-account-settings mdi"></span>
                         <span class="ml-3 nav-link-text">Администрирование</span>
                     </a>
-                    <ul id="dash_drp" class="nav flex-column collapse-level-1 collapse" data-parent="#accordionExample">
+                    <ul id="admin_drp" class="nav flex-column collapse-level-1 collapse" data-parent="#accordionExample">
                         <li class="nav-item">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
@@ -26,7 +26,39 @@
                                 </li>   
                                 <li class="nav-item">
                                     <a class="nav-link" href="%$host%/admin/userRegistration">Регистрация пользователя</a>
-                                </li> 
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <a href="#" class="nav-link collapsed" data-toggle="collapse"
+                                        data-target="#useDB_drp" aria-expanded="false">
+                                            <span>Управление БД</span>
+                                        </a>
+                                        <ul id="useDB_drp" class="nav flex-column collapse-level-2 collapse">
+                                            <li class="nav-item">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="%$host%/admin/controlDataBase/technology">Технологии</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="%$host%/admin/controlDataBase/">Управление слоями</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="%$host%/admin/controlDataBase/">Слои</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="%$host%/admin/controlDataBase/">ЧТЗ</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="%$host%/admin/controlDataBase/">Тeg</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="%$host%/admin/controlDataBase/">RealseNotes</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                     </ul>

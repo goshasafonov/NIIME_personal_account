@@ -5,9 +5,9 @@ $titlePage = "Личный кабинет";
 
 //Настройки подключения к БД
 $dbHost = "localhost";
-$dbBase = "opfshLkV2";
-$dbUser = "php_opshLkV2";
-$dbPwd = "38LTBLWIsnA1Al60";
+$dbBase = "opfshlkv3";
+$dbUser = "root";
+$dbPwd = "";
 
 //Пустые переменные. Их значения могут меняться внутри скриптов по управлению страницей.
 $contentJsScript = "";
