@@ -12,6 +12,11 @@ $msg = array();
 $queryId = $_POST['queryId'];
 
 switch ($queryId) {
+    case 'createPage':
+        $query = ""
+            . "INSERT INTO `Site::Page`";
+        
+        break;
     case 'getListDocuments':
         $query = ""
                 . "SELECT"

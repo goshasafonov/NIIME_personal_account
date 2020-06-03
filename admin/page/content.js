@@ -8,7 +8,11 @@ $(document).ready(function () {
 
 function createNewPage() {
     var formData = new FormData(formCreatePage);
-    formData.append('queryId', 'getRoute');
+    formData.append('queryId', 'createPage');
+    if (formData.get('name') == "" || formData.get('path') == ""){
+        createToast("Error", "Ошибка в форме заполнения!");  
+        return false;
+    }
      $.ajax({
         url: 'ajax.php',
         type: 'POST',
