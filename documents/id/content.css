@@ -14,3 +14,17 @@ body{
 .fileMD5Container:hover .fileMD5{
 	color: #1ebccd;
 }
+.closeBadge{
+	color: rgba(255,255,255,0.5);
+	transition: 0.2s;
+}
+.closeBadge:hover{
+	color: rgba(255,255,255,1);
+}
+.FormAreementBadge{
+	left: calc( 6px + 7rem);
+}
+.input-comment-document{
+	padding-right: 45px;
+	transition: 0.2s;
+}

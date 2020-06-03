@@ -117,7 +117,7 @@
                     <!-- ////////////////////////////////////////// -->
 
 
-                    <div class="timeline-vertical flex-grow-2 flex-column" style=" ">
+                    <div class="timeline-vertical flex-grow-2 flex-column mb-4" style=" ">
                         <div class="py-4 timeline-group">
                             <div class="timeline-item">
                                 <div class="timeline-point-wraper"> 
@@ -135,8 +135,8 @@
                                         </a>                        
                                     </div>
                                     <div class="timeline-date font-weight-light">
-                                        <span class="mr-1">05.05.1925</span>
-                                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                                        <span class="DateUpload mr-1">05.05.1925</span>
+                                        <span class="DateUploadTip mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
                                     </div>
                                 </div>
                             </div>
@@ -172,17 +172,24 @@
                             <button class="btn btn-sm btn-primary">Согласовать</button>
                             <button class="btn btn-sm btn-danger">Отказать</button>
                         </div> -->
-                        <form class="mt-4 d-flex align-items-center" style="margin-left: 4.5rem; margin-right: 3rem;">
-                            <button type="button" class="agreementDoc btn btn-sm mdi mdi-paperclip position-absolute" style="left: calc( 6px + 5rem ); font-size: 1.2rem"
+                        <form class="FormAreement mt-4 d-flex align-items-center" style="margin-left: 4.5rem; margin-right: 3rem;">
+                            <button type="button" class="agreementDoc btn btn-sm mdi mdi-paperclip position-absolute" style="left: calc( -3px + 5rem ); font-size: 1.2rem; outline: none;"
                                 data-toggle="popover"
                                 data-trigger="click"
                                 data-placement="top"
                                 title=""
                                 data-html="true"
                             ></button>
-                            <button type="button" class="btn btn-sm mdi mdi-send-outline position-absolute" style="right: calc( 6px + 3.5rem); font-size: 1.2rem" 
+                            <div class="FormAreementBadge badge badge-success d-none position-absolute">
+                                <span class="textAgreementBadge">Согласовать</span>
+                                <span class="closeBadge ml-1 mdi mdi-close"
+                                type="button" data-toggle="tooltip" data-placement="top" 
+                                title="Отменить" onclick='closeBadgeInput()'
+                                ></span>
+                            </div>
+                            <button type="submit" class="sendBtnAgreementForm btn btn-sm mdi mdi-send-outline position-absolute" style="right: calc( -3px + 3.5rem); font-size: 1.2rem; outline:none;" 
                             type="button" data-toggle="tooltip" data-placement="top" title="Отправить"></button>
-                            <input class="input-comment-document rounded-pill border py-1 form-control form-control" type="text" name="" placeholder="Комментарий" style="width: 100%; padding-left:50px; ">
+                            <input class="input-comment-document rounded-pill border border-secondary py-1 w-100 form-control form-control" type="text" name="" placeholder="Комментарий" style="padding-left:50px; ">
                         </form>
                     </div>
 

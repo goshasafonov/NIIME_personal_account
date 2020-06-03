@@ -42,7 +42,7 @@ $(function () {
     	$('.UploadUser').text(jsonData.UploadUserId);
     	$('.sizeFile').text(size.toUpperCase());
     	$('.DateUpload').text(new Date(jsonData.TimeStamp).toLocaleDateString() );
-    	$('.DateUploadTip').attr('data-original-title', jsonData.TimeStamp);
+    	$('.DateUploadTip').attr('data-original-title', new Date(jsonData.TimeStamp));
     	$('.commentUploadFile').html(jsonData.Description == ''? '<small>Комментарий отсутствует<small>' : jsonData.Descriptions);
     	$('.downloadDoc').attr('href', jsonData.Host+'/'+jsonData.Path);
     	$('.fileMD5').text(jsonData.MD5);
@@ -52,7 +52,7 @@ $(function () {
 
     	$('.acceptList').html();
     	$('.lastUpdateDate').text( new Date(jsonData.TimeStamp).toLocaleDateString() );
-    	$('.fullLastUpdateDate').attr('data-original-title', jsonData.TimeStamp);
+    	$('.fullLastUpdateDate').attr('data-original-title', new Date(jsonData.TimeStamp) );
 
 
 
@@ -77,6 +77,10 @@ $(function () {
     });
     parseTimeLineData(data);
     agreementPopover();
+    $('.FormAreement').on('submit', submitFormAgreement);
+    $('.sendBtnAgreementForm').on('click', function(){
+        $(this).tooltip('hide');
+    })
   
     $('[data-toggle="popover"]').popover();
 
@@ -170,7 +174,7 @@ function timeLineItemCreate(data){
 	        </div>
 	        <div class="timeline-date">
 	            <span class="mr-1">${new Date(data.date).toLocaleDateString()}</span>
-	            <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="${data.date}"></span>
+	            <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="${new Date(data.date)}"></span>
 	        </div>
 	    </div>
 	</div>
@@ -212,7 +216,7 @@ function agreementPopover(){
         		Согласовать
         	</a>
         	<br>
-        	<a href='#' class='buttonDesAgreeDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-danger'>
+        	<a href='#' class='buttonDisAgreeDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-danger'>
         		<span class='mdi mdi-thumb-down'></span>
         		Отказать
         	</a>
@@ -228,8 +232,12 @@ function agreementPopover(){
         	</a>
         <div>`;
     content = $(content)[0];
+    var allButton = content.querySelectorAll('a');
+    allButton.forEach(button => {
+        button.addEventListener('click', clickButtonOnPopover);
+    });
     content.querySelector('.buttonAgreeDoc').onclick = buttonAgreeDoc;
-    content.querySelector('.buttonDesAgreeDoc').onclick = buttonAgreeDoc;
+    content.querySelector('.buttonDisAgreeDoc').onclick = buttonDisAgreeDoc;
     content.querySelector('.buttonCommentDoc').onclick = buttonCommentDoc;
 
 	$('.agreementDoc').popover({
@@ -248,22 +256,52 @@ function agreementPopover(){
     });
 }
 function buttonAgreeDoc(e){
-	preventDefaults (e);
-	console.log('lol');
-	$('.agreementDoc').popover('hide');
-	$('.input-comment-document').focus();
-}
-function buttonDesAgreeDoc(e){
-	preventDefaults (e);
-	console.log('lol');
-	$('.agreementDoc').popover('hide');
-	$('.input-comment-document').focus();
-}
+    $('.textAgreementBadge').text('Согласовать');
+	$('.FormAreementBadge').removeClass('d-none').addClass('d-flex');
+    $('.FormAreementBadge').removeClass('badge-danger').addClass('badge-success');
+    $('.FormAreementBadge').attr('data-status', 'agree');
+    var width = $('.FormAreementBadge').outerWidth(true);
+    $('.input-comment-document').css('paddingLeft', width + 50)
+};
+function buttonDisAgreeDoc(e){
+    $('.textAgreementBadge').text('Отказать');
+	$('.FormAreementBadge').removeClass('d-none').addClass('d-flex');
+    $('.FormAreementBadge').removeClass('badge-success').addClass('badge-danger');
+    $('.FormAreementBadge').attr('data-status', 'disagree');
+    var width = $('.FormAreementBadge').outerWidth(true);
+    $('.input-comment-document').css('paddingLeft', width + 50)
+};
 function buttonCommentDoc(e){
-	preventDefaults (e);
-	console.log('lol');
-	$('.agreementDoc').popover('hide');
-	$('.input-comment-document').focus();
+	
+};
+
+function closeBadgeInput(){
+    $('.FormAreementBadge').removeClass('d-flex').addClass('d-none');
+    $('.FormAreementBadge').attr('data-status', '');
+    $('.input-comment-document').css('paddingLeft',50)
+}
+//default click all buttons on popover form comment
+function clickButtonOnPopover(e){
+    preventDefaults (e);
+    $('.agreementDoc').popover('hide');
+    $('.input-comment-document').focus();
+}
+function submitFormAgreement(e){
+    e.preventDefault();
+    var comment = $('.input-comment-document').val();
+    var status = $('.FormAreementBadge').attr('data-status');
+    if(!status){status = 'comment'};
+    var data = [{
+            'comment':comment, 
+            'status': status, 
+            'date': '2020-05-28 21:59:30',
+            'author'  : 'Сафонов Георгий Юрьевич',
+            'position': 'Мл.научный сотрудник',
+            }];
+    parseTimeLineData(data);
+    $('.input-comment-document').val('');
+    $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 0);
+    return false;
 }
 function preventDefaults (e) {
     e.preventDefault();
