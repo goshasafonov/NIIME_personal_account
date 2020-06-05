@@ -1,0 +1,663 @@
+<div class="AppContent-wrapper">
+    <div class="AppContent" style="margin-top: 57px; overflow: hidden;">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="%$host%">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Технологии</li>
+            </ol>
+        </nav>
+                        
+        <div class="container">
+            <div>                    
+                <h3 class="mb-5"><span class="text-muted mdi mdi-file-certificate"></span>
+                    Управление слоями
+                </h3>
+            </div>
+            <div class="shadow p-3" style="border-radius: .25rem;">
+                <!-- START -->
+                <h3>Интерфейис для управление слоями</h3>
+                
+
+
+
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-3 border-light">
+                            <div class="row no-gutters">
+                                <div class="col-md-3">
+                                    <img src="%$host%/admin/controlDataBase/layerManagment/logo.png" class="card-img" alt="..." style="margin-top: 20px;">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Данный модуль содержит:</h5>
+                                        <p class="card-text"></p>
+                                        <ul class="card-text">
+                                            <li>Множественная загрузка слоев</li>
+                                        </ul>
+                                        <p class="card-text">
+                                            <small class="text-muted">Версия сайта</small>
+                                            <span class="ml-2 badge badge-sm badge-info">%$versionSite%</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>          
+                <div class="row" style="margin-top:20px;">
+                    <div class="col">
+                        <div class="row">
+                                    <div class="col-md-6">
+                                        <form id="formTechnology">
+                                            <div class="form-group">
+                                                <label for="technology">Семейство технологий:</label>
+                                                <select class="custom-select" id="technologySelect" name="technology" onchange="getRoute()" disabled></select>
+                                                <small id="technologyHelp" class="form-text text-muted">Для просмотра маршрутов, выберите семейство технологий.</small>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form id="formRoutes">
+                                            <div class="form-group" id="routesCheckbox">
+                                                <label>Маршруты:</label>                        
+                                            </div>                    
+                                        </form>                            
+                                    </div>
+                                </div>
+                        <ul class="nav nav-pills nav-justified" id="TabCadLayers" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" id="formCadLayers-tab" data-toggle="tab" href="#divManageCadLayers" role="tab" 
+                                aria-controls="divManageCadLayers" aria-selected="false" onclick="getAllLayers()">Управление слоями</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="streamInOut-tab" data-toggle="tab" href="#divStreamInOutUpload" role="tab" 
+                                aria-controls="divStreamInOutUpload" aria-selected="false" onclick="initialStateDivStreamInOutUpload()">Загрузить StreamInOut</a>
+                            </li>                    
+                        </ul>
+                        <div class="tab-content" id="TabCadLayersContent"  style="margin-top:50px;">
+                            <div class="tab-pane fade" id="divStreamInOutUpload" role="tabpanel" aria-labelledby="home-tab">
+                                <hr>
+                                <div class="row">
+                                    <div class="col">
+                                        <form id="streamOutfile">                   
+                                            <div class="form-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="customFile" name="filename" onchange="renameLabelInputFile(this)"/>
+                                                    <label class="custom-file-label" for="customFile">Выберите файл</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-sm btn-warning" onclick="uploadStreamInOut()">Загрузить StreamInOut</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>  
+                                <div class="row">
+                                    <div class="col">
+                                        <table id="tableCadLayers" class="table table-bordered table-sm table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Наличие в маршруте</th>
+                                                    <th>№</th>
+                                                    <th>Слой</th>
+                                                    <th>Имя</th>
+                                                    <th>Тип</th>
+                                                    <th>Базовый</th>
+                                                    <th>Дамми</th>
+                                                    <th>Дополнительные действия</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>                          
+                            <div class="tab-pane fade" id="divManageCadLayers" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col">                           
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <ul class="nav nav-tabs card-header-tabs" id="managePanelAllLayers">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" id="managePanelAllLayersFiltr" data-toggle="tab" href="#divManagePanelAllLayersFiltr" 
+                                                        role="tab" aria-controls="divManagePanelAllLayersFiltr" aria-selected="true">Фильтр</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="managePanelAllLayersCreateNewLayer" data-toggle="tab" 
+                                                        href="#divManagePanelAllLayersCreateNewLayers" role="tab" 
+                                                        aria-controls="divManagePanelAllLayersCreateNewLayers" aria-selected="false" 
+                                                        onclick="intialFormCreateNewLayerOfManagmentAllLayers()">Создать</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="managePanelAllLayersChangeNewLayer" data-toggle="tab" 
+                                                        href="#divManagePanelAllLayersChangeLayer" role="tab" 
+                                                        aria-controls="divManagePanelAllLayersChangeLayer" aria-selected="false" 
+                                                        onclick="initialFormSearchLayerOfManagmentAllLayers()">Редактирование</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="tab-content" style="margin-top:20px;">
+                                                    <div class="tab-pane fade show active" id="divManagePanelAllLayersFiltr" role="tabpanel" aria-labelledby="home-tab">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <form>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="filtrShowCadLayers" 
+                                                                        onclick="showRowTableAllLayers()" checked>
+                                                                        <label class="form-check-label" for="filtrShowCadLayers">
+                                                                            Отображать Cad слои
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="filtrShowIntermediateLayers" 
+                                                                        onclick="showRowTableAllLayers()" checked>
+                                                                        <label class="form-check-label" for="filtrShowIntermediateLayers">
+                                                                            Отображать Intermediate слои
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="filtrShowMaskLayers" 
+                                                                        onclick="showRowTableAllLayers()" checked>
+                                                                        <label class="form-check-label" for="filtrShowMaskLayers">
+                                                                            Отображать Mask слои
+                                                                        </label>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="divManagePanelAllLayersCreateNewLayers" role="tabpanel" aria-labelledby="home-tab">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <form id="formCreateNewLayerOfManagmentAllLayers">
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col">
+                                                                            <input class="form-control" name="layer" type="text" 
+                                                                            id="formCreateNewLayerOfManagmentAllLayers_layer" placeholder="Слой">
+                                                                        </div>
+                                                                        <div class="form-group col">
+                                                                            <input class="form-control" name="name" type="text" 
+                                                                            id="formCreateNewLayerOfManagmentAllLayers_name" placeholder="Имя">
+                                                                        </div>
+                                                                        <div class="form-group col">
+                                                                            <select class="form-control" id="formCreateNewLayerOfManagmentAllLayers_type" 
+                                                                            onchange="setTypeFormCreateNewLayerOfManagmentAllLyers_type()">
+                                                                                <option value="0">Выберите тип слоя ...</option>
+                                                                                <option value="1">Cad</option>
+                                                                                <option value="2">Intermediate</option>
+                                                                                <option value="3">Mask</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Cad-->
+                                                                    <div class="form-row" id="formCreateNewLayerOfManagmentAllLayers_cadDivRow">
+                                                                        <div class="form-group col">
+                                                                            <select class="form-control" id="formCreateNewLayerOfManagmentAllLayers_cadType" 
+                                                                            onchange="setTypeFormCreateNewLayerOfManagmentAllLyers_cadType()">
+                                                                                <option value="0">Выберите тип cad слоя ...</option>
+                                                                                <option value="1">Forbidding</option>
+                                                                                <option value="2">Suspended</option>
+                                                                                <option value="3">Merging</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group col" style="margin-top:1rem;">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input type="checkbox" class="form-check-input" 
+                                                                                disabled id="formCreateNewLayerOfManagmentAllLayers_cadTypeBase"> 
+                                                                                <label class="form-check-label" for="formCreateNewLayerOfManagmentAllLayers_cadTypeBase">
+                                                                                Base</label>                                                                 
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input type="checkbox" class="form-check-input" 
+                                                                                disabled id="formCreateNewLayerOfManagmentAllLayers_cadTypeDummy"> 
+                                                                                <label class="form-check-label" for="formCreateNewLayerOfManagmentAllLayers_cadTypeDummy">
+                                                                                Dummy</label>                                                                                                                               
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Intermediate-->
+                                                                    <div class="form-row" id="formCreateNewLayerOfManagmentAllLayers_intermediateDivRow">
+                                                                        <div class="form-group col">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input type="checkbox" class="form-check-input" disabled 
+                                                                                id="formCreateNewLayerOfManagmentAllLayers_intermediateMark">
+                                                                                <label class="form-check-label" for="formCreateNewLayerOfManagmentAllLayers_intermediateMark">Mark</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input type="checkbox" class="form-check-input" disabled id="formCreateNewLayerOfManagmentAllLayers_intermediateDensity">
+                                                                                <label class="form-check-label" for="formCreateNewLayerOfManagmentAllLayers_intermediateDensity">Density</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Mask-->
+                                                                    <div class="form-row" id="formCreateNewLayerOfManagmentAllLayers_maskDivRow">
+                                                                        <div class="form-group col">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input type="checkbox" class="form-check-input" disabled id="formCreateNewLayerOfManagmentAllLayers_maskMark">
+                                                                                <label class="form-check-label" for="formCreateNewLayerOfManagmentAllLayers_maskMark">Mark</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button" class="btn btn-primary" onclick="createNewLayerOfFormCreateNewLayerOfManagmentAllLayers()">Создать</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="divManagePanelAllLayersChangeLayer" role="tabpanel" aria-labelledby="home-tab">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h5>1. Найти слой.</h5>
+                                                                <p>Для редактирования слоя, необходимо указать его Id. Дополнительные поля уменьшают список Id.</p>
+                                                                <form id="formSearcheManagePanelAllLayersChangeLayer">
+                                                                    <fieldset>
+                                                                        <div class="form-row">
+                                                                            <div class="col">                                                           
+                                                                                <div class="input-group">
+                                                                                    <select name="id" class="custom-select" id="formSearcheManagePanelAllLayersChangeLayer_id" onchange="getAllInfoForLayers()"></select>
+                                                                                    <select name="layer" data-size="5" data-live-search="true" class="selectpicker" id="formSearcheManagePanelAllLayersChangeLayer_layer" onchange="getFiltrForSearchChangeLayers()"></select>
+                                                                                    <select name="name"  data-size="5" data-live-search="true" class="selectpicker" id="formSearcheManagePanelAllLayersChangeLayer_name" onchange="getFiltrForSearchChangeLayers()"></select>
+                                                                                    <select name="type" class="custom-select" id="formSearcheManagePanelAllLayersChangeLayer_type" onchange="getFiltrForSearchChangeLayers()"></select>
+                                                                                    <select name="attribute" class="custom-select" id="formSearcheManagePanelAllLayersChangeLayer_attribute" onchange="getFiltrForSearchChangeLayers()"></select>
+                                                                                    <select name="route"   class="custom-select"  id="formSearcheManagePanelAllLayersChangeLayer_route" onchange="getFiltrForSearchChangeLayers()"></select>
+                                                                                </div>  
+                                                                            </div>                                                              
+                                                                        </div>
+                                                                    </fieldset>
+                                                                </form>
+                                                                <br>
+                                                                <h5>2. Управление слоем.</h5>
+                                                                <form id="formChangeLayerOfManagmentAllLayers"> 
+                                                                    <fieldset>
+                                                                        <!--Id-->
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-2" >
+                                                                                <label>Id</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10" style="font-weight: 600;">
+                                                                                <p id="formChangeLayerOfManagmentAllLayers_id">Id</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Слой-->
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-2" >
+                                                                                <label>Слой</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10" >
+                                                                                <div class="input-group input-group-sm mb-3">
+                                                                                    <input id="formChangeLayerOfManagmentAllLayers_layer" type="text" value="" class="form-control" placeholder="" aria-label="" aria-describedby="formChangeLayerOfManagmentAllLayers_layerButton">
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" id="formChangeLayerOfManagmentAllLayers_layerButton" onclick="updateLayerOfFormChangeLayerOfManagmentAllLayers()">Корректировать</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Название слоя-->
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-2" >
+                                                                                <label>Название слоя</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10" >
+                                                                                <div class="input-group input-group-sm mb-3">
+                                                                                    <input id="formChangeLayerOfManagmentAllLayers_name" type="text" value="" class="form-control" placeholder="" aria-label="" aria-describedby="formChangeLayerOfManagmentAllLayers_nameButton">
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" id="formChangeLayerOfManagmentAllLayers_nameButton" onclick="updateNameOfFormChangeLayerOfManagmentAllLayers()">Корректировать</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Тип слоя-->
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-2" >
+                                                                                <label>Тип слоя</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10" style="font-weight: 600;">
+                                                                                <p id="formChangeLayerOfManagmentAllLayers_type">Id</p>
+                                                                            </div>
+                                                                        </div>  
+                                                                        <hr>
+                                                                        <!--Свойства MergingLayers-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowAttributesMerging">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Свойства merging слоя</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input type="checkbox" class="form-check-input" id="formChangeLayerOfManagmentAllLayers_mergingBase" onchange="updateMergingBaseOfFormChangeLayerOfManagmentAllLayers()"> 
+                                                                                    <label class="form-check-label" for="formChangeLayerOfManagmentAllLayers_mergingBase">Base</label>                                                                
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input type="checkbox" class="form-check-input" id="formChangeLayerOfManagmentAllLayers_mergingDummy" onchange="updateMergingDummyOfFormChangeLayerOfManagmentAllLayers()"> 
+                                                                                    <label class="form-check-label" for="formChangeLayerOfManagmentAllLayers_mergingDummy">Dummy</label>                                                                                                                                  
+                                                                                </div>                                                                  
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Свойства IntermediateLayers-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowAttributesIntermediate">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Свойства intermediate слоя</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input type="checkbox" class="form-check-input" id="formChangeLayerOfManagmentAllLayers_intermediateMark" onchange="updateIntermdiateMarkOfFormChangeLayerOfManagmentAllLayers()"> 
+                                                                                    <label class="form-check-label" for="formChangeLayerOfManagmentAllLayers_intermediateMark">Mark</label>                                                               
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input type="checkbox" class="form-check-input" id="formChangeLayerOfManagmentAllLayers_intermediateDensity" onchange="updateIntermdiateDensityOfFormChangeLayerOfManagmentAllLayers()"> 
+                                                                                    <label class="form-check-label" for="formChangeLayerOfManagmentAllLayers_intermediateDensity">Density</label>                                                                                                                                 
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Свойства MaskLayers-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowAttributesMask">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Свойства mask слоя</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input type="checkbox" class="form-check-input" id="formChangeLayerOfManagmentAllLayers_maskMark" onchange="updateMaskMarkOfFormChangeLayerOfManagmentAllLayers()"> 
+                                                                                    <label class="form-check-label" for="formChangeLayerOfManagmentAllLayers_maskMark">Mark</label>                                                               
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Маршруты-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowRoutes">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Маршруты</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_routesSelectTechnology" onchange="updateFormChangeLayerOfManagmentAllLayers_routesSelectRoute()">
+                                                                                        <option selected>Технология...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_routesSelectRoute">
+                                                                                        <option selected>Маршрут...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerBaseRouteRelationOfFormChangeLayerOfManagmentAllLayers()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Опции-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowOptions">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Опции</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">                                                                            
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_optionsSelectOption">
+                                                                                        <option selected>Опция...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerOptionRelationOfFormChangeLayerOfManagmentAllLayers()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Связь Forbidding-Merging-->
+                                                                        <hr>
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowRelationForbiddingMerging">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Связь с Merging</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_forbiddingMergingRelation_id">
+                                                                                        <option value="" selected>Id...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_forbiddingMergingRelation_layer" onchange="getFiltrForSearchMergingLayerForFormForbiddingMergingRelation()">
+                                                                                        <option value="" selected>Слой...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_forbiddingMergingRelation_name" onchange="getFiltrForSearchMergingLayerForFormForbiddingMergingRelation()">
+                                                                                        <option value="" selected>Название слоя...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_forbiddingMergingRelation_attribute" onchange="getFiltrForSearchMergingLayerForFormForbiddingMergingRelation()">
+                                                                                        <option value="" selected>Свойство...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_forbiddingMergingRelation_route" onchange="getFiltrForSearchMergingLayerForFormForbiddingMergingRelation()">
+                                                                                        <option value="" selected>Маршрут...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerMergingLayerForbiddingRelation_ofFormChangeLayerOfManagmentAllLayers_rowRelationForbiddingMerging()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Связь Merging-Forbidding-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowRelationMergingForbidding">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Связь с Forbidding</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_mergingForbiddingRelation_id">
+                                                                                        <option value="" selected>Id...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker"  id="formChangeLayerOfManagmentAllLayers_mergingForbiddingRelation_layer" onchange="getFiltrForSearchForbiddingLayerForFormMergingForbiddingRelation()">
+                                                                                        <option value="" selected>Слой...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker"  id="formChangeLayerOfManagmentAllLayers_mergingForbiddingRelation_name" onchange="getFiltrForSearchForbiddingLayerForFormMergingForbiddingRelation()">
+                                                                                        <option value="" selected>Название слоя...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_mergingForbiddingRelation_route" onchange="getFiltrForSearchForbiddingLayerForFormMergingForbiddingRelation()">
+                                                                                        <option value="" selected>Маршрут...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerMergingLayerForbiddingRelation_ofFormChangeLayerOfManagmentAllLayers_rowRelationMergingForbidding()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Связь Merging-Intermediate-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowRelationMergingIntermdiate">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Связь с Intermediate</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_mergingIntermediateRelation_id">
+                                                                                        <option value="" selected>Id...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_mergingIntermediateRelation_layer" onchange="getFiltrForSearchIntermediateLayerForFormMergingIntermediateRelation()">
+                                                                                        <option value="" selected>Слой...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_mergingIntermediateRelation_name" onchange="getFiltrForSearchIntermediateLayerForFormMergingIntermediateRelation()">
+                                                                                        <option value="" selected>Название слоя...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_mergingIntermediateRelation_attribute" onchange="getFiltrForSearchIntermediateLayerForFormMergingIntermediateRelation()">
+                                                                                        <option value="" selected>Свойство...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_mergingIntermediateRelation_route" onchange="getFiltrForSearchIntermediateLayerForFormMergingIntermediateRelation()">
+                                                                                        <option value="" selected>Маршрут...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerIntermediateLayerMergingRelation_ofFormChangeLayerOfManagmentAllLayers_rowRelationMergingIntermdiate()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Связь Intermediate-Merging-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowRelationIntermdiateMerging">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Связь с Merging</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_intermediateMergingRelation_id">
+                                                                                        <option value="" selected>Id...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_intermediateMergingRelation_layer" onchange="getFiltrForSearchMergingLayerForFormIntermediateMergingRelation()">
+                                                                                        <option value="" selected>Слой...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_intermediateMergingRelation_name" onchange="getFiltrForSearchMergingLayerForFormIntermediateMergingRelation()">
+                                                                                        <option value="" selected>Название слоя...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_intermediateMergingRelation_attribute" onchange="getFiltrForSearchMergingLayerForFormIntermediateMergingRelation()">
+                                                                                        <option value="" selected>Свойство...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_intermediateMergingRelation_route" onchange="getFiltrForSearchMergingLayerForFormIntermediateMergingRelation()">
+                                                                                        <option value="" selected>Маршрут...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerIntermediateLayerMergingRelation_ofFormChangeLayerOfManagmentAllLayers_rowRelationIntermdiateMerging()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Связь Intermediate-Mask-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowRelationIntermdiateMask">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Связь с Mask</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_intermediateMaskRelation_id">
+                                                                                        <option value="" selected>Id...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_intermediateMaskRelation_layer" onchange="getFiltrForSearchMaskLayerForFormIntermediateMaskRelation()">
+                                                                                        <option value="" selected>Слой...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_intermediateMaskRelation_name" onchange="getFiltrForSearchMaskLayerForFormIntermediateMaskRelation()">
+                                                                                        <option value="" selected>Название слоя...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_intermediateMaskRelation_attribute" onchange="getFiltrForSearchMaskLayerForFormIntermediateMaskRelation()">
+                                                                                        <option value="" selected>Свойство...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_intermediateMaskRelation_route" onchange="getFiltrForSearchMaskLayerForFormIntermediateMaskRelation()">
+                                                                                        <option value="" selected>Маршрут...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerMaskIntermediateLayerRelation_ofFormChangeLayerOfManagmentAllLayers_rowRelationIntermdiateMask()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Связь Mask-Intermediate-->
+                                                                        <div class="form-row" id="formChangeLayerOfManagmentAllLayers_rowRelationMaskIntermdiate">
+                                                                            <div class="form-group col-md-2">
+                                                                                <label>Связь с Intermediate</label>
+                                                                            </div>
+                                                                            <div class="form-group col-md-10">
+                                                                                <div></div>
+                                                                                <div class="input-group">
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_maskIntermediateRelation_id">
+                                                                                        <option value="" selected>Id...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_maskIntermediateRelation_layer" onchange="getFiltrForSearchIntermediatekLayerForFormMaskIntermediateRelation()">
+                                                                                        <option value="" selected>Слой...</option>
+                                                                                    </select>
+                                                                                    <select data-size="5" data-live-search="true" class="selectpicker" id="formChangeLayerOfManagmentAllLayers_maskIntermediateRelation_name" onchange="getFiltrForSearchIntermediatekLayerForFormMaskIntermediateRelation()">
+                                                                                        <option value="" selected>Название слоя...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_maskIntermediateRelation_attribute" onchange="getFiltrForSearchIntermediatekLayerForFormMaskIntermediateRelation()">
+                                                                                        <option value="" selected>Свойство...</option>
+                                                                                    </select>
+                                                                                    <select class="custom-select" id="formChangeLayerOfManagmentAllLayers_maskIntermediateRelation_route" onchange="getFiltrForSearchIntermediatekLayerForFormMaskIntermediateRelation()">
+                                                                                        <option value="" selected>Маршрут...</option>
+                                                                                    </select>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="btn btn-outline-primary" type="button" onclick="createLayerMaskIntermediateLayerRelation_ofFormChangeLayerOfManagmentAllLayers_rowRelationMaskIntermdiate()">Добавить</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </fieldset>
+                                                                </form>
+                                                                <br>
+                                                                <h5>3. Перейти к слою в таблице.</h5>
+                                                                <button type="button" class="btn btn-primary" onclick="scroolToRowInAllLayersTable(formChangeLayerOfManagmentAllLayers_id.innerHTML)">Перейти в таблицу</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>      
+                                <div class="row" style="margin-top:30px">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-primary" onclick="getAllLayers()"><span class="mdi mdi-update mr-2"></span>Обновить таблицу</button>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:30px">
+                                    <div class="col">
+                                        <table id="tableManageAllLayers" class="table table-bordered table-sm table-hover">
+                                               <thead>
+                                                <tr>
+                                                    <th>№</th>
+                                                    <th>Слой</th>
+                                                    <th>Имя</th>
+                                                    <th>Маршруты</th>
+                                                    <th>Опции</th>
+                                                    <th>Тип</th>                                            
+                                                    <th>Свойства</th>
+                                                    <th>Доп данные</th>
+                                                    <th>Управление</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>                    
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="#modalAlertTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalAlertTitle">Внимание!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="modalAlertBody">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END -->
+            </div>
+        
+
+            <footer class="mt-3 d-flex justify-content-between">
+                <div>
+                    <small> НИИМЭ </small>
+                    <small class="text-muted">© 2020</small>
+                </div>
+                <div>
+                    <small class="text-muted">Make with</small>
+                    <small><span class="mdi mdi-heart"></span></small>
+                    <small class="text-muted">and</small>
+                    <small><span class="mdi mdi-tea"></span></small>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
