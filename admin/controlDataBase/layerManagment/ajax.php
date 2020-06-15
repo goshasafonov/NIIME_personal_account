@@ -63,9 +63,9 @@ switch ($queryId) {
             break;
         }
         $msg["Layer"] = $layer;
-        if (!isset($_POST["baseroute"])) {
-            break;
-        }
+        // if (!isset($_POST["baseroute"])) {
+        //     break;
+        // }
         // $query = "INSERT INTO"
         //         . " `Layer_BaseRoute_R` "
         //         . "SET"
@@ -90,7 +90,8 @@ switch ($queryId) {
                 . " `Layer` "
                 . "SET"
                 . " `Layer` = '" . $_POST['layer'] . "', "
-                . " `Name` = '" . $_POST['name'] . "'";
+                . " `Name` = '" . $_POST['name'] . "', "
+                . " `BaseRouteId` = " . $_POST['baseroute'];
         $result = $mysqli->query($query);
         if ($result) {
             $layer["id"] = $mysqli->insert_id;
@@ -129,20 +130,20 @@ switch ($queryId) {
         }
 
         $msg["Layer"] = $layer;
-        if (!isset($_POST["baseroute"])) {
-            break;
-        }
-        $query = "INSERT INTO"
-                . " `Layer_BaseRoute_R` "
-                . "SET"
-                . " `LayerId` = " . $layer['id'] . ", "
-                . " `BaseRouteId` = " . $_POST['baseroute'];
-        $result = $mysqli->query($query);
-        if ($result) {
+        // if (!isset($_POST["baseroute"])) {
+        //     break;
+        // }
+        // $query = "INSERT INTO"
+        //         . " `Layer_BaseRoute_R` "
+        //         . "SET"
+        //         . " `LayerId` = " . $layer['id'] . ", "
+        //         . " `BaseRouteId` = " . $_POST['baseroute'];
+        // $result = $mysqli->query($query);
+        // if ($result) {
             
-        } else {
-            $msg["AjaxError"] = "Ошибка при создании связи: слой - базовый маршрут.<br>" . $mysqli->error . "<br>$query";
-        }
+        // } else {
+        //     $msg["AjaxError"] = "Ошибка при создании связи: слой - базовый маршрут.<br>" . $mysqli->error . "<br>$query";
+        // }
         break;
     case "createLayerBaseRouteRelation" :
 
@@ -332,7 +333,8 @@ switch ($queryId) {
                 . " `Layer` "
                 . "SET"
                 . " `Layer` = '" . $_POST['layer'] . "', "
-                . " `Name` = '" . $_POST['name'] . "'";
+                . " `Name` = '" . $_POST['name'] . "', "
+                . " `BaseRouteId` = " . $_POST['baseroute'];;
         $result = $mysqli->query($query);
         if ($result) {
             $layer["id"] = $mysqli->insert_id;
@@ -363,20 +365,20 @@ switch ($queryId) {
         }
 
         $msg["Layer"] = $layer;
-        if (!isset($_POST["baseroute"])) {
-            break;
-        }
-        $query = "INSERT INTO"
-                . " `Layer_BaseRoute_R` "
-                . "SET"
-                . " `LayerId` = " . $layer['id'] . ", "
-                . " `BaseRouteId` = " . $_POST['baseroute'];
-        $result = $mysqli->query($query);
-        if ($result) {
+        // if (!isset($_POST["baseroute"])) {
+        //     break;
+        // }
+        // $query = "INSERT INTO"
+        //         . " `Layer_BaseRoute_R` "
+        //         . "SET"
+        //         . " `LayerId` = " . $layer['id'] . ", "
+        //         . " `BaseRouteId` = " . $_POST['baseroute'];
+        // $result = $mysqli->query($query);
+        // if ($result) {
             
-        } else {
-            $msg["AjaxError"] = "Ошибка при создании связи: слой - базовый маршрут.<br>" . $mysqli->error . "<br>$query";
-        }
+        // } else {
+        //     $msg["AjaxError"] = "Ошибка при создании связи: слой - базовый маршрут.<br>" . $mysqli->error . "<br>$query";
+        // }
         break;
     case "createMergingLayer" :
         $layer["id"] = "";
@@ -2130,9 +2132,105 @@ switch ($queryId) {
             $msg["AjaxError"] = "Не удалось загрузить файл на сервер.";
         }
         break;
+    case 'getAllMergingLayers':
+        $query_Merging = ""        
+            ."SELECT DISTINCT"
+            ." `Layer`.Id, "
+            ." `Layer`.`Layer`, "
+            ." `Layer`.`Name`, "
+            ." `Layer`.`BaseRouteId`, "
+            ." `Layer`.`comment`, "
+            ." `Layer::Merging`.Id as MergingId, "
+            ." `Layer::Merging`.Base, "
+            ." `Layer::Merging`.Dummy "
+            ."FROM"
+            ." `Layer` "
+            ." LEFT JOIN `Layer::Cad` ON `Layer::Cad`.LayerId = `Layer`.Id"
+            ." LEFT JOIN `Layer::Merging` ON `Layer::Merging`.CadLayerId = `Layer::Cad`.Id "
+            ."WHERE "
+            ." `Layer`.`BaseRouteId` = ".$_POST['baseroute']." AND"
+            ." `Layer::Merging`.Id IS NOT NULL";
+        $query_Intermediate = ""
+            ."SELECT DISTINCT"
+            ." `Layer`.Id,"
+            ." `Layer`.`Layer`, "
+            ." `Layer`.`Name`, "
+            ." `Layer`.`BaseRouteId`, "
+            ." `Layer`.`comment`, "
+            ." `layer::intermediate`.`Id` AS IntermediateId, "
+            ." `layer::intermediate`.`Mark` AS Mark, "
+            ." `layer::intermediate`.`Density` AS Density "
+            ."FROM"
+            ." `Layer` "
+            ." LEFT JOIN `Layer::Cad` ON `Layer::Cad`.LayerId = `Layer`.Id "
+            ." LEFT JOIN `layer::intermediate` ON `layer::intermediate`.`LayerId` = `layer`.`Id` "
+            ."WHERE"
+            ." `Layer`.`BaseRouteId` = 8 AND "
+            ." `layer::intermediate`.`Id` IS NOT NULL ";
+        $query_Links = ""
+            ."SELECT"
+            ." Layer.Id,"
+            ." Layer.Layer,"
+            ." Layer.Name,"
+            ." Layer::Merging.Base,"
+            ." Layer::Merging.Dummy "
+            ."FROM"
+            ." Layer::Intermediate_Layer::Merging_R"
+            ." LEFT JOIN Layer::Merging ON Layer::Merging.Id=Layer::Intermediate_Layer::Merging_R.MergingLayerId"
+            ." LEFT JOIN Layer::Cad ON Layer::Cad.Id=Layer::Merging.CadLayerId"
+            ." LEFT JOIN Layer ON Layer.Id=Layer::Cad.LayerId "
+            ."WHERE"
+            ." Layer::Intermediate_Layer::Merging_R.IntermediateLayerId=ID_INTR";
+
+
+        $list_Layers = [];
+        $Intermediate_L = [];
+        $result = $mysqli->query($query_Intermediate);
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $row['type'] = 'Intermediate';
+                array_push($Intermediate_L, $row);
+            }
+        } else {
+            $msg['AjaxError'] = "$queryId: Ошибка в запросе.<br>" . $mysqli->error . "<br>" . $query;
+        }
+
+
+
+        $result = $mysqli->query($query_Merging);
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $row['type'] = 'Merging';
+                $is_layer = false;
+                for ($i=0; $i < count($Intermediate_L); $i++) { 
+                    if ($row['Layer'] == $Intermediate_L[$i]['Layer'] && $row['Name'] == $Intermediate_L[$i]['Name']) {
+                        $Intermediate_L[$i]['Base'] = $row['Base'];
+                        $Intermediate_L[$i]['Dummy'] = $row['Dummy'];
+
+
+                        $query_Links = str_replace("ID_INTR", $Intermediate_L[$i]['IntermediateId'], $query_Links);
+                        $stmt = $mysqli->query($query_Links);                        
+
+                        $Intermediate_L[$i]['links'] = $resultLinks;
+                        array_push($list_Layers, $Intermediate_L[$i]);
+                        $is_layer = true;
+                    }
+                }
+                if (!$is_layer) {
+                    $row['IntermediateId'] = '';
+                    $row['Mark'] = 0;
+                    $row['Density'] = 0;
+                    array_push($list_Layers, $row);
+                }
+            }
+            $msg['Content'] = $list_Layers;
+        } else {
+            $msg['AjaxError'] = "$queryId: Ошибка в запросе.<br>" . $mysqli->error . "<br>" . $query;
+        }
+        break;
     default:
         $msg['AjaxError'] = "Не корректный ключ запроса.";
 }
 
-echo json_encode($msg);
+ echo json_encode($msg);
 ?>

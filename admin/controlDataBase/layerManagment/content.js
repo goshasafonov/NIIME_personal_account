@@ -643,16 +643,16 @@ function createButtonsRowTableManageAllLayers(td) {
     var buttonChange = document.createElement("button");
 
     buttonCopy.type = "button";
-    buttonCopy.setAttribute("class", "btn btn-primary btn-sm");
-    buttonCopy.innerHTML = "<span class=\"mdi mdi-content-copy mr-1\"></span>";
+    buttonCopy.setAttribute("class", "btn btn-primary btn-sm mr-2");
+    buttonCopy.innerHTML = "<span class=\"mdi mdi-content-copy\"></span>";
     buttonCopy.setAttribute("onclick", "openDivManagePanelAllLayersCreateNewLayers(this)");
     buttonDelete.type = "button";
-    buttonDelete.setAttribute("class", "btn btn-danger btn-sm");
+    buttonDelete.setAttribute("class", "btn btn-danger btn-sm mr-2");
     buttonDelete.setAttribute("onclick", "deleteLayerOfTableManageAllLayers(this)");
-    buttonDelete.innerHTML = "<span class=\"mdi mdi-trash-can-outline mr-1\"></span>";
+    buttonDelete.innerHTML = "<span class=\"mdi mdi-trash-can-outline\"></span>";
     buttonChange.type = "button";
-    buttonChange.setAttribute("class", "btn btn-primary btn-sm");
-    buttonChange.innerHTML = "<span class=\"mdi mdi-grease-pencil mr-1\"></span>";
+    buttonChange.setAttribute("class", "btn btn-primary btn-sm ml-2 mr-2");
+    buttonChange.innerHTML = "<span class=\"mdi mdi-grease-pencil\"></span>";
     buttonChange.setAttribute("onclick", "openDivManagePanelAllLayersChangeNewLayers(this)");
 
     td.appendChild(buttonChange);
@@ -667,6 +667,15 @@ function createNewLayerOfFormCreateNewLayerOfManagmentAllLayers() {
     var intMark = formCreateNewLayerOfManagmentAllLayers_intermediateMark;
     var intDens = formCreateNewLayerOfManagmentAllLayers_intermediateDensity;
     var maskMark = formCreateNewLayerOfManagmentAllLayers_maskMark;
+
+    var formDataRoute = new FormData(formRoutes);
+    if (!formDataRoute.has("route")) {
+        alertMsg("Необходимо выбрать маршрут");
+        return false;
+    }else{
+        formData.append('baseroute', formDataRoute.get('route'));
+    }
+    
 
     if (formCreateNewLayerOfManagmentAllLayers_layer.value == "") {
         alertMsg("Необходимо указать слой.");
@@ -735,13 +744,13 @@ function createNewLayerOfFormCreateNewLayerOfManagmentAllLayers() {
                 if (typeof jsonData.AjaxError !== "undefined") {
                     alertMsg(jsonData.AjaxError);
                 } else if (typeof jsonData.Layer !== "undefined") {
-                    //getAllLayers(jsonData.Layer.id);
+                    getAllLayers(jsonData.Layer.id);
 
-                    $('#managePanelAllLayers a[href="#divManagePanelAllLayersChangeLayer"]').tab('show')
-                    managePanelAllLayersChangeNewLayer.scrollIntoView();
-                    initialFormChangeLayerOfManagmentAllLayers();
-                    formSearcheManagePanelAllLayersChangeLayer_id.value = jsonData.Layer.id;
-                    getFiltrForSearchChangeLayers(jsonData.Layer.id);
+                    // $('#managePanelAllLayers a[href="#divManagePanelAllLayersChangeLayer"]').tab('show')
+                    // managePanelAllLayersChangeNewLayer.scrollIntoView();
+                    // initialFormChangeLayerOfManagmentAllLayers();
+                    // formSearcheManagePanelAllLayersChangeLayer_id.value = jsonData.Layer.id;
+                    // getFiltrForSearchChangeLayers(jsonData.Layer.id);
 
                 } else {
                     alertMsg("Не корректный ответ от сервера");
@@ -2506,4 +2515,83 @@ function updateNameOfFormChangeLayerOfManagmentAllLayers() {
     } else {
         alertMsg("Слой не может быть пустым");
     }
+}
+
+
+
+function getAllMergingLayers () {
+    tableMergingLayers.children[1].innerHTML = "";
+    tableMergingLayers.hidden = true;
+
+    var formDataRoute = new FormData(formRoutes);
+    if (!formDataRoute.has("route")) {
+        alertMsg("Необходимо выбрать маршрут");
+        return false;
+    };
+
+    var formData = new FormData();
+    formData.append('queryId', 'getAllMergingLayers');
+    formData.append('baseroute', formDataRoute.get('route'));
+
+    $.ajax({
+        url: pathAjax.value,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            try {
+                var jsonData = JSON.parse(data);
+                if (typeof jsonData.AjaxError !== "undefined") {
+                    alertMsg(jsonData.AjaxError);
+                } else if (typeof jsonData.Content !== "undefined") {
+                    var tbody = tableMergingLayers.children[1];
+                    for (var key in jsonData.Content) {
+                        var row = tbody.insertRow(tbody.rows.length);
+                        var cellRelationBaseRoute = row.insertCell(row.length);
+                        var cellId = row.insertCell(row.length);
+                        var cellLayer = row.insertCell(row.length);
+                        var cellName = row.insertCell(row.length);
+                        var cellType = row.insertCell(row.length);
+                        var cellMark = row.insertCell(row.length);
+                        var cellDensity = row.insertCell(row.length);
+                        var cellLinks = row.insertCell(row.length);
+                        var cellButton = row.insertCell(row.length);
+
+                        if (jsonData.Content[key].IntermediateId != "") {
+                            
+                            createButtonDeleteBaseRouteLayerRelationOfStreamInOut(cellRelationBaseRoute);
+                            
+                            createButtonNewRowStreamInOutLayers(cellButton);
+                            cellId.innerHTML = jsonData.Content[key].Id;
+                            cellType.innerHTML = jsonData.Content[key].type;
+
+                            Number(jsonData.Content[key].Base) ? $(cellType).append('<br><span class="badge badge-sm badge-info">Base</span>') : '';
+                            Number(jsonData.Content[key].Dummy) ? $(cellType).append('<br><span class="badge badge-sm badge-info">Dammy</span>') : '';
+                            createCheckBox(cellMark);
+                            createCheckBox(cellDensity);
+                            cellLinks.innerHTML = '';
+                        } else {
+                            cellId.innerHTML = '';
+                            cellType.innerHTML = jsonData.Content[key].type;
+                            Number(jsonData.Content[key].Base) ? $(cellType).append('<br><span class="badge badge-sm badge-info">Base</span>') : '';
+                            Number(jsonData.Content[key].Dummy) ? $(cellType).append('<br><span class="badge badge-sm badge-info">Dammy</span>') : '';
+                            createButtonNewLayerOfStreamInOut(cellButton);
+                            $(cellLinks).append('<span class="badge badge-sm badge-warning">Нет</span>');
+                        }
+                        cellLayer.innerHTML = jsonData.Content[key].Layer;
+                        cellName.innerHTML = jsonData.Content[key].Name;
+                    }
+                    tableMergingLayers.hidden = false;
+                } else {
+                    alertMsg("Не корректный ответ от сервера");
+                }
+            } catch (e) {
+                alertMsg("Ошибка в структуре ответа от сайта:<br>" + e);
+            }
+        },
+        error: function (request, status, error) {
+            alertMsg("Ошибка при обращении к серверу:<br>error:" + error + "<br>status:" + status);
+        }
+    });
 }
