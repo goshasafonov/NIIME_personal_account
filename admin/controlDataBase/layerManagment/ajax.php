@@ -2169,18 +2169,18 @@ switch ($queryId) {
             ." `layer::intermediate`.`Id` IS NOT NULL ";
         $query_Links = ""
             ."SELECT"
-            ." Layer.Id,"
-            ." Layer.Layer,"
-            ." Layer.Name,"
-            ." Layer::Merging.Base,"
-            ." Layer::Merging.Dummy "
+            ." `Layer`.`Id`,"
+            ." `Layer`.`Layer`,"
+            ." `Layer`.`Name`,"
+            ." `Layer::Merging`.`Base`,"
+            ." `Layer::Merging`.`Dummy` "
             ."FROM"
-            ." Layer::Intermediate_Layer::Merging_R"
-            ." LEFT JOIN Layer::Merging ON Layer::Merging.Id=Layer::Intermediate_Layer::Merging_R.MergingLayerId"
-            ." LEFT JOIN Layer::Cad ON Layer::Cad.Id=Layer::Merging.CadLayerId"
-            ." LEFT JOIN Layer ON Layer.Id=Layer::Cad.LayerId "
+            ." `Layer::Intermediate_Layer::Merging_R`"
+            ." LEFT JOIN `Layer::Merging` ON `Layer::Merging`.`Id`=`Layer::Intermediate_Layer::Merging_R`.`MergingLayerId`"
+            ." LEFT JOIN `Layer::Cad` ON `Layer::Cad`.`Id`=`Layer::Merging`.`CadLayerId`"
+            ." LEFT JOIN `Layer` ON `Layer`.`Id`=`Layer::Cad`.`LayerId` "
             ."WHERE"
-            ." Layer::Intermediate_Layer::Merging_R.IntermediateLayerId=ID_INTR";
+            ." `Layer::Intermediate_Layer::Merging_R`.`IntermediateLayerId`=ID_INTR";
 
 
         $list_Layers = [];
@@ -2202,16 +2202,23 @@ switch ($queryId) {
             while ($row = $result->fetch_assoc()) {
                 $row['type'] = 'Merging';
                 $is_layer = false;
-                for ($i=0; $i < count($Intermediate_L); $i++) { 
+                for ($i=0; $i < count($Intermediate_L); $i++) {
                     if ($row['Layer'] == $Intermediate_L[$i]['Layer'] && $row['Name'] == $Intermediate_L[$i]['Name']) {
                         $Intermediate_L[$i]['Base'] = $row['Base'];
                         $Intermediate_L[$i]['Dummy'] = $row['Dummy'];
 
 
-                        $query_Links = str_replace("ID_INTR", $Intermediate_L[$i]['IntermediateId'], $query_Links);
-                        $stmt = $mysqli->query($query_Links);                        
+                        $query_Links_ID = str_replace("ID_INTR", $Intermediate_L[$i]['IntermediateId'], $query_Links);
+                        $stmt = $mysqli->query($query_Links_ID);
+                        $links = [];
+                        if ($stmt) {
+                            while ($link = $stmt->fetch_assoc()) {
+                                array_push($links, $link);
+                            }
 
-                        $Intermediate_L[$i]['links'] = $resultLinks;
+                        }                     
+
+                        $Intermediate_L[$i]['links'] = $links;
                         array_push($list_Layers, $Intermediate_L[$i]);
                         $is_layer = true;
                     }

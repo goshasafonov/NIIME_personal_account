@@ -349,6 +349,7 @@ function createNewLayerOfStreamInOut(el) {
     var type = row.children[4].children[0];
     var base = row.children[5].children[0];
     var dummy = row.children[6].children[0];
+    console.log(type);
 
     var formData = new FormData(formTechnology);
     formData.append('layer', layer);
@@ -413,7 +414,7 @@ function createNewLayerOfStreamInOut(el) {
 }
 
 function createNewRowStreamInOutLayers(rowGold) {
-    var tbody = tableCadLayers.children[1];
+    var tbody = tableMergingLayers.children[1];
     var row = tbody.insertRow(rowGold.rowIndex);
 
     var cellRelationBaseRoute = row.insertCell(row.length);
@@ -2560,9 +2561,9 @@ function getAllMergingLayers () {
 
                         if (jsonData.Content[key].IntermediateId != "") {
                             
-                            createButtonDeleteBaseRouteLayerRelationOfStreamInOut(cellRelationBaseRoute);
+                            createButtonDeleteBaseRouteLayerRelationOfMergingToIntermediate(cellRelationBaseRoute);
                             
-                            createButtonNewRowStreamInOutLayers(cellButton);
+                            createButtonNewRowMergingToIntermediate(cellButton);
                             cellId.innerHTML = jsonData.Content[key].Id;
                             cellType.innerHTML = jsonData.Content[key].type;
 
@@ -2570,13 +2571,23 @@ function getAllMergingLayers () {
                             Number(jsonData.Content[key].Dummy) ? $(cellType).append('<br><span class="badge badge-sm badge-info">Dammy</span>') : '';
                             createCheckBox(cellMark);
                             createCheckBox(cellDensity);
-                            cellLinks.innerHTML = '';
+                            if (jsonData.Content[key].links.length != 0) {
+                                jsonData.Content[key].links.forEach((link) => {
+                                    $(cellLinks).append(
+                                        `<span>Id:${link.Id} Layer:${link.Layer} Name:${link.Name}</span>
+                                        <span class='badge badge-sm badge-info'>${Number(link.Base) ? 'B' : ''}</span>
+                                        <span class='badge badge-sm badge-info'>${Number(link.Dummy) ? 'D' : ''}</span>
+                                        <hr>`);
+                                });
+                            }else 
+                                $(cellLinks).append('<span class="badge badge-sm badge-warning">Нет</span>');
+                            
                         } else {
                             cellId.innerHTML = '';
-                            cellType.innerHTML = jsonData.Content[key].type;
+                            $(cellType).append(`<span>${jsonData.Content[key].type}</span>`);
                             Number(jsonData.Content[key].Base) ? $(cellType).append('<br><span class="badge badge-sm badge-info">Base</span>') : '';
                             Number(jsonData.Content[key].Dummy) ? $(cellType).append('<br><span class="badge badge-sm badge-info">Dammy</span>') : '';
-                            createButtonNewLayerOfStreamInOut(cellButton);
+                            createButtonNewLayerOfMergingToIntermediate(cellButton);
                             $(cellLinks).append('<span class="badge badge-sm badge-warning">Нет</span>');
                         }
                         cellLayer.innerHTML = jsonData.Content[key].Layer;
@@ -2595,3 +2606,115 @@ function getAllMergingLayers () {
         }
     });
 }
+function createButtonNewLayerOfMergingToIntermediate(cellButton) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("class", "btn btn-success btn-sm btn-block");
+    button.setAttribute("onclick", "createNewLayerOfMergingToIntermediate(this);");
+    button.innerHTML = "Создать";
+    cellButton.appendChild(button);
+}
+function createButtonNewRowMergingToIntermediate(cellButton) {
+    var buttonCreateDuplicate = document.createElement("button");
+    buttonCreateDuplicate.type = "button";
+    buttonCreateDuplicate.setAttribute("class", "btn btn-primary btn-sm btn-block");
+    buttonCreateDuplicate.innerHTML = "Копировать";
+    buttonCreateDuplicate.setAttribute("onclick", "createNewRowMergingToIntermediate(this.parentElement.parentElement)");
+    cellButton.appendChild(buttonCreateDuplicate);
+}
+function createButtonDeleteBaseRouteLayerRelationOfMergingToIntermediate(cellRelationBaseRoute) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("class", "btn btn-success btn-sm mdi mdi-delete");
+    button.setAttribute("onclick", "deleteBaseRouteLayerRelationOfStreamInOut(this);getAllMergingLayers()");
+    button.innerHTML = "Удалить слой";
+    cellRelationBaseRoute.appendChild(button);
+}
+
+function createNewLayerOfMergingToIntermediate(el) {
+    var formDataRoute = new FormData(formRoutes);
+    if (!formDataRoute.has("route")) {
+        alertMsg("Необходимо выбрать маршрут");
+        return false;
+    }
+    var row = el.parentNode.parentNode;
+    var layer = row.children[2].innerHTML;
+    var name = row.children[3].innerHTML;
+    var type = row.children[4].children[0].innerHTML;
+    var base = row.children[5].children[0];
+    var dummy = row.children[6].children[0];
+    
+
+    var formData = new FormData(formTechnology);
+    formData.append('layer', layer);
+    formData.append('name', name);
+    formData.append('baseroute', formDataRoute.get('route'));
+    if (type != 'Merging'){
+        return false;
+    }
+    formData.append('queryId', "createIntermediateLayer");
+            
+    
+
+    $.ajax({
+        url: pathAjax.value,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            try {
+                var jsonData = JSON.parse(data);
+                if (typeof jsonData.AjaxError !== "undefined") {
+                    alertMsg(jsonData.AjaxError);
+                } else if (typeof jsonData.Layer !== "undefined") {
+                    row.children[0].innerHTML = "";
+                    createButtonDeleteBaseRouteLayerRelationOfMergingToIntermediate(row.children[0]);
+                    row.children[1].innerHTML = jsonData.Layer["id"];
+                    row.children[2].innerHTML = jsonData.Layer["layer"];
+                    row.children[3].innerHTML = jsonData.Layer["name"];
+                    row.children[4].innerHTML = jsonData.Layer["type"];
+                    row.children[5].innerHTML = jsonData.Layer["base"];
+                    row.children[6].innerHTML = jsonData.Layer["dummy"];
+                    row.children[7].innerHTML = "";
+                    $(row.children[7]).append('<span class="badge badge-sm badge-warning">Нет</span>')
+                    row.children[8].innerHTML = "";
+                    createButtonNewRowStreamInOutLayers(row.children[8]);
+                } else {
+                    alertMsg("Не корректный ответ от сервера");
+                }
+            } catch (e) {
+                alertMsg("Ошибка в структуре ответа от сайта:<br>" + e);
+            }
+        },
+        error: function (request, status, error) {
+            alertMsg("Ошибка при обращении к серверу:<br>error:" + error + "<br>status:" + status);
+        }
+    });
+
+}
+function createNewRowMergingToIntermediate(rowGold) {
+    var tbody = tableMergingLayers.children[1];
+    var row = tbody.insertRow(rowGold.rowIndex);
+
+    var cellRelationBaseRoute = row.insertCell(row.length);
+    var cellId = row.insertCell(row.length);
+    var cellLayer = row.insertCell(row.length);
+    var cellName = row.insertCell(row.length);
+    var cellType = row.insertCell(row.length);
+    var cellBase = row.insertCell(row.length);
+    var cellDummy = row.insertCell(row.length);
+    var cellButton = row.insertCell(row.length);
+
+    cellLayer.innerHTML = rowGold.children[2].innerHTML;
+    cellName.innerHTML = rowGold.children[3].innerHTML;
+    createSelectTypeStereamInOutLayers(cellType);
+
+    createCheckBox(cellBase);
+    cellBase.children[0].disabled = true;
+    createCheckBox(cellDummy);
+    cellDummy.children[0].disabled = true;
+
+    createButtonNewLayerOfStreamInOut(cellButton);
+}
+
