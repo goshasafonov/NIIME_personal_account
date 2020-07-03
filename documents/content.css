@@ -62,3 +62,31 @@
     border-top-color: #343a40;
     border-bottom-color: #343a40;
 }
+
+
+/*modal-FULL*/
+
+
+.modal-fullscreen{ padding: 0 !important};
+  
+ .modal.modal-fullscreen .modal-dialog {
+	width: 100% !important;
+	min-width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.modal.modal-fullscreen .modal-dialog-centered.modal-dialog {
+	width: 100% !important;
+	min-width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+  
+.modal-fullscreen .modal-dialog .modal-content {
+    height: auto !important;
+    min-height: 100% !important;
+    border: 0 none !important;
+    border-radius: 0 !important;
+}

@@ -484,4 +484,15 @@ $(function () {
     function alertMsg(text) {
         alert(text);
     }
+
+    $(selectCategory).change(
+        function (e) {
+            console.log("Changed to: " + e.target.value)
+        }
+    );
+    $(selectCategoryForDownloadFiles).change(function(e){
+       var Category = e.target.value;
+       console.log(Category)
+       $('#CategoryForDownloadFiles span:nth-child(2)').html( ': ' + Category);
+    });
 });

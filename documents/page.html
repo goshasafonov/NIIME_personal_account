@@ -25,12 +25,28 @@
                         <span>Добавить</span>
                     </button>
                 </div>
+                <div class="mb-4 shadow-sm">
+                    <select id='selectCategory' class="selectpicker test" data-live-search="true" title="Выберите Категорию" data-size="6">
+                        <optgroup label="Категории">
+                            <option>Mustard</option>
+                            <option data-subtext="Heinz">Ketchup</option>
+                            <option>Relish</option>
+                            <option>Mustard</option>
+                            <option>Ketchup</option>
+                            <option>Relish</option>
+                            <option>Mustard</option>
+                            <option>Ketchup</option>
+                            <option>Relish</option>
+                        </optgroup>
+                    </select>
+                </div>
                 <!-- loader module (bootstrap modal-dialog)-->
-                <div class="modal fade download-modal-xl" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
+                <div id="modal-fullscreen" class="modal fade download-modal-xl modal-fullscreen" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="user-select: none;">
                         <div class="modal-content  modal-drag-n-drop-downloader">
-                            <div class="modal-header">
+                            <div class="modal-header justify-content-between">
                                 <h5 class="modal-title" id="exampleModalLabel">Загрузка документов</h5>
+                                <h5 id="CategoryForDownloadFiles" class="modal-title text-muted font-weight-light" style="position: absolute;left:50%;transform: translateX(-50%);"><span>Категория</span><span> не выбрана</span></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="outline: none;">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -60,6 +76,26 @@
                                     style="display: none;top: -60px; opacity: 0.9; border-top-left-radius: 6px;border-top-right-radius: 6px; background-color: black;">
                                     <small></small>
                                 </div>
+
+                                <a type="button" class="btn btn-info btn-sm button-downloader-upload-all-documents text-light">
+                                    <span class="mdi mdi-help"></span>
+                                </a>
+
+
+                                <select id='selectCategoryForDownloadFiles' class="selectpicker test" data-live-search="true" title="Выберите Категорию" data-size="6">
+                                    <optgroup label="Категории">
+                                        <option>Mustard</option>
+                                        <option data-subtext="Heinz">Ketchup</option>
+                                        <option>Relish</option>
+                                        <option>Mustard</option>
+                                        <option>Ketchup</option>
+                                        <option>Relish</option>
+                                        <option>Mustard</option>
+                                        <option>Ketchup</option>
+                                        <option>Соглвсование основных документов по производству</option>
+                                    </optgroup>
+                                </select>
+
                                 <div class=" d-flex align-items-center position-relative" 
                                 style="margin-left: 2rem; margin-right: 2rem; width: 100%; max-width: 700px;">
                                     <span type="button" class="mdi mdi-sticker-plus-outline position-absolute" style="left: 1rem;"
