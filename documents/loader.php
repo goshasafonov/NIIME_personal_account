@@ -66,10 +66,11 @@ if (
                     . " `UploadStatusId` = ?,"
                     . " `PublicationStatusId` = ?,"
                     . " `MD5` = 'не сформирована',"
+                    . " `CategoryId` = ?,"
                     . " `Description` = ?";
         $statement = $mysqli->prepare($query);
     	if ($statement) {
-    		$statement->bind_param('ssiiis', $name, $name, $UploadUserId, $UploadStatusId, $PublicationStatusId, $_POST['comment']);
+    		$statement->bind_param('ssiiiis', $name, $name, $UploadUserId, $UploadStatusId, $PublicationStatusId, $_POST['category'], $_POST['comment']);
     		if ($statement->execute()) {
     			$msg["AjaxSuccess"] = $statement->insert_id;
     			$msg["DB_id"] = $msg["AjaxSuccess"];

@@ -7,12 +7,15 @@ $authAjax = true;
 
 include './../config.php';
 include './../auth.php';
+// $dbUser = "php_checkDB_v2";
+// $dbPwd = "XH55bf5d5y5SbThA";
+
+$dbUser = "root";
+$dbPwd = "";
 include $phpLogin;
 
 $msg = array();
 $queryId = $_POST['queryId'];
-
-$queryId = "getListDocuments";
 
 switch ($queryId) {
     case 'getListDocuments':
@@ -70,6 +73,21 @@ switch ($queryId) {
             }
         } else {
             $msg["AjaxError"] = "Ошибка в запросе на получение списка документов: <br>" . $mysqli->error;
+        }
+        break;
+    case 'getCategories':
+        $query = "SELECT"
+                    . " `Id`, "
+                    . " `NameCategory` "
+                    . "FROM"
+                    . " `categories_documents`";
+        $result = $mysqli->query($query);
+        if ($result) {
+            while( $row = $result->fetch_assoc() ) {
+                $msg[] = $row;
+            };
+        }else {
+            $msg["AjaxError"] = "Ошибка в запросе на получение списка категорий: <br>" . $mysqli->error;
         }
         break;
     default:

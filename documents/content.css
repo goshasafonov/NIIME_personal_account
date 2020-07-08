@@ -64,6 +64,22 @@
 }
 
 
+
+/*COMMENT DOWNLOADER*/
+.container-Input-comment-downloader-active {
+	max-width: 800px !important;
+}
+
+.container-Input-comment-downloader {
+	max-width: 500px;
+	transition: 0.2s;
+	transition-timing-function: ease;
+}
+
+
+
+
+
 /*modal-FULL*/
 
 
@@ -89,4 +105,10 @@
     min-height: 100% !important;
     border: 0 none !important;
     border-radius: 0 !important;
+}
+
+
+.absolute-center-y{
+    top: 50%;
+    transform: translateY(-50%);
 }
