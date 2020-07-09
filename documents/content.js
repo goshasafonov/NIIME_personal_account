@@ -596,5 +596,11 @@ $(function () {
     }
     
 
+    $('.container-Input-comment-downloader').submit(function( event ) {
+        event.preventDefault();
+        $('.input-comment-downloader').blur();
+        $('.button-send-comment-downloader').trigger('mousedown')
+    });
+
 
 });
