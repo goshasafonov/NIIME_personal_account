@@ -143,7 +143,9 @@ var clog = {
                 }
                 // Склеивание столбцов при параметре больничного
                 else if (dataForTable[i].date[j] === 'sick' ) {
-                    if (dataForTable[i].date[j + 1] === 'sick') { colSick ++; }
+                    if (dataForTable[i].date[j + 1] === 'sick') { colSick ++; 
+                        if (dataForTable[i].date[j - 1] != 'sick') {var dateStart = j;}                         
+                    }
                     else if ( dataForTable[i].date[j - 1] != 'sick' && dataForTable[i].date[j + 1] != 'sick' ) {
                         span.setAttribute('class', option.mdi );
                         td.appendChild(span).style.color = option.color;
@@ -158,12 +160,23 @@ var clog = {
                         badge.appendChild ( spanText ).setAttribute( 'class', 'ml-2' );
                         td.appendChild(badge).style.color = 'black';
                         td.setAttribute('colspan', colSick);
+                        //TOOLTIP
+                        td.setAttribute('data-toggle', 'tooltip');
+                        td.setAttribute('data-placement', 'top');
+                        td.setAttribute('data-html', true);
+                        td.setAttribute('title', `<span class="mdi mdi-account-circle"></span> ${dataForTable[i].name} 
+                            <br> Больничный : <br>
+                            ${dateStart < 10 ? '0' + dateStart : dateStart}.${Month < 10 ? '0' + Month : Month}.${Year} - 
+                            ${j < 10 ? '0' + j : j}.${Month < 10 ? '0' + Month : Month}.${Year}`);
+
                         tr.appendChild(td);
                         colSick = 1;
                     }
                 }
                 else if (dataForTable[i].date[j] === 'holiday' ) {
-                    if (dataForTable[i].date[j + 1] === 'holiday') { colSick ++; }
+                    if (dataForTable[i].date[j + 1] === 'holiday') { colSick ++;                          
+                        if (dataForTable[i].date[j - 1] != 'holiday') {var dateStart = j;}
+                    }
                     else if ( dataForTable[i].date[j - 1] != 'holiday' && dataForTable[i].date[j + 1] != 'holiday' ) {
                         span.setAttribute('class', option.mdi );
                         td.appendChild(span).style.color = option.color;
@@ -178,6 +191,15 @@ var clog = {
                         badge.appendChild ( spanText ).setAttribute( 'class', 'ml-2' );
                         td.appendChild(badge).style.color = 'black';
                         td.setAttribute('colspan', colSick);
+                        //TOOLTIP
+                        td.setAttribute('data-toggle', 'tooltip');
+                        td.setAttribute('data-placement', 'top');
+                        td.setAttribute('data-html', true);
+                        td.setAttribute('title', `<span class="mdi mdi-account-circle"></span> ${dataForTable[i].name} 
+                            <br> Отпуск : <br>
+                            ${dateStart < 10 ? '0' + dateStart : dateStart}.${Month < 10 ? '0' + Month : Month}.${Year} - 
+                            ${j < 10 ? '0' + j : j}.${Month < 10 ? '0' + Month : Month}.${Year}`);
+
                         tr.appendChild(td);
                         colSick = 1;
                     }
