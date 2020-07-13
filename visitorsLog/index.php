@@ -20,7 +20,10 @@ $pageC = file_get_contents("./page.html");
 $page = $page.$pageC;
 
 //fouter
-$contentJsScript = '<script src="' . $host . '/visitorsLog/content.js" type="text/javascript"></script>';
+
+$contentJsScript = ''
+        .'<script src="' . $host . '/visitorsLog/vlog.js" type="text/javascript"></script>'
+        .'<script src="' . $host . '/visitorsLog/content.js" type="text/javascript"></script>';
 $contentCss = '<link rel="stylesheet" href="' . $host . '/visitorsLog/content.css" type="text/css">';
 $pageF = file_get_contents($pageFouter);
 
