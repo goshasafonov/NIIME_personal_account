@@ -10,7 +10,7 @@ var clog = {
     
     renderSelectDate : function (Year, Month) {
         this.selector('.selectMonth').innerHTML = this.getMonthRus(Month);
-	this.selector('.selectYear').innerHTML  = Year;
+	    this.selector('.selectYear').innerHTML  = Year;
     },
     
     renderHead    : function (Year, Month) {
@@ -107,7 +107,6 @@ var clog = {
         var dayMonth     = new Date(Year, Month);
         this.tbody.innerHTML = '';
         
-        //dataForTable.forEach(function (item, i) {
         for (var i = 0; i < dataForTable.length; i++){
             var tr   = document.createElement('tr');
             var th   = document.createElement('th');
@@ -119,10 +118,10 @@ var clog = {
             tr.appendChild(td);
 
             var rulesForData = {
-                work    : { mdi : 'mdi mdi-check-bold', color: '#4CAF50'},
-                sick    : { mdi : 'mdi mdi-ambulance',  color: '#FF9800'},
-                holiday : { mdi : 'mdi mdi-palm-tree',  color: '#2196F3'},
-                not     : { mdi : 'emprty', color: 'empty'}
+                work    : { mdi : 'mdi mdi-check-bold', color: '#4CAF50' , description: 'Рабочий день' },
+                sick    : { mdi : 'mdi mdi-ambulance',  color: '#FF9800' , description: 'Больничный'   },
+                holiday : { mdi : 'mdi mdi-palm-tree',  color: '#2196F3' , description: 'Отпуск'       },
+                not     : { mdi : 'emprty',             color: 'empty'   , description: 'Отсутствие'   }
             };
 
 		      
@@ -135,7 +134,12 @@ var clog = {
 
                 dayMonth.setDate(j);
                 if ( dayMonth.getDay() === 0 || dayMonth.getDay() === 6) {
-                    td.style.backgroundColor  = this.holidayBG;
+                    if ( (dataForTable[i].date[j] === 'sick' && (dataForTable[i].date[j - 1] === 'sick' || dataForTable[i].date[j + 1] === 'sick') ) ||
+                         (dataForTable[i].date[j] === 'holiday' && (dataForTable[i].date[j - 1] === 'holiday' || dataForTable[i].date[j + 1] === 'holiday') ) )
+                        {
+
+                        }
+                    else{ td.style.backgroundColor = this.holidayBG; }
                 }
 
                 if ( option.mdi === 'empty' ) {
@@ -150,6 +154,12 @@ var clog = {
                         span.setAttribute('class', option.mdi );
                         td.appendChild(span).style.color = option.color;
                         tr.appendChild(td);
+                        //TOOLTIP
+                        td.setAttribute('data-toggle', 'tooltip');
+                        td.setAttribute('data-placement', 'top');
+                        td.setAttribute('data-html', true);
+                        td.setAttribute('title', `<span class="mdi mdi-account-circle"></span> ${dataForTable[i].name} 
+                            <br> ${option.description} : <br> ${j < 10 ? '0' + j : j}.${Month < 10 ? '0' + Month : Month}.${Year}`);
                     }
                     else if ( dataForTable[i].date[j - 1] === 'sick' && dataForTable[i].date[j + 1] != 'sick' ) {
                         var spanText    = document.createElement('span')
@@ -181,6 +191,12 @@ var clog = {
                         span.setAttribute('class', option.mdi );
                         td.appendChild(span).style.color = option.color;
                         tr.appendChild(td);
+                        //TOOLTIP
+                        td.setAttribute('data-toggle', 'tooltip');
+                        td.setAttribute('data-placement', 'top');
+                        td.setAttribute('data-html', true);
+                        td.setAttribute('title', `<span class="mdi mdi-account-circle"></span> ${dataForTable[i].name} 
+                            <br> ${option.description} : <br> ${j < 10 ? '0' + j : j}.${Month < 10 ? '0' + Month : Month}.${Year}`);
                     }
                     else if ( dataForTable[i].date[j - 1] === 'holiday' && dataForTable[i].date[j + 1] != 'holiday' ) {
                         var spanText    = document.createElement('span')
@@ -208,12 +224,24 @@ var clog = {
                         span.setAttribute('class', option.mdi );
                         span.style.color = option.color;
                         td.appendChild(span);
+                        //TOOLTIP
+                        if (dataForTable[i].date[j] != 'not') {
+                            td.setAttribute('tabindex', 0);
+                            td.setAttribute('data-toggle', 'tooltip');
+                            td.setAttribute('data-placement', 'top');
+                            td.setAttribute('data-trigger', 'focus');
+                            td.setAttribute('data-html', true);
+                            td.setAttribute('title', `<span class="mdi mdi-account-circle"></span> ${dataForTable[i].name} 
+                                <br> ${option.description} : <br> ${j < 10 ? '0' + j : j}.${Month < 10 ? '0' + Month : Month}.${Year}`);
+                        }                       
+
                         tr.appendChild(td);
                 };
             }
 		this.tbody.appendChild(tr);
 	    };
-	this.table.appendChild(this.tbody);
+	    this.table.appendChild(this.tbody);
+        this.focusOneTr();
     },
     
     checkRulesForData : function (rulesForData, data) {
@@ -322,6 +350,7 @@ var clog = {
         this.renderHead(selectYear, monthNumber);
         return {Year: selectYear, Month: monthNumber};
     },
+
     loading       : function () {
         var col  = this.thead.lastElementChild.childNodes.length;
         var tr   = document.createElement('tr');
@@ -339,7 +368,51 @@ var clog = {
         span.innerHTML = 'LOADING ...';
         td.appendChild( span );
         tr.appendChild(td);
+
         this.tbody.innerHTML = '';
         this.tbody.appendChild(tr);
+        this.table.appendChild( this.tbody );
+    },
+
+    focusOneTr    : function () {
+        var allTr = this.tbody.querySelectorAll('tr');
+        allTr.forEach(tr => {
+            attrs = {'data-toggle': 'tooltip', 'data-placement': 'top', 'data-html': true, 'title': 'Нажмите чтобы отобразить только эту строку' };
+            setAttributes( tr.querySelector('th'),  attrs);
+            tr.querySelector('th').addEventListener('click', (e)=>{
+                th = e.target;
+                tr = e.target.parentNode;
+                if (th.classList.contains('select')) {
+                    allTr.forEach(tr => {tr.style.display = 'table-row'});
+                    setAttributes(th, {'class' : ''});
+                }else{
+                    allTr.forEach(tr => {tr.style.display = 'none'});
+                    tr.style.display = 'table-row';
+                    setAttributes(th, {'class' : 'select'});
+                }                
+            });
+        })        
+    }    
+};
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////
+   //                             //
+  //    ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИ   //
+ //                             //
+/////////////////////////////////
+
+
+function setAttributes (el, attrs) {
+    for(var key in attrs) {
+        el.setAttribute(key, attrs[key]);
     }
 };
