@@ -371,7 +371,7 @@ function focusOneTr (tbody) {
             attrs = {'data-toggle': 'tooltip', 'data-placement': 'top', 'data-html': true, 'title': 'Нажмите чтобы отобразить только эту строку' };
             setAttributes( tr.querySelector('th'),  attrs);
             tr.querySelector('th').addEventListener('click', function(e){
-                event.stopPropagation();
+                e.stopPropagation();
                 th = this;
                 tr = this.parentNode;
 
