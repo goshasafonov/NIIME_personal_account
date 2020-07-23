@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QUIL EDITOR</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="language" content="english">
+    <meta name="viewport" content="width=device-width">
+    
+    <!--Стили необходимые для работы QUILL-->
+    <link rel="stylesheet" href="../Libs/quill-1.3.7/katex/katex.min.css" />
+    <link rel="stylesheet" href="../Libs/quill-1.3.7/highlight/monokai-sublime.min.css" />    
+    <link href="../Libs/quill-1.3.7/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    
+    
+    
+<!-- Create the editor container -->
+<div class="editor-container p-2 border rounded">
+    <div id="editor"></div>
+</div>
+    
+<!-- Include the Quill library -->
+
+<script src="../Libs/quill-1.3.7/katex/katex.min.js"></script>
+<script src="../Libs/quill-1.3.7/highlight/highlight.min.js"></script>
+<script src="../Libs/quill-1.3.7/quill.min.js"></script>
+<script>
+    var toolbarOptions = [
+        [
+            { 'font': [] },
+            { 'size': ['small', false, 'large', 'huge'] } // custom dropdown
+        ],
+                
+        ['bold', 'italic', 'underline', 'strike'],
+        
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        
+        [{ 'header': 1 }, { 'header': 2 },'blockquote', 'code-block'],
+        [
+            { 'list': 'ordered'}, { 'list': 'bullet' }, 
+            { 'indent': '-1'}, { 'indent': '+1' }         // outdent/indent
+        ],
+        [{ 'direction': 'rtl' }, { 'align': [] }],
+        ['link', 'image', 'video', 'formula'],
+        [{ 'header': [false, 6, 5, 4, 3, 2, 1] }],
+        
+        
+        
+
+        ['clean']
+    ];
+    
+    var options = 
+    {
+        debug: 'info',
+        modules: {
+          formula: true,
+          syntax: true,
+          toolbar: toolbarOptions//'#toolbar-container'
+        },
+        placeholder: 'Compose an epic...',
+        readOnly: false,
+        theme: 'snow'
+    };
+    
+    var quill = new Quill('#editor', options);
+</script>
+<style>
+
+</style>
+</body>
+</html>

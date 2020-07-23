@@ -21,8 +21,17 @@
                     </p>
                 </div>
                 <div class="BugForm" style="position: relative;">
-                    <form>  
-                        <textarea class="form-control form-control-lg mb-3" type="text" placeholder="Опишите здесь найденную вами неисправность или пожелание к работе приложения" style="height: 400px;"></textarea>
+                    <form>
+                                                
+                        
+                        <!-- Create the editor container -->
+                        <div class="editor-container p-2 border rounded mb-3">
+                            <div id="editor">
+                                
+                            </div>
+                        </div>
+                                                
+                        
                         <button type="submit" class="btn btn-sm btn-primary mb-2 buttonGetBug">
                             <span class="mdi mdi-loading mdi-spin" style="display: none;"></span>
                             <span>Отправить на рассмотрение</span>

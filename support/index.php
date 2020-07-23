@@ -21,8 +21,21 @@ $page = $page.$pageC;
 
 //fouter
 
-$contentJsScript = '<script src="' . $host . '/support/content.js" type="text/javascript"></script>';
-$contentCss = '<link rel="stylesheet" href="' . $host . '/support/content.css" type="text/css">';
+$contentJsScript = ''
+//        <!-- Include the Quill library -->
+        .'<script src="' . $host . '/Libs/quill-1.3.7/katex/katex.min.js"></script>'
+        .'<script src="' . $host . '/Libs/quill-1.3.7/highlight/highlight.min.js"></script>'
+        .'<script src="' . $host . '/Libs/quill-1.3.7/quill.min.js"></script>'
+//Управляющий скрипт
+        .'<script src="' . $host . '/support/content.js" type="text/javascript"></script>';
+
+$contentCss = ''
+//        <!--Include the Quill library-->
+        .'<link rel="stylesheet" href="' . $host . '/Libs/quill-1.3.7/katex/katex.min.css" />'
+        .'<link rel="stylesheet" href="' . $host . '/Libs/quill-1.3.7/highlight/monokai-sublime.min.css" />'
+        .'<link rel="stylesheet" href="' . $host . '/Libs/quill-1.3.7/quill.snow.css" rel="stylesheet">'
+        .'<link rel="stylesheet" href="' . $host . '/support/content.css" type="text/css">';
+
 $pageF = file_get_contents($pageFouter);
 
 //Замена переменных в шаблоне
