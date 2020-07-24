@@ -1,0 +1,190 @@
+<div class="AppContent-wrapper">
+    <div class="AppContent" style="margin-top: 57px; overflow: hidden;">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="%$host%">Главная</a></li>
+                <li class="breadcrumb-item"><a href="%$host%/documents">Документы</a></li>
+                <li class="breadcrumb-item active reqName" aria-current="page">%$reqName%</li>
+            </ol>
+        </nav>
+
+        <div class="container">
+            <div>                    
+                <h3 class="mb-5">
+                    <span class="text-muted mdi mdi-file-cog"></span>
+                    <span class="docName">%$reqName%</span>
+                </h3>
+            </div>
+            <div class="shadow p-3" style="border-radius: .25rem;">
+                <div class="d-flex align-items-start">
+                    <h4 class="text-muted mb-5">
+                        Подробная информация о заявке
+                    </h4>
+                </div>
+
+
+                <div class="d-flex align-items-center flex-group justify-content-center flex-column">
+
+                    <div class="card shadow-sm-05 mb-4" style="max-width: 700px; min-width: 300px">
+                        <div class="card-header bg-transparent d-flex flex-wrap justify-content-between">
+                            <h4 class="d-flex align-items-center m-0">
+                                Заявка
+                            </h4>
+                            <div class="docNameContainer btn border-success rounded-pill text-success text-nowrap" style="font-size: 0.8rem !important">
+                                <span class="mdi mdi-file-clock"></span>
+                                <span class="docName">%$reqName%</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Загрузил: 
+                                <span class="UploadUser">Сафонов Г.Ю.</span>
+                                <span class="mdi mdi-account-circle" data-toggle="tooltip" data-placement="right" title="Сафонов Георгий Юрьевич Мл. науч. сотр."></span>
+                            </h5>
+
+                            <div class="d-flex align-items-start">
+                                <p>Статус заявки:
+                                    <span class="ExtFileMDI"></span>
+                                    <span class="descExtDoc">ADOBE PDF</span>
+                                </p>
+                                <p class="sizeFile badge badge-info ml-3" type="button" data-toggle="tooltip" data-placement="right" title="Размер файла">3,56 mb</p>
+                            </div>
+                            <div class="">
+                                <p>
+                                    Имя файла: 
+                                    <span class="docName font-weight-bold">%$docName%</span>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-start ">
+                                <p>
+                                    Дата загрузки: 
+                                    <span class="DateUpload">29.05.1996</span>
+                                </p>
+                                <span class="DateUploadTip mdi mdi-calendar ml-3" type="button" data-toggle="tooltip" data-placement="top" title=""></span>
+                            </div>
+
+                            <div class="alert alert-warning mb-2" role="alert">
+                                <h6 class="alert-heading">Коментарий</h6>
+                                <hr>
+                                <p class="card-text commentUploadFile">Я думал согласуют вот и отправил на согласование это файл, а его все не как не согласовывают. Что тут еще добавить хз.</p>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="mt-2 alert alert-success">
+                                <span class="">Подтвердили: 3/5</span> 
+                                <div class="acceptList">
+                                    Иванов Г.О. Иванов Г.О. Иванов Г.О.
+                                </div>
+                            </div>
+                            <div class="alert alert-danger">
+                                <span>Отказали: 0</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="" type="button" target="_blank" class="downloadDoc btn btn-sm btn-primary text-white">
+                                    <span class="mdi mdi-download mr-2"></span>
+                                    Скачать
+                                </a>
+                                <button class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" data-placement="top" title="Удалить">
+                                    <span class="mdi mdi-delete"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">
+                                <span>Последнее обновление</span> 
+                                <span class="lastUpdateDate">3 mins ago</span>
+                            </small>
+                            <span class="fullLastUpdateDate mdi mdi-calendar text-muted" type="button" data-toggle="tooltip" data-placement="right" title="29.05.1996 16:15"></span>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <!-- ////////////////////////////////////////// -->
+
+
+                    <div class="timeline-vertical flex-grow-2 flex-column mb-4" style=" ">
+                        <div class="py-4 timeline-group">
+                            <div class="timeline-item">
+                                <div class="timeline-point-wraper"> 
+                                    <div class="btn rounded-circle timeline-point timeline-point-account">
+                                        <div class="btn rounded-circle timeline-point-color bg-warning">
+                                            <span class="mdi mdi-download"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-body">
+                                        <h4 class="font-weight-light">Загрузил документ</h4>
+                                        <a href="" type="button" data-toggle="tooltip" data-placement="top" title="Сафонов Георгий Юрьевич мл.науч.сотр.">
+                                            Сафонов Г.Ю.<span class="mdi mdi-account ml-2"></span>
+                                        </a>                        
+                                    </div>
+                                    <div class="timeline-date font-weight-light">
+                                        <span class="DateUpload mr-1">05.05.1925</span>
+                                        <span class="DateUploadTip mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-point-wraper"></div>
+                                <div class="timeline-content">
+                                    <h5 class="timeline-body text-muted font-weight-light">
+                                        Процесс согласования
+                                    </h5>                   
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-point-wraper">
+                                    <div class="rounded-circle timeline-point timeline-point-delete">
+                                        <div class="rounded-circle timeline-point-color bg-secondary">
+                                            <span class="mdi mdi-delete"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-content d-flex">
+                                    <div class="timeline-body">
+                                        Документ удален
+                                        <br>                        
+                                    </div>
+                                    <div class="timeline-date">
+                                        <span class="mr-1">05.05.1925</span>
+                                        <span class="mdi mdi-calendar" type="button" data-toggle="tooltip" data-placement="top" title="16:00"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="mt-4 d-flex justify-content-between" style="margin-left: 4.5rem; margin-right: 3rem;">
+                            <button class="btn btn-sm btn-primary">Согласовать</button>
+                            <button class="btn btn-sm btn-danger">Отказать</button>
+                        </div> -->
+                        <form class="FormAreement mt-4 d-flex align-items-center" style="margin-left: 4.5rem; margin-right: 3rem;">
+                            <button type="button" class="agreementDoc btn btn-sm mdi mdi-paperclip position-absolute" style="left: calc( -3px + 5rem ); font-size: 1.2rem; outline: none;"
+                                data-toggle="popover"
+                                data-trigger="click"
+                                data-placement="top"
+                                title=""
+                                data-html="true"
+                            ></button>
+                            <div class="FormAreementBadge badge badge-success d-none position-absolute">
+                                <span class="textAgreementBadge">Согласовать</span>
+                                <span class="closeBadge ml-1 mdi mdi-close"
+                                type="button" data-toggle="tooltip" data-placement="top" 
+                                title="Отменить" onclick='closeBadgeInput()'
+                                ></span>
+                            </div>
+                            <button type="submit" class="sendBtnAgreementForm btn btn-sm mdi mdi-send-outline position-absolute" style="right: calc( -3px + 3.5rem); font-size: 1.2rem; outline:none;" 
+                            type="button" data-toggle="tooltip" data-placement="top" title="Отправить"></button>
+                            <input class="input-comment-document rounded-pill border border-secondary py-1 w-100 form-control form-control" type="text" name="" placeholder="Комментарий" style="padding-left:50px; ">
+                        </form>
+                    </div>
+
+                    <!-- ////////////////////////////////////////// -->                       
+
+
+                </div>
+            </div>

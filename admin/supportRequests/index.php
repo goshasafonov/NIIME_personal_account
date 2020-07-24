@@ -5,7 +5,7 @@ include './../../config.php';
 include './../../auth.php';
 
 $page = "";
-$titlePage = $titlePage . " | Журнал посещений";
+$titlePage = $titlePage . " | Заявки";
 
 //header
 $pageH = file_get_contents($pageHeader);

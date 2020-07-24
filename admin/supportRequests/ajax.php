@@ -18,20 +18,8 @@ $msg = array();
 $queryId = $_POST['queryId'];
 
 switch ($queryId) {
-    case 'setBug':
-        // $query = "SELECT"
-        //             . " `Id`, "
-        //             . " `NameCategory` "
-        //             . "FROM"
-        //             . " `categories_documents`";
-        // $result = $mysqli->query($query);
-        // if ($result) {
-        //     while( $row = $result->fetch_assoc() ) {
-        //         $msg[] = $row;
-        //     };
-        // }else {
-        //     $msg["AjaxError"] = "Ошибка в запросе на получение списка категорий: <br>" . $mysqli->error;
-        // }
+    case 'YOU_ID':
+        
 
         $msg[] = 'olololo';
         break;
