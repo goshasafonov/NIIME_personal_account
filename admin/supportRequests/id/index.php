@@ -77,8 +77,21 @@ $pageC = file_get_contents("./page.html");
 $page = $page.$pageC;
 
 //fouter
-$contentJsScript = '<script src="' . $host . '/documents/id/content.js" type="text/javascript"></script>';
-$contentCss = '<link href="' . $host . '/documents/id/content.css" rel="stylesheet" type="text/css">';
+$contentJsScript = ''
+//        <!-- Include the Quill library -->
+        .'<script src="' . $host . '/Libs/quill-1.3.7/katex/katex.min.js"></script>'
+        .'<script src="' . $host . '/Libs/quill-1.3.7/highlight/highlight.min.js"></script>'
+        .'<script src="' . $host . '/Libs/quill-1.3.7/quill.min.js"></script>'
+//Управляющий скрипт
+        .'<script src="' . $host . '/admin/supportRequests/id/content.js" type="text/javascript"></script>';
+
+$contentCss = ''
+	.'<link rel="stylesheet" href="' . $host . '/admin/supportRequests/id/content.css" type="text/css">'
+	.'<link rel="stylesheet" href="' . $host . '/Libs/quill-1.3.7/quill.snow.css" type="text/css">'
+	.'<link rel="stylesheet" href="' . $host . '/Libs/quill-1.3.7/highlight/monokai-sublime.min.css" type="text/css">'
+	.'<link rel="stylesheet" href="' . $host . '/Libs/quill-1.3.7/katex/katex.min.css" type="text/css">';
+
+
 $pageF = file_get_contents($pageFouter);
 
 //Замена переменных в шаблоне

@@ -28,3 +28,16 @@ body{
 	padding-right: 45px;
 	transition: 0.2s;
 }
+
+
+
+
+
+/*Toolbar*/
+
+.ql-toolbar.ql-snow{
+	display: none;
+}
+.ql-container.ql-snow{
+	border: none!important;
+}

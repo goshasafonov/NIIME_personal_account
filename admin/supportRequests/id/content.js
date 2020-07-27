@@ -2,7 +2,7 @@ $(function () {
 	var GET = infoGetQuery();
 	$('[data-toggle="tooltip"]').tooltip();
 
-	getInfoDocument();
+	//getInfoDocument();
 
 	function getInfoDocument() {
 		var formData = new FormData();
@@ -59,22 +59,7 @@ $(function () {
     	console.log(jsonData);
     }
 
-    $(document).on('click', '.fileMD5Container', function(){
-    	var MD5 = $(this).find('.fileMD5').text();
-    	
-    	var copyForm = document.createElement('textarea');
-    	copyForm.setAttribute('style', 'opacity:0;position:fixed;top:0;left:0;height:0;width:0;');
-    	copyForm.value = MD5;
-    	document.body.appendChild(copyForm);
-    	copyForm.select();
-    	document.execCommand('copy');
-    	document.body.removeChild(copyForm);
-    	
-    	var tip = $(this).data('bs.tooltip').tip
-    	var tooltipInner = $(tip).find('.tooltip-inner');
-    	tooltipInner.html('Скопировано');
-    	$(this).tooltip('update');
-    });
+    
     parseTimeLineData(data);
     agreementPopover();
     $('.FormAreement').on('submit', submitFormAgreement);
@@ -211,24 +196,24 @@ function agreementPopover(){
     var popoverElem = null;
     var content = `
     	<div>
+            <a href='#' class='buttonJobReq w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-warning'>
+                <span class='mdi mdi-thumb-up'></span>
+                В работе
+            </a>
+            <br>
         	<a href='#' class='buttonAgreeDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-success'>
         		<span class='mdi mdi-thumb-up'></span>
-        		Согласовать
+        		Выполнена
         	</a>
         	<br>
         	<a href='#' class='buttonDisAgreeDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-danger'>
         		<span class='mdi mdi-thumb-down'></span>
-        		Отказать
+        		Заблокировать
         	</a>
         	<br>
         	<a href="#" class='buttonCommentDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-info'>
         		<span class='mdi mdi-comment'></span>
         		Комментарий
-        	</a>
-        	<br>
-        	<a href="#" class='buttonImageDoc w-100 pr-4 text-left rounded-0 border-0 btn btn-sm btn-outline-secondary'>
-        		<span class='mdi mdi-image'></span>
-        		Изображение
         	</a>
         <div>`;
     content = $(content)[0];
@@ -236,6 +221,7 @@ function agreementPopover(){
     allButton.forEach(button => {
         button.addEventListener('click', clickButtonOnPopover);
     });
+    content.querySelector('.buttonJobReq').onclick  = buttonJobReq;
     content.querySelector('.buttonAgreeDoc').onclick = buttonAgreeDoc;
     content.querySelector('.buttonDisAgreeDoc').onclick = buttonDisAgreeDoc;
     content.querySelector('.buttonCommentDoc').onclick = buttonCommentDoc;
@@ -255,10 +241,18 @@ function agreementPopover(){
     	},100);
     });
 }
+function buttonJobReq(e){
+    $('.textAgreementBadge').text('В работе');
+    $('.FormAreementBadge').removeClass('d-none').addClass('d-flex');
+    $('.FormAreementBadge').removeClass('badge-warning badge-danger badge-success badge-info').addClass('badge-warning');
+    $('.FormAreementBadge').attr('data-status', 'agree');
+    var width = $('.FormAreementBadge').outerWidth(true);
+    $('.input-comment-document').css('paddingLeft', width + 50)
+};
 function buttonAgreeDoc(e){
     $('.textAgreementBadge').text('Согласовать');
 	$('.FormAreementBadge').removeClass('d-none').addClass('d-flex');
-    $('.FormAreementBadge').removeClass('badge-danger').addClass('badge-success');
+    $('.FormAreementBadge').removeClass('badge-warning badge-danger badge-success badge-info').addClass('badge-success');
     $('.FormAreementBadge').attr('data-status', 'agree');
     var width = $('.FormAreementBadge').outerWidth(true);
     $('.input-comment-document').css('paddingLeft', width + 50)
@@ -266,7 +260,7 @@ function buttonAgreeDoc(e){
 function buttonDisAgreeDoc(e){
     $('.textAgreementBadge').text('Отказать');
 	$('.FormAreementBadge').removeClass('d-none').addClass('d-flex');
-    $('.FormAreementBadge').removeClass('badge-success').addClass('badge-danger');
+    $('.FormAreementBadge').removeClass('badge-warning badge-danger badge-success badge-info').addClass('badge-danger');
     $('.FormAreementBadge').attr('data-status', 'disagree');
     var width = $('.FormAreementBadge').outerWidth(true);
     $('.input-comment-document').css('paddingLeft', width + 50)
@@ -346,3 +340,57 @@ var data = [
 	},
 ];
 
+
+
+
+
+
+
+
+//contentForRequestEditor
+
+//Settings for Quill text editor
+var toolbarOptions = [
+    [
+        { 'font': [] },
+        { 'size': ['small', false, 'large', 'huge'] } // custom dropdown
+    ],
+                
+    ['bold', 'italic', 'underline', 'strike'],
+        
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        
+    [{ 'header': 1 }, { 'header': 2 },'blockquote', 'code-block'],
+    [
+        { 'list': 'ordered'}, { 'list': 'bullet' }, 
+        { 'indent': '-1'}, { 'indent': '+1' }         // outdent/indent
+    ],
+    [{ 'direction': 'rtl' }, { 'align': [] }],
+    ['link', 'image', 'video', 'formula'],
+    [{ 'header': [false, 6, 5, 4, 3, 2, 1] }],
+
+    ['clean']
+];
+    
+var options = 
+{
+    debug: '',
+    modules: {
+      formula: true,
+      syntax: true,
+      toolbar: toolbarOptions
+    },
+    placeholder: 'Опишите заявку здесь',
+    readOnly: true,
+    theme: 'snow'
+};
+    
+// Start Quill
+var quill = new Quill('#editor', options);
+
+
+$.get('./Test_Content_Of_Editor.html', function(data) {
+  $('.ql-editor').html(data)[0].lastChild.remove();
+  console.log('Загрузка завершена.');
+});
